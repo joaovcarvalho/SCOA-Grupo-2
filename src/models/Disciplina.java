@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package scoa;
+package models;
 
 /**
  *
- * @author joaocarvalho
+ * @author JoãoVitor
  */
-public class Model {
+public class Disciplina {
     
 }

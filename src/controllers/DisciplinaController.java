@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package scoa;
+package controllers;
+
+import views.InsereDisciplinaView;
 
 /**
  *
- * @author joaocarvalho
+ * @author JoãoVitor
  */
-public class Controller {
-    
+public class DisciplinaController {
+    public void index(){
+        new InsereDisciplinaView().setVisible(true);
+    }
 }
