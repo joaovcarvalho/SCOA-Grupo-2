@@ -6,10 +6,13 @@
 package controllers;
 
 import exceptions.KeyNotExistsException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import views.InsereDisciplinaView;
+import models.Disciplina;
+import views.*;
 import scoa.Controller;
+import scoa.Model;
 import scoa.Request;
 import scoa.View;
 
@@ -18,6 +21,15 @@ import scoa.View;
  * @author JoãoVitor
  */
 public class DisciplinaController extends Controller {
+    
+    public void index(Request request){
+        Disciplina disciplina = new Disciplina();
+        disciplina.setNome("Cálculo I");
+        disciplina.save();
+        
+        ArrayList<Object> resultados = new Disciplina().all();
+        View.make(new listaDisciplinasView(resultados));
+    }
     public void insert(Request request){
         View.make(new InsereDisciplinaView());
    }

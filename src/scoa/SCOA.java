@@ -13,6 +13,6 @@ import controllers.DisciplinaController;
 public class SCOA {
     public static void main(String[] args){
         // Making first request
-        new Request(new DisciplinaController(), "insert").send();
+        new Request(new DisciplinaController(), "index").send();
     }
 }
