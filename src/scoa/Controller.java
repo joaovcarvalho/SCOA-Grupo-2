@@ -4,15 +4,11 @@
  * and open the template in the editor.
  */
 package scoa;
-import controllers.DisciplinaController;
 
 /**
  *
  * @author JoãoVitor
  */
-public class SCOA {
-    public static void main(String[] args){
-        // Making first request
-        new Request(new DisciplinaController(), "insert").send();
-    }
+public class Controller {
+    
 }
