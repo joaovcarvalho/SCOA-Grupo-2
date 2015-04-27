@@ -23,10 +23,6 @@ import scoa.View;
 public class DisciplinaController extends Controller {
     
     public void index(Request request){
-        Disciplina disciplina = new Disciplina();
-        disciplina.setNome("Cálculo I");
-        disciplina.save();
-        
         ArrayList<Object> resultados = new Disciplina().all();
         View.make(new listaDisciplinasView(resultados));
     }
@@ -36,9 +32,14 @@ public class DisciplinaController extends Controller {
     
    public void store(Request request){
         try {
-            System.out.println(request.input("nome"));
+            String name = request.input("nome");
+            Disciplina disciplina = new Disciplina();
+            disciplina.setNome(name);
+            disciplina.save();
         } catch (KeyNotExistsException ex) {
             Logger.getLogger(DisciplinaController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        new Request(this, "index").send();
    }
 }
