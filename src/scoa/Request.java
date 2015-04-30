@@ -46,13 +46,13 @@ public class Request {
         
     }
     
-    public void addInput(String key, String value){
+    public void addInput(String key, Object value){
         this.fields.put(key, value);
     }
     
-    public String input(String key) throws KeyNotExistsException{
+    public Object input(String key) throws KeyNotExistsException{
         if(this.fields.containsKey(key)){
-            return (String) this.fields.get(key);
+            return this.fields.get(key);
         }else{
             throw new KeyNotExistsException("Key is not set.");
         }

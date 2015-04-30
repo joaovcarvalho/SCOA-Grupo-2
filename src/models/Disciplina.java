@@ -79,10 +79,44 @@ public class Disciplina extends Model {
         } 
 
     }
+    
+    public void update(){
+        
+        try{
+          
+
+            // This will load the MySQL driver, each DB has its own driver
+            Class.forName("com.mysql.jdbc.Driver");
+            // Setup the connection with the DB
+            connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/scoa?"
+                    + "user=scoauser&password=scoauser");
+
+            // PreparedStatements can use variables and are more efficient
+
+            preparedStatement = Model.connect
+                .prepareStatement("UPDATE scoa.disciplinas set nome = ? WHERE id = ?;");
+            // "myuser, webpage, datum, summery, COMMENTS from feedback.comments");
+            // Parameters start with 1
+
+
+            preparedStatement.setString(1, this.nome);
+            preparedStatement.setString(2, this.id);
+            preparedStatement.executeUpdate();
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+          close();
+        } 
+
+    }
 
     @Override
     public String toString() {
-        return "Disciplina{" + "id=" + id + ", nome=" + nome + '}';
+        return id + " | " + nome;
     }
 
     public String getNome() {

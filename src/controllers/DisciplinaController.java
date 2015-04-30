@@ -32,7 +32,7 @@ public class DisciplinaController extends Controller {
     
    public void store(Request request){
         try {
-            String name = request.input("nome");
+            String name = (String) request.input("nome");
             Disciplina disciplina = new Disciplina();
             disciplina.setNome(name);
             disciplina.save();
@@ -41,5 +41,17 @@ public class DisciplinaController extends Controller {
         }
         
         new Request(this, "index").send();
+   }
+   
+   public void update(Request request){
+       Disciplina selecionada;
+        try {
+            selecionada = (Disciplina) request.input("disciplina");
+            System.out.println(selecionada);
+            View.make(new editarDisciplina(selecionada));
+        } catch (KeyNotExistsException ex) {
+            Logger.getLogger(DisciplinaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
    }
 }
