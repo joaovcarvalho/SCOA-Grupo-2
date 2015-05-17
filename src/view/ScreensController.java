@@ -1,4 +1,4 @@
-package scoa;
+package view;
 
 import java.util.HashMap;
 import javafx.animation.KeyFrame;

@@ -1,4 +1,4 @@
-package scoa;
+package view;
 
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -32,6 +32,6 @@ public class ScreensFramework extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        launch(args);;
     }
 }

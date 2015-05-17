@@ -1,5 +1,5 @@
 
-package scoa;
+package view;
 
 /**
  *
