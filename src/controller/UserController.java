@@ -15,12 +15,11 @@ import model.User;
  */
 public class UserController {
     
-    public void login(String CPF, String password){
+    public static User login(String CPF, String password){
      
        User user = new UserDAO().getUserByCPFandPassword(CPF, password);
-       Type t = user.getType();
-       System.out.println(user.getId());
-    
+       
+       return user;
     }
     
 }

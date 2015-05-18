@@ -1,6 +1,7 @@
 package view;
 
 import dao.UserDAO;
+import controller.UserController;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -32,7 +33,7 @@ public class LoginController implements Initializable, ControlledScreen {
     private PasswordField PasswordField;
     
     @FXML
-    private Label StatusLabel;
+    private Label Status;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,8 +50,17 @@ public class LoginController implements Initializable, ControlledScreen {
        String CPF = UserCPF.getText() ;
        String password = PasswordField.getText() ;
        
-       User user = new UserDAO().getUserByCPFandPassword(CPF, password);
-       System.out.println(user.getId());
+       User user = UserController.login(CPF, password);
+       if(user != null){
+          
+          myController.setScreen(ScreensFramework.screen2ID);
+       }else{
+           System.out.println("Usuário ou Senha Incorretos");
+           Status.setVisible(true);
+       }
+     //  myController.setCurrentUser(user);
+       
+             
     }
 
 }

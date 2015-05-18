@@ -7,7 +7,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="view.LoginController">
   <children>
     <Label layoutX="49.0" layoutY="22.0" prefHeight="84.0" prefWidth="488.0" text="SCOA - Sistema de Controle Academico" textAlignment="JUSTIFY" underline="false" wrapText="false">
       <font>
@@ -20,13 +20,14 @@
         <Font name="Arial Bold" size="18.0" fx:id="x1" />
       </font>
     </Label>
-    <Label font="$x1" layoutX="56.0" layoutY="200.0" text="Senha" />
+    <Label font="$x1" layoutX="56.0" layoutY="190.0" text="Senha" />
     <Button layoutX="49.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleLoginButton" text="Enviar">
       <font>
         <Font name="Arial Bold" size="14.0" />
       </font>
     </Button>
-    <Label fx:id="statusLabel" layoutX="49.0" layoutY="267.0" text="Label" textFill="#ff3333" visible="false" />
-    <PasswordField fx:id="PasswordField" layoutX="49.0" layoutY="229.0" prefHeight="32.0" prefWidth="200.0" />
+    <Label fx:id="Status" layoutX="49.0" layoutY="267.0" text="Usuário ou senha incorretos." textFill="#ff3333" visible="false" />
+    <PasswordField fx:id="PasswordField" layoutX="49.0" layoutY="219.0" prefHeight="32.0" prefWidth="200.0" />
+      <Label layoutX="49.0" layoutY="267.0" prefHeight="17.0" prefWidth="200.0" visible="false" />
   </children>
 </AnchorPane>
