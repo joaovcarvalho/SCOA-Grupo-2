@@ -30,7 +30,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     
     @FXML
     private Pane inserirPauta;
-    
+        
     @FXML
     private Pane editPauta;
     

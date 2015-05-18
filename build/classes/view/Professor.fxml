@@ -57,7 +57,7 @@
     </Accordion>
     <StackPane layoutX="308.0" layoutY="73.0" prefHeight="306.0" prefWidth="278.0">
       <children>
-        <Pane prefHeight="200.0" prefWidth="200.0" visible="false">
+        <Pane fx:id="deletePauta" prefHeight="200.0" prefWidth="200.0" visible="false">
           <children>
             <Label text="Deletar Pauta" />
           </children>
