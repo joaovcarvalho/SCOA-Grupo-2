@@ -59,16 +59,13 @@ public class UserDAO extends DataAccessObject {
                     closeConnection();
                     return new User(id, cpf, user_password, new Secretary(name, type_id));                     
             }
-            System.out.println("2");
             
         }
         
          catch (SQLException ex) {
-               System.out.println("3");
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
           
         }
-        System.out.println("4");
         
         closeConnection();
         return null;

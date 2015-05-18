@@ -14,11 +14,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import model.User;
 
-/**
- * FXML Controller class
- *
- * @author Guilherme Herzog
- */
+
 public class LoginController implements Initializable, ControlledScreen {
 
     ScreensController myController;
