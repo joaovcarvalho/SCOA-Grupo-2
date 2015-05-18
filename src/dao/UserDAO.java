@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Professor;
 import model.Secretary;
 import model.User;
 
@@ -30,45 +31,58 @@ public class UserDAO extends DataAccessObject {
             statement.setString(2, password);
             
             ResultSet rs = statement.executeQuery();
-            System.out.println("1");
             if(rs.next()){
                 int id = rs.getInt("id");
                 String cpf = rs.getString("cpf");
                 String user_password = rs.getString("password");
                 String type = rs.getString("type");
                 int type_id = rs.getInt("type_id");
-                String name = "";
+                
                 //Verifica qual o tipo , e pega as informacoes do tipo especifico
                 //de usuario no banco
                 if(type.equals("secretary")){
-                   System.out.println("secretaria");
                    String q = "SELECT * FROM secretaries WHERE id = ?";
                     PreparedStatement s = connection.prepareStatement(q);
                     s.setInt(1, type_id);
                     ResultSet r = s.executeQuery();
-                   
+                    
+                    String name = "";
                     if(r.next()){
                         name = r.getString("name");
                     }
                     
+                    closeConnection();
+                    return new User(id, cpf, user_password, new Secretary(name, type_id));   
                 }/*else if(type.equals("student")){
                    return new User(id, cpf, user_password, new Secretary());
-                }else if(type.equals("professor")){
-                    return new User(id, cpf, user_password, new Professor());
-                }*/
-                    closeConnection();
-                    return new User(id, cpf, user_password, new Secretary(name, type_id));                     
+                }*/else if(type.equals("professor")){
+                    String queryType = "SELECT * FROM professors WHERE id = ?";
+                    PreparedStatement typeStatment = connection.prepareStatement(queryType);
+                    typeStatment.setInt(1, type_id);
+                    ResultSet r = typeStatment.executeQuery();
+                    Professor professor = null;
+                    
+                    if(r.next()){
+                        professor = new Professor();
+                        professor.setName(r.getString("name"));
+                        professor.setId(r.getInt("id"));
+                        professor.setRegister(r.getString("register"));
+                        professor.setRoom(r.getString("room"));
+                        professor.setLattes(r.getString("lattes"));
+                        professor.setTelephone(r.getString("telephone"));
+                    }
+                    
+                    return new User(id, cpf, user_password, professor);
+                };
+                                      
             }
-            System.out.println("2");
             
         }
         
          catch (SQLException ex) {
-               System.out.println("3");
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
           
         }
-        System.out.println("4");
         
         closeConnection();
         return null;

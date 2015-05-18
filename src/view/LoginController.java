@@ -12,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import model.Professor;
+import model.Secretary;
 import model.User;
 
 /**
@@ -52,8 +54,16 @@ public class LoginController implements Initializable, ControlledScreen {
        
        User user = UserController.login(CPF, password);
        if(user != null){
+           
+           if(user.getType() instanceof Secretary){
+               myController.setScreen(ScreensFramework.screen2ID);
+           }
+           
+           if(user.getType() instanceof Professor){
+               myController.setScreen(ScreensFramework.screen3ID);
+           }
           
-          myController.setScreen(ScreensFramework.screen2ID);
+          
        }else{
            System.out.println("Usuário ou Senha Incorretos");
            Status.setVisible(true);
