@@ -39,13 +39,35 @@ public class UserDAO extends DataAccessObject {
                 String user_password = rs.getString("password");
                 String type = rs.getString("type");
                 int type_id = rs.getInt("type_id");
+               
+                
+                if(type.equals("secretary")){
+                   System.out.println("secretaria");
+                   String q = "SELECT * FROM secretaries WHERE id = ?";
+                    PreparedStatement s = connection.prepareStatement(q);
+                    statement.setString(1, Integer.toString(type_id));
+                   
+                    ResultSet r = statement.executeQuery();
+                    String name = "";
+                    if(r.next()){
+                         name = r.getString("name");
+                         System.out.println("name = " + name);
+                    }
+                    
+                }
+                    closeConnection();
+                    return new User(id, cpf, user_password, new Secretary());
+                //}
+                     
+            }/*else if(type.equals("student")){
+                   return new User(id, cpf, user_password, new Secretary());
+                }else if(type.equals("professor")){
+                    return new User(id, cpf, user_password, new Professor());
+                }*/
+        }
 
-                closeConnection();
-                return new User(id, cpf, user_password, new Secretary());
-            }
 
-
-        } catch (SQLException ex) {
+         catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         

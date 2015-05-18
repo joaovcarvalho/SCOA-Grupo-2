@@ -50,7 +50,7 @@ public class LoginController implements Initializable, ControlledScreen {
        String password = PasswordField.getText() ;
        
        User user = new UserDAO().getUserByCPFandPassword(CPF, password);
-       System.out.println(user.getCpf());
+       System.out.println(user.getId());
     }
 
 }
