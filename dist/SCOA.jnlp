@@ -8,8 +8,13 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="Scoa.jar" size="16305" download="eager" />
     <jar href="lib/mysql-connector-java-5.1.23-bin.jar" size="834126" download="eager" />
+=======
+    <jar href="Scoa.jar" size="14531" download="eager" />
+    <jar href="lib/mysql-connector-java-5.1.23-bin.jar" size="827921" download="eager" />
+>>>>>>> 8f7683fb131536bd367aac6f066d459d3528d950
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Scoa" >
     <param name="requiredFXVersion" value="8.0+"/>

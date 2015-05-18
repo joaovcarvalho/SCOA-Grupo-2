@@ -16,11 +16,7 @@ import model.Professor;
 import model.Secretary;
 import model.User;
 
-/**
- * FXML Controller class
- *
- * @author Guilherme Herzog
- */
+
 public class LoginController implements Initializable, ControlledScreen {
 
     ScreensController myController;
