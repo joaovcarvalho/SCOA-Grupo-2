@@ -36,7 +36,9 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
     private Pane EditProfessor;
     @FXML
-    private Pane DeleteProfessor;
+    private Pane ListProfessor;
+    
+    
     @FXML
     private Hyperlink InsertProf;
     @FXML
@@ -63,22 +65,27 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
     
     @FXML
-    private TextArea ProfName;
+    private TextField ProfName;
     @FXML
-    private TextArea ProfReg;
+    private TextField ProfReg;
     @FXML
-    private TextArea ProfCPF;
+    private TextField ProfCPF;
     @FXML
-    private TextArea ProfPassword;
+    private TextField ProfPassword;
     @FXML
-    private TextArea ProfTel;
+    private TextField ProfTel;
     @FXML
-    private TextArea ProfLattes;
+    private TextField ProfLattes;
     @FXML
-    private TextArea ProfRoom;
+    private TextField ProfRoom;
     @FXML
-    private TextArea ProfConfirm;
-    
+    private TextField ProfConfirm;
+    @FXML
+    private Label statusPassword;
+    @FXML
+    private Label statusEmpty;
+    @FXML
+    private Label statusSuccess;
     
     
     
@@ -93,32 +100,31 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     }
     
     @FXML
+    public void showEditProfessor(ActionEvent event) {
+        hideAllPanes();
+        EditProfessor.setVisible(true); 
+        //Pane dentro de editProfessor, responsavel pela exibicao do listar
+        ListProfessor.setVisible(true); 
+    }
+    
+    @FXML
     public void showInsertProfessor(ActionEvent event) {
         hideAllPanes();
-        
-        /*nameInsertProf.setVisible(true);
-        telInsertProf.setVisible(true);
-        regInsertProf.setVisible(true);
-        lattesInsertProf.setVisible(true);
-        cpfInsertProf.setVisible(true);
-        roomInsertProf.setVisible(true);
-        passwordInsertProf.setVisible(true);
-        confirmInsertProf.setVisible(true);*/
         InsertProfessor.setVisible(true);
-        
-        System.out.println("Exibindo Painel de Inserir professor...");
     }
     
     public void hideAllPanes() {
         InsertProfessor.setVisible(false);
         
         EditProfessor.setVisible(false);
-        DeleteProfessor.setVisible(false);
     }
     
     @FXML
     private void handleInsertProfButton(ActionEvent event) throws SQLException{
-        System.out.println("Inserir");
+        System.out.println("cliquei em inserir");
+         statusEmpty.setVisible(false);
+         statusPassword.setVisible(false);
+         statusSuccess.setVisible(false);
          String name = ProfName.getText();
          String cpf = ProfCPF.getText() ;
          String reg = ProfReg.getText() ;
@@ -127,7 +133,16 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          String lattes = ProfLattes.getText() ;
          String room = ProfRoom.getText() ;
          String confirm = ProfConfirm.getText() ;
-         SecretaryController.insertProf(cpf,password,confirm, reg, room, tel, lattes, name);
+         int result = SecretaryController.insertProf(cpf,password,confirm, reg, room, tel, lattes, name);
+         
+         
+         if(result == 1){
+             statusSuccess.setVisible(true);
+         }else if(result == 2){
+           statusEmpty.setVisible(true);
+         }else if(result ==3){
+             statusPassword.setVisible(true); 
+         }
     }
     
     

@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Professor;
@@ -20,6 +21,42 @@ import model.User;
  * @author Amanda
  */
 public class ProfessorDAO extends DataAccessObject{
+    
+    
+    
+      public static ArrayList<Professor> listProfessors() throws SQLException{ //throws SQLException {
+        initConnection();
+        Connection connection = getConnection();
+        String query = "SELECT * FROM Professors";
+        Statement st = connection.prepareStatement(query);
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<Professor> profs = new ArrayList<>();
+        try{
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("register");
+                String register = rs.getString("room");
+                String room = rs.getString("telephone");
+                String telephone = rs.getString("lattes");
+                String lattes = rs.getString("name");
+    
+                Professor prof = new Professor(id, register, room, telephone,  lattes,  name);
+                
+    
+                profs.add(prof);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();     
+        return profs;
+    }
+    
+    
+    
+    
     
     public void insertUser(String cpf, String password, String type, int type_id){
         initConnection();
@@ -36,8 +73,7 @@ public class ProfessorDAO extends DataAccessObject{
             
             statement.execute();
             
-            
-                
+           
                 
              closeConnection();                    
         }
@@ -70,11 +106,10 @@ public class ProfessorDAO extends DataAccessObject{
                 if(rs.next())
                 {
                     id = rs.getInt(1);
-                   // id++;
                     
                 }
             closeConnection();
-            // preciso pegar o id do prof inserido pra passar pro metodo abaixo
+           
             insertUser(cpf, password, "professor", id);
 
              
@@ -87,7 +122,7 @@ public class ProfessorDAO extends DataAccessObject{
         }
         
         closeConnection();
-       // return null;
+      
     }
 }
 

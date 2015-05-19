@@ -19,13 +19,20 @@ public class SecretaryController {
     static ProfessorDAO p = new ProfessorDAO();
        
     
-       public static void insertProf(String cpf, String password,String confirm, String register, String room, String telephone, String lattes, String name){
-           // Validar os campos
-           // Conferir de password e confirm batem
-          
-           p.insertProfessor(cpf, password, register, room, telephone, lattes, name);
-       
-          System.out.println("foi");
+       public static int insertProf(String cpf, String password,String confirm, String register, String room, String telephone, String lattes, String name){
+           // Validar os campos também, nesse if
+          if(password.equals(confirm) && !cpf.isEmpty()&& !password.isEmpty()&& !confirm.isEmpty()&& !register.isEmpty()
+                  && !room.isEmpty()&& !telephone.isEmpty()&& !lattes.isEmpty()&& !name.isEmpty()){
+             p.insertProfessor(cpf, password, register, room, telephone, lattes, name);
+            
+             return 1;
+          }else if(!password.equals(confirm)){
+              return 2;
+          }
+          else{
+              return 3;
+          }
+         
     }
   
 }
