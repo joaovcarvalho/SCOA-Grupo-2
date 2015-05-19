@@ -5,6 +5,7 @@
  */
 package view;
 
+import controller.ProfessorController;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -60,5 +61,14 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     private void handleInserirPautaButton(ActionEvent event) throws SQLException{
         hideAllPanels();
         inserirPauta.setVisible(true);
+    }
+    
+    @FXML
+    private void insertPauta(ActionEvent event){
+        String turma = "";
+        String data = "";
+        String descricao = "";
+        
+        ProfessorController.insertAgenda(turma, data, descricao);
     }
 }
