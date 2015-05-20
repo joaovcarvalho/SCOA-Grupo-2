@@ -34,11 +34,11 @@ public class ProfessorDAO extends DataAccessObject{
         try{
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String name = rs.getString("register");
-                String register = rs.getString("room");
-                String room = rs.getString("telephone");
-                String telephone = rs.getString("lattes");
-                String lattes = rs.getString("name");
+                String name = rs.getString("name");
+                String register = rs.getString("register");
+                String room = rs.getString("room");
+                String telephone = rs.getString("telephone");
+                String lattes = rs.getString("lattes");
     
                 Professor prof = new Professor(id, register, room, telephone,  lattes,  name);
                 System.out.println("nome: " + prof.getName() + "id: " + prof.getId());

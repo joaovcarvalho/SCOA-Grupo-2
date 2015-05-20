@@ -25,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import model.Course;
 import model.Professor;
 import model.User;
 /**
@@ -147,8 +148,16 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     }
     
      @FXML
-    public void showInsertSubject(ActionEvent event) {
+    public void showInsertSubject(ActionEvent event) throws SQLException {
         hideAllPanes();
+        
+        SubjectCourse.getItems().clear();
+
+        ArrayList<Course> c_list = SecretaryController.listCourses();
+        for (Course c : c_list) {  
+           SubjectCourse.getItems().add(c.getName());
+        }   
+        
         InsertSubject.setVisible(true);
     }
     
@@ -176,6 +185,15 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
     private void handleInsertSubjectButton(ActionEvent event) throws SQLException{
          System.out.println("cliquei em inserir disciplina");
+         String name = SubjectName.getText();
+         String code = SubjectCode.getText();
+         String description = SubjectDescription.getText();
+         String credits = SubjectCredits.getText();
+         //String courseName = "cc";//SubjectCourse.getAccessibleText();
+         String courseName = SubjectCourse.getSelectionModel().selectedItemProperty().getValue().toString();
+         // System.out.println("nome curso: " + courseName);
+          
+         SecretaryController.insertSubject(code, description, name, credits, courseName);
     }
     
     @FXML

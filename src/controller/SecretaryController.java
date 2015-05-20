@@ -7,11 +7,14 @@ package controller;
 
 import dao.CourseDAO;
 import dao.ProfessorDAO;
+import dao.SubjectDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+import model.Course;
 import model.Professor;
+import model.Subject;
 
 /**
  *
@@ -21,11 +24,13 @@ public class SecretaryController {
     
     static ProfessorDAO p = new ProfessorDAO();
     static CourseDAO c = new CourseDAO();
+    static SubjectDAO s = new SubjectDAO();
        
        public static void insertCourse(String name, String code, String description){
            
            c.insertCourse(code, description, name);
        }
+       
        public static int insertProf(String cpf, String password,String confirm, String register, String room, String telephone, String lattes, String name){
            // Validar os campos também, nesse if
           if(password.equals(confirm) && !cpf.isEmpty()&& !password.isEmpty()&& !confirm.isEmpty()&& !register.isEmpty()
@@ -43,6 +48,14 @@ public class SecretaryController {
        
      public static ArrayList<Professor>listProf() throws SQLException{
         return ProfessorDAO.listProfessors();
+    }
+     
+     public static void insertSubject(String code, String description, String name, String credits, String courseName) throws SQLException{
+         s.insertSubject(code, description, name, credits, courseName);
+     }
+     
+     public static ArrayList<Course>listCourses() throws SQLException{
+        return CourseDAO.selectAllCourses();
     }
   }  
      
