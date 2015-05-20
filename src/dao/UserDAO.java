@@ -18,6 +18,32 @@ import model.User;
 
 public class UserDAO extends DataAccessObject {
     
+    public static void insertUser(String cpf, String password, String type, int type_id){
+        initConnection();
+        
+        Connection connection = getConnection();
+        String query = "INSERT INTO users (cpf, password, type, type_id) VALUES (?, ?,?,?)";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, cpf);
+            statement.setString(2, password);
+            statement.setString(3, type);
+            statement.setInt(4, type_id);
+            
+            statement.execute();
+            
+           
+                
+             closeConnection();                    
+        }
+         catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+        
+    }
+    
     public User getUserByCPFandPassword(String CPF, String password){
         initConnection();
         

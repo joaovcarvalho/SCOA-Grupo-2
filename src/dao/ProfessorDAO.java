@@ -32,7 +32,7 @@ public class ProfessorDAO extends DataAccessObject{
         ResultSet rs = st.executeQuery(query);
         ArrayList<Professor> profs = new ArrayList<>();
         try{
-            if (rs.next()) {
+            while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("register");
                 String register = rs.getString("room");
@@ -41,7 +41,7 @@ public class ProfessorDAO extends DataAccessObject{
                 String lattes = rs.getString("name");
     
                 Professor prof = new Professor(id, register, room, telephone,  lattes,  name);
-                
+                System.out.println("nome: " + prof.getName() + "id: " + prof.getId());
     
                 profs.add(prof);
             }
@@ -54,35 +54,6 @@ public class ProfessorDAO extends DataAccessObject{
         return profs;
     }
     
-    
-    
-    
-    
-    public void insertUser(String cpf, String password, String type, int type_id){
-        initConnection();
-        
-        Connection connection = getConnection();
-        String query = "INSERT INTO users (cpf, password, type, type_id) VALUES (?, ?,?,?)";
-        
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, cpf);
-            statement.setString(2, password);
-            statement.setString(3, type);
-            statement.setInt(4, type_id);
-            
-            statement.execute();
-            
-           
-                
-             closeConnection();                    
-        }
-         catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        closeConnection();
-        
-    }
     
     
     public void insertProfessor(String cpf, String password, String register, String room, String telephone, String lattes, String name){
@@ -110,7 +81,7 @@ public class ProfessorDAO extends DataAccessObject{
                 }
             closeConnection();
            
-            insertUser(cpf, password, "professor", id);
+            UserDAO.insertUser(cpf, password, "professor", id);
 
              
              //return new Professor(id, register, room, telephone, lattes, name);
