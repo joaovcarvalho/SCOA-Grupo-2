@@ -121,10 +121,18 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     //TURMAS
     @FXML
     private Pane InsertClass;
+    @FXML
+    private TextField RoomName;
+    @FXML
+    private TextField RoomDescription;
     
     //SALAS
     @FXML
     private Pane InsertRoom;
+    @FXML
+    private TextField RoomCapacity;
+    @FXML
+    private TextField RoomNumber;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -137,7 +145,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
      @FXML
     public void showInsertRoom(ActionEvent event) {
         hideAllPanes();
-       InsertRoom.setVisible(true);
+        InsertRoom.setVisible(true);
+       
     }
     
     
@@ -201,17 +210,23 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         InsertRoom.setVisible(false);
     }
     
+    @FXML
+    private void handleInsertRoomButton(ActionEvent event) throws SQLException{
+         String number = RoomNumber.getText();
+         String capacity = RoomCapacity.getText();
+          
+         SecretaryController.insertRoom(number, capacity);
+    }
      
     @FXML
     private void handleInsertSubjectButton(ActionEvent event) throws SQLException{
-         System.out.println("cliquei em inserir disciplina");
+         
          String name = SubjectName.getText();
          String code = SubjectCode.getText();
          String description = SubjectDescription.getText();
          String credits = SubjectCredits.getText();
-         //String courseName = "cc";//SubjectCourse.getAccessibleText();
          String courseName = SubjectCourse.getSelectionModel().selectedItemProperty().getValue().toString();
-         // System.out.println("nome curso: " + courseName);
+         
           
          SecretaryController.insertSubject(code, description, name, credits, courseName);
     }

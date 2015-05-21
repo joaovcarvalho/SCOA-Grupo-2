@@ -7,6 +7,7 @@ package controller;
 
 import dao.CourseDAO;
 import dao.ProfessorDAO;
+import dao.RoomDAO;
 import dao.SubjectDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,8 +26,9 @@ public class SecretaryController {
     static ProfessorDAO p = new ProfessorDAO();
     static CourseDAO c = new CourseDAO();
     static SubjectDAO s = new SubjectDAO();
-       
-       public static void insertCourse(String name, String code, String description){
+    static RoomDAO r = new RoomDAO();
+    
+    public static void insertCourse(String name, String code, String description){
            
            c.insertCourse(code, description, name);
        }
@@ -49,6 +51,10 @@ public class SecretaryController {
      public static ArrayList<Professor>listProf() throws SQLException{
         return ProfessorDAO.listProfessors();
     }
+     
+     public static void insertRoom(String number, String capacity) throws SQLException{
+        r.insertRoom(number, capacity);     
+     }
      
      public static void insertSubject(String code, String description, String name, String credits, String courseName) throws SQLException{
          s.insertSubject(code, description, name, credits, courseName);
