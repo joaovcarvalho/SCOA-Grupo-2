@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 21-Maio-2015 às 23:09
+-- Generation Time: 21-Maio-2015 às 23:17
 -- Versão do servidor: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -207,7 +207,8 @@ CREATE TABLE IF NOT EXISTS `students` (
   `telephone` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `birth_date` date NOT NULL
+  `birth_date` date NOT NULL,
+  `semester` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
