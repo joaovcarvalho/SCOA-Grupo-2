@@ -118,7 +118,13 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
      private ComboBox SubjectCourse;
     
+    //TURMAS
+    @FXML
+    private Pane InsertClass;
     
+    //SALAS
+    @FXML
+    private Pane InsertRoom;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -127,6 +133,18 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
     public void setScreenParent(ScreensController screenParent){
         myController = screenParent;
+    }
+     @FXML
+    public void showInsertRoom(ActionEvent event) {
+        hideAllPanes();
+       InsertRoom.setVisible(true);
+    }
+    
+    
+    @FXML
+    public void showInsertClass(ActionEvent event) {
+        hideAllPanes();
+        InsertClass.setVisible(true);
     }
     
     @FXML
@@ -179,6 +197,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         EditProfessor.setVisible(false);
         InsertCourse.setVisible(false);
         InsertSubject.setVisible(false);
+        InsertClass.setVisible(false);
+        InsertRoom.setVisible(false);
     }
     
      
