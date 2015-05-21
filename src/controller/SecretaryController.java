@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import model.Course;
 import model.Professor;
+import model.Room;
 import model.Subject;
 
 /**
@@ -63,6 +64,16 @@ public class SecretaryController {
      public static ArrayList<Course>listCourses() throws SQLException{
         return CourseDAO.selectAllCourses();
     }
+     
+     public static ArrayList<Room>listRooms() throws SQLException{
+         return RoomDAO.listRooms();
+     }
+       
+     public static ArrayList<Subject>listSubjects() throws SQLException{
+         return SubjectDAO.listSubjects();
+     }
+     
+     
   }  
      
   

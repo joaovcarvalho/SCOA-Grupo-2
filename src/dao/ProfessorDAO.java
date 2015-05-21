@@ -41,7 +41,7 @@ public class ProfessorDAO extends DataAccessObject{
                 String lattes = rs.getString("lattes");
     
                 Professor prof = new Professor(id, register, room, telephone,  lattes,  name);
-                System.out.println("nome: " + prof.getName() + "id: " + prof.getId());
+               
     
                 profs.add(prof);
             }

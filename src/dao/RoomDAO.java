@@ -10,10 +10,14 @@ import static dao.DataAccessObject.getConnection;
 import static dao.DataAccessObject.initConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Course;
+import model.Room;
 
 /**
  *
@@ -43,6 +47,38 @@ public class RoomDAO extends DataAccessObject{
        
         closeConnection();  
      }
+    
+    
+    
+     public static ArrayList<Room> listRooms() throws SQLException{ //throws SQLException {
+        initConnection();
+        Connection connection = getConnection();
+        String query = "SELECT * FROM Rooms";
+        Statement st = connection.prepareStatement(query);
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<Room> rooms = new ArrayList<>();
+        try{
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String number = rs.getString("number");
+                String capacity = rs.getString("capacity");
+                
+    
+                Room room = new Room(id, number, capacity);
+               
+    
+                rooms.add(room);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();     
+        return rooms;
+    }
+    
+    
     
     
 }

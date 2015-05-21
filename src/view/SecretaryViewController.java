@@ -27,6 +27,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import model.Course;
 import model.Professor;
+import model.Room;
+import model.Subject;
 import model.User;
 /**
  *
@@ -208,9 +210,35 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
      private ComboBox ClassRoom;
     
     @FXML
-    public void showInsertClass(ActionEvent event) {
+    public void showInsertClass(ActionEvent event) throws SQLException {
         hideAllPanes();
+        //Professor
+        ClassProfessor.getItems().clear();
+       
+        ArrayList<Professor> p_list = SecretaryController.listProf();
+        for (Professor p : p_list) {  
+           ClassProfessor.getItems().add(p.getName());
+        } 
+        //Sala
+        ClassRoom.getItems().clear();
+       
+        ArrayList<Room> r_list = SecretaryController.listRooms();
+        for (Room r : r_list) {  
+           ClassRoom.getItems().add(r.getNumber());
+        } 
+        
+        //Disciplina
+        ClassSubject.getItems().clear();
+       
+        ArrayList<Subject> s_list = SecretaryController.listSubjects();
+        
+        for (Subject s : s_list) {  
+          ClassSubject.getItems().add(s.getName());
+        } 
+        
+        
         InsertClass.setVisible(true);
+        
     }
     
     //***************************** SALAS *****************************

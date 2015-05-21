@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Course;
@@ -49,6 +50,44 @@ public class SubjectDAO extends DataAccessObject{
        
         closeConnection();  
      }
+     
+     
+     public static ArrayList<Subject> listSubjects() throws SQLException{ 
+        initConnection();
+        
+        Connection connection = getConnection();
+        String query = "SELECT * FROM subjects";
+        Statement st = connection.prepareStatement(query);
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<Subject> subs = new ArrayList<>();
+        try{
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                //String course_id = rs.getString("course_id");
+                String code = rs.getString("code");
+                String credits = rs.getString("credits");
+     
+                
+                 
+                Subject sub = new Subject(id, name, description, code, credits, -1);
+               
+    
+                subs.add(sub);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();     
+        return subs;
+    }
+    
+     
+     
+     
     
     
 }
