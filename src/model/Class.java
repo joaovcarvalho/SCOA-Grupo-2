@@ -13,13 +13,13 @@ import dao.DataAccessObject;
  */
 public class Class {
       private int id;
-      private int id_professor;
+      private int idProfessor;
       private int id_room;
       private int id_subject;
 
     public Class(int id, int id_professor, int id_room, int id_subject) {
         this.id = id;
-        this.id_professor = id_professor;
+        this.idProfessor = id_professor;
         this.id_room = id_room;
         this.id_subject = id_subject;
     }
@@ -33,7 +33,7 @@ public class Class {
     }
 
     public int getId_professor() {
-        return id_professor;
+        return idProfessor;
     }
 
     public int getId_subject() {
@@ -45,7 +45,7 @@ public class Class {
     }
 
     public void setId_professor(int id_professor) {
-        this.id_professor = id_professor;
+        this.idProfessor = id_professor;
     }
 
     public void setId_room(int id_room) {

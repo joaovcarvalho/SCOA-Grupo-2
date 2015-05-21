@@ -88,7 +88,7 @@ public class ProfessorDAO extends DataAccessObject{
         }
             
          catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
           
         }
         

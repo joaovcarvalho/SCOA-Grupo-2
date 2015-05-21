@@ -21,9 +21,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import model.Course;
 import model.Professor;
@@ -41,7 +43,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        name.setCellValueFactory(new PropertyValueFactory("name"));
+
     }
     
     public void setScreenParent(ScreensController screenParent){
@@ -80,6 +83,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     private Label statusSuccess;
     @FXML
     private TableView professorsTable;
+    @FXML
+    private TableColumn name;
     
     @FXML
     public void showInsertProfessor(ActionEvent event) {
@@ -90,16 +95,22 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
     public void showEditProfessor(ActionEvent event) throws SQLException {
         hideAllPanes();
-        EditProfessor.setVisible(true); 
+        
         //Pane dentro de editProfessor, responsavel pela exibicao do listar
-        ListProfessor.setVisible(true); 
+       
         
         ArrayList<Professor> profs_list = SecretaryController.listProf();
         ObservableList<Professor> profs = FXCollections.observableArrayList(profs_list);
         
         professorsTable.setEditable(false);
-        System.out.println("oi");
+        
+       //professorsTable.getColumns().setAll(profs);
+        
+ 
+        professorsTable.setItems(profs);
         professorsTable.getItems().setAll(profs);
+        ListProfessor.setVisible(true); 
+        EditProfessor.setVisible(true); 
     }
     
     @FXML
