@@ -37,37 +37,23 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     /**
      * Initializes the controller class.
      */
-    // PROFESSORES    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }
+    
+    public void setScreenParent(ScreensController screenParent){
+        myController = screenParent;
+    }
+    
+    
+    // ***************************** PROFESSORES *****************************   
     @FXML
     private Pane InsertProfessor;
     @FXML
     private Pane EditProfessor;
     @FXML
     private Pane ListProfessor;
-        
-    @FXML
-    private Hyperlink InsertProf;
-    @FXML
-    private Label labelTesteInsertProf;
-        
-    @FXML
-    private Label nameInsertProf;
-    @FXML
-    private Label telInsertProf;
-    @FXML
-    private Label regInsertProf;
-    @FXML
-    private Label lattesInsertProf;
-    @FXML
-    private Label cpfInsertProf;
-    @FXML
-    private Label roomInsertProf;
-    @FXML
-    private Label passwordInsertProf;
-    @FXML
-    private Label confirmInsertProf;
-    
-    
     @FXML
     private TextField ProfName;
     @FXML
@@ -93,67 +79,10 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
     private TableView professorsTable;
     
-    
-    // CURSOS
     @FXML
-    private Pane InsertCourse;
-    @FXML
-    private TextField CourseName;
-    @FXML
-    private TextField CourseDescription;
-    @FXML
-    private TextField CourseCode;
-    
-    //DISCIPLINAS
-    @FXML
-    private Pane InsertSubject;
-    @FXML
-    private TextField SubjectName;
-    @FXML
-    private TextField SubjectDescription;
-    @FXML
-    private TextField SubjectCode;
-    @FXML
-     private TextField SubjectCredits;
-    @FXML
-     private ComboBox SubjectCourse;
-    
-    //TURMAS
-    @FXML
-    private Pane InsertClass;
-    @FXML
-    private TextField RoomName;
-    @FXML
-    private TextField RoomDescription;
-    
-    //SALAS
-    @FXML
-    private Pane InsertRoom;
-    @FXML
-    private TextField RoomCapacity;
-    @FXML
-    private TextField RoomNumber;
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }
-    
-    public void setScreenParent(ScreensController screenParent){
-        myController = screenParent;
-    }
-     @FXML
-    public void showInsertRoom(ActionEvent event) {
+    public void showInsertProfessor(ActionEvent event) {
         hideAllPanes();
-        InsertRoom.setVisible(true);
-       
-    }
-    
-    
-    @FXML
-    public void showInsertClass(ActionEvent event) {
-        hideAllPanes();
-        InsertClass.setVisible(true);
+        InsertProfessor.setVisible(true);
     }
     
     @FXML
@@ -169,80 +98,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         professorsTable.setEditable(false);
         System.out.println("oi");
         professorsTable.getItems().setAll(profs);
-        
-        
-        
     }
-    
-     @FXML
-    public void showInsertSubject(ActionEvent event) throws SQLException {
-        hideAllPanes();
-        
-        SubjectCourse.getItems().clear();
-
-        ArrayList<Course> c_list = SecretaryController.listCourses();
-        for (Course c : c_list) {  
-           SubjectCourse.getItems().add(c.getName());
-        }   
-        
-        InsertSubject.setVisible(true);
-    }
-    
-    @FXML
-    public void showInsertProfessor(ActionEvent event) {
-        hideAllPanes();
-        InsertProfessor.setVisible(true);
-    }
-    
-     @FXML
-    public void showInsertCourse(ActionEvent event) {
-        hideAllPanes();
-        InsertCourse.setVisible(true);
-    }
-    
-    public void hideAllPanes() {
-        InsertProfessor.setVisible(false);
-        InsertCourse.setVisible(false);
-        EditProfessor.setVisible(false);
-        InsertCourse.setVisible(false);
-        InsertSubject.setVisible(false);
-        InsertClass.setVisible(false);
-        InsertRoom.setVisible(false);
-    }
-    
-    @FXML
-    private void handleInsertRoomButton(ActionEvent event) throws SQLException{
-         String number = RoomNumber.getText();
-         String capacity = RoomCapacity.getText();
-          
-         SecretaryController.insertRoom(number, capacity);
-    }
-     
-    @FXML
-    private void handleInsertSubjectButton(ActionEvent event) throws SQLException{
-         
-         String name = SubjectName.getText();
-         String code = SubjectCode.getText();
-         String description = SubjectDescription.getText();
-         String credits = SubjectCredits.getText();
-         String courseName = SubjectCourse.getSelectionModel().selectedItemProperty().getValue().toString();
-         
-          
-         SecretaryController.insertSubject(code, description, name, credits, courseName);
-    }
-    
-    @FXML
-    private void handleInsertCourseButton(ActionEvent event) throws SQLException{
-        System.out.println("cliquei em inserir curso");
-        
-        String description = CourseDescription.getText() ;
-        String name = CourseName.getText() ;
-        String code = CourseCode.getText() ;
-        SecretaryController.insertCourse(name, code, description);
-        
-        System.out.println("foi");
-    }
-    
     
     @FXML
     private void handleInsertProfButton(ActionEvent event) throws SQLException{
@@ -270,7 +126,128 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          }
     }
     
+    // ***************************** CURSOS ******************************
+    @FXML
+    private Pane InsertCourse;
+    @FXML
+    private TextField CourseName;
+    @FXML
+    private TextField CourseDescription;
+    @FXML
+    private TextField CourseCode;
     
+    @FXML
+    public void showInsertCourse(ActionEvent event) {
+        hideAllPanes();
+        InsertCourse.setVisible(true);
+    }
+    
+     @FXML
+    private void handleInsertCourseButton(ActionEvent event) throws SQLException{
+        System.out.println("cliquei em inserir curso");
+        
+        String description = CourseDescription.getText() ;
+        String name = CourseName.getText() ;
+        String code = CourseCode.getText() ;
+        SecretaryController.insertCourse(name, code, description);
+       
+    }
+    
+    //***************************** DISCIPLINAS *****************************
+    @FXML
+    private Pane InsertSubject;
+    @FXML
+    private TextField SubjectName;
+    @FXML
+    private TextField SubjectDescription;
+    @FXML
+    private TextField SubjectCode;
+    @FXML
+     private TextField SubjectCredits;
+    @FXML
+     private ComboBox SubjectCourse;
+    
+    @FXML
+    public void showInsertSubject(ActionEvent event) throws SQLException {
+        hideAllPanes();
+        
+        SubjectCourse.getItems().clear();
+
+        ArrayList<Course> c_list = SecretaryController.listCourses();
+        for (Course c : c_list) {  
+           SubjectCourse.getItems().add(c.getName());
+        }   
+        
+        InsertSubject.setVisible(true);
+    }
+     @FXML
+    private void handleInsertSubjectButton(ActionEvent event) throws SQLException{
+         
+         String name = SubjectName.getText();
+         String code = SubjectCode.getText();
+         String description = SubjectDescription.getText();
+         String credits = SubjectCredits.getText();
+         String courseName = SubjectCourse.getSelectionModel().selectedItemProperty().getValue().toString();
+         
+          
+         SecretaryController.insertSubject(code, description, name, credits, courseName);
+    }
+    
+    // ***************************** TURMAS *****************************
+    @FXML
+    private Pane InsertClass;
+    @FXML
+    private TextField RoomName;
+    @FXML
+    private TextField RoomDescription;
+    @FXML
+     private ComboBox ClassProfessor;
+    @FXML
+     private ComboBox ClassSubject;
+    @FXML
+     private ComboBox ClassRoom;
+    
+    @FXML
+    public void showInsertClass(ActionEvent event) {
+        hideAllPanes();
+        InsertClass.setVisible(true);
+    }
+    
+    //***************************** SALAS *****************************
+    @FXML
+    private Pane InsertRoom;
+    @FXML
+    private TextField RoomCapacity;
+    @FXML
+    private TextField RoomNumber;
+    
+     @FXML
+    public void showInsertRoom(ActionEvent event) {
+        hideAllPanes();
+        InsertRoom.setVisible(true);
+    }
+    
+      @FXML
+    private void handleInsertRoomButton(ActionEvent event) throws SQLException{
+         String number = RoomNumber.getText();
+         String capacity = RoomCapacity.getText();
+          
+         SecretaryController.insertRoom(number, capacity);
+    }
+    
+    // ***************************** 
+    
+    public void hideAllPanes() {
+        InsertProfessor.setVisible(false);
+        InsertCourse.setVisible(false);
+        EditProfessor.setVisible(false);
+        InsertCourse.setVisible(false);
+        InsertSubject.setVisible(false);
+        InsertClass.setVisible(false);
+        InsertRoom.setVisible(false);
+    }
+    
+ 
     
     }
 
