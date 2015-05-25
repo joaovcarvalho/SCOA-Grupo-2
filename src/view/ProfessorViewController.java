@@ -30,7 +30,12 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
      */
     
     @FXML
-    private Pane inserirPauta;
+    private Pane inserirPautaPane;
+    
+    @FXML
+    private Pane inserirFrequenciaPane;
+    
+    private Pane inserirAvaliacaoPane;
         
     @FXML
     private Pane editPauta;
@@ -52,15 +57,13 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     }
     
     private void hideAllPanels(){
-        inserirPauta.setVisible(false);
-        editPauta.setVisible(false);
-        inserirPauta.setVisible(false);
+        inserirPautaPane.setVisible(false);
     }
     
     @FXML
     private void handleInserirPautaButton(ActionEvent event) throws SQLException{
         hideAllPanels();
-        inserirPauta.setVisible(true);
+        inserirPautaPane.setVisible(true);
     }
     
     @FXML
