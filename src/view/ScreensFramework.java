@@ -23,6 +23,7 @@ public class ScreensFramework extends Application {
     @Override
     public void start(Stage primaryStage) {
         
+        primaryStage.fullScreenProperty();
         ScreensController mainContainer = new ScreensController();
         
         mainContainer.loadScreen(ScreensFramework.screen1ID, ScreensFramework.screen1File);

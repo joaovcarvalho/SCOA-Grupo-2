@@ -3,12 +3,14 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 21-Maio-2015 às 23:17
+-- Generation Time: 27-Maio-2015 às 02:30
 -- Versão do servidor: 5.6.21
 -- PHP Version: 5.6.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+CREATE DATABASE IF NOT EXISTS scoa;
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -214,6 +216,17 @@ CREATE TABLE IF NOT EXISTS `students` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `study_plans`
+--
+
+CREATE TABLE IF NOT EXISTS `study_plans` (
+`id` int(11) NOT NULL,
+  `semester` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `subjects`
 --
 
@@ -343,6 +356,12 @@ ALTER TABLE `students`
  ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `study_plans`
+--
+ALTER TABLE `study_plans`
+ ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `subjects`
 --
 ALTER TABLE `subjects`
@@ -412,6 +431,11 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `study_plans`
+--
+ALTER TABLE `study_plans`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `subjects`

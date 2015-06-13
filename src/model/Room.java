@@ -44,5 +44,10 @@ public class Room {
         this.number = number;
     }
 
+    @Override
+    public String toString() {
+        return "Room{" + "id=" + id + ", number=" + number + ", capacity=" + capacity + '}';
+    }
+
     
 }

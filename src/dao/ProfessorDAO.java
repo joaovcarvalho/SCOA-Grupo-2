@@ -95,5 +95,35 @@ public class ProfessorDAO extends DataAccessObject{
         closeConnection();
       
     }
+    
+    public static Professor getProfessorById(int id) throws SQLException{
+        initConnection();
+        
+        Connection connection = getConnection();
+        String query = "SELECT * FROM Professors WHERE id = ? ";
+        
+        PreparedStatement st = connection.prepareStatement(query);
+        st.setInt(1, id);
+        
+        ResultSet rs = st.executeQuery();
+        try{
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String register = rs.getString("register");
+                String room = rs.getString("room");
+                String telephone = rs.getString("telephone");
+                String lattes = rs.getString("lattes");
+                Professor p = new Professor(id, register, room, telephone, lattes, name);
+               
+                return p;
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();     
+        return null;
+    }
 }
 

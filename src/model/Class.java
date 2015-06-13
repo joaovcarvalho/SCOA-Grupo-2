@@ -12,48 +12,65 @@ import dao.DataAccessObject;
  * @author Amanda
  */
 public class Class {
-      private int id;
-      private int idProfessor;
-      private int id_room;
-      private int id_subject;
-
-    public Class(int id, int id_professor, int id_room, int id_subject) {
+    private int id;
+    private Professor professor;
+    private Room room;
+    private Subject subject;
+    private int semester;
+      
+    public Class(int id, Professor professor, Room room, Subject subject, int semester) {
         this.id = id;
-        this.idProfessor = id_professor;
-        this.id_room = id_room;
-        this.id_subject = id_subject;
+        this.professor = professor;
+        this.room = room;
+        this.subject = subject;
+        this.semester = semester;
     }
+    
+    
 
     public int getId() {
         return id;
-    }
-
-    public int getId_room() {
-        return id_room;
-    }
-
-    public int getId_professor() {
-        return idProfessor;
-    }
-
-    public int getId_subject() {
-        return id_subject;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setId_professor(int id_professor) {
-        this.idProfessor = id_professor;
+    public Professor getProfessor() {
+        return professor;
     }
 
-    public void setId_room(int id_room) {
-        this.id_room = id_room;
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 
-    public void setId_subject(int id_subject) {
-        this.id_subject = id_subject;
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
+
+    @Override
+    public String toString() {
+        return "Class{" + "id=" + id + ", professor=" + professor + ", room=" + room + ", subject=" + subject + ", semester=" + semester + '}';
     }
       
       

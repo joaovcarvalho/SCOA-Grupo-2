@@ -77,6 +77,34 @@ public class RoomDAO extends DataAccessObject{
         closeConnection();     
         return rooms;
     }
+     
+     public static Room getRoomById(int id) throws SQLException{
+        initConnection();
+        
+        Connection connection = getConnection();
+        String query = "SELECT * FROM rooms WHERE id = ?";
+        
+        PreparedStatement st = connection.prepareStatement(query);
+        st.setInt(1, id);
+        
+        ResultSet rs = st.executeQuery();
+        try{
+            while (rs.next()) {
+                String capacity = rs.getString("capacity");
+                String number = rs.getString("number");
+                 
+                Room r = new Room(id, number, capacity);
+               
+                return r;
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();     
+        return null;
+    }
     
     
     

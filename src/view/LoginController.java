@@ -1,6 +1,5 @@
 package view;
 
-import dao.UserDAO;
 import controller.UserController;
 import java.net.URL;
 import java.sql.SQLException;
@@ -11,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import model.Professor;
 import model.Secretary;
 import model.User;
@@ -51,6 +49,7 @@ public class LoginController implements Initializable, ControlledScreen {
        User user = UserController.login(CPF, password);
        if(user != null){
            
+           myController.setUser(user);
            if(user.getType() instanceof Secretary){
                myController.setScreen(ScreensFramework.screen2ID);
            }

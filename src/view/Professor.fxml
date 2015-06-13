@@ -17,11 +17,12 @@
     </Label>
     <Accordion layoutX="22.0" layoutY="73.0" minWidth="173.0" prefHeight="391.0" prefWidth="278.0">
       <expandedPane>
-        <TitledPane fx:id="x1" animated="false" prefWidth="278.0" text="Gerenciar Pauta de Aula">
+        <TitledPane fx:id="x4" animated="false" prefWidth="249.0" text="Gerenciar Avaliações">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Hyperlink fx:id="inserirPautaLink" layoutX="10.0" layoutY="13.0" onAction="#handleInserirPautaButton" text="Inserir" />
+                <Hyperlink id="inserirAvaliacaoLink" layoutX="13.0" layoutY="13.0" onAction="#handleInsertExamLink" text="Inserir" />
+                <Hyperlink id="inserirAvaliacaoLink" layoutX="14.0" layoutY="50.0" onAction="#handleListExamLink" text="Listar" />
               </children>
             </AnchorPane>
           </content>
@@ -31,112 +32,27 @@
         </TitledPane>
       </expandedPane>
       <panes>
-        <fx:reference source="x1" />
-        <TitledPane animated="false" font="$x2" text="Gerenciar Frequencia de Aula">
+        <TitledPane fx:id="x1" animated="false" font="$x2" prefWidth="278.0" text="Gerenciar Diario de Classe">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Hyperlink layoutX="13.0" layoutY="13.0" text="Inserir" />
+                <Hyperlink fx:id="inserirPautaLink" layoutX="10.0" layoutY="13.0" text="Inserir" />
               </children>
             </AnchorPane>
           </content>
         </TitledPane>
-        <TitledPane animated="false" font="$x2" prefWidth="249.0" text="Gerenciar Avaliações">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-              <children>
-                <Hyperlink layoutX="13.0" layoutY="13.0" text="Inserir" />
-              </children>
-            </AnchorPane>
-          </content>
-        </TitledPane>
-        <TitledPane animated="false" font="$x2" prefHeight="269.0" prefWidth="278.0" text="Consultar Diario de Classe">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-              <children>
-                <Hyperlink layoutX="13.0" layoutY="13.0" text="Inserir" />
-              </children>
-            </AnchorPane>
-          </content>
-        </TitledPane>
-        <TitledPane animated="false" font="$x2" prefHeight="198.0" prefWidth="278.0" text="Cadastrar Notas de Alunos">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-              <children>
-                <Hyperlink layoutX="13.0" layoutY="13.0" text="Inserir" />
-              </children>
-            </AnchorPane>
-          </content>
-        </TitledPane>
-        <TitledPane animated="false" font="$x2" prefWidth="249.0" text="Gerenciar Avaliações">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="72.0" prefWidth="273.0">
-              <children>
-                <Hyperlink layoutX="13.0" layoutY="13.0" text="Inserir" />
-              </children>
-            </AnchorPane>
-          </content>
-        </TitledPane>
+        <fx:reference source="x4" />
       </panes>
     </Accordion>
     <StackPane layoutX="308.0" layoutY="73.0" prefHeight="389.0" prefWidth="348.0">
       <children>
-        <Pane id="InserirPauta" fx:id="inserirPauta" prefHeight="306.0" prefWidth="278.0" visible="false">
+        <Pane id="inserFrequenciaPane" fx:id="insertExamPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="false">
           <children>
-            <Label layoutX="14.0" layoutY="14.0" text="Inserir Pauta">
+            <Label layoutX="14.0" layoutY="14.0" text="Inserir Avaliação">
               <font>
                 <Font name="System Bold" size="15.0" fx:id="x3" />
               </font>
             </Label>
-            <TextField layoutX="14.0" layoutY="135.0" prefWidth="320.0" />
-            <Label layoutX="14.0" layoutY="109.0" text="Data" />
-            <Label layoutX="14.0" layoutY="170.0" text="Conteúdo:" />
-            <TextArea layoutX="14.0" layoutY="190.0" prefHeight="117.0" prefWidth="319.999977929685" wrapText="true" />
-            <Button layoutX="14.0" layoutY="330.0" mnemonicParsing="false" text="Cadastrar" />
-            <Label layoutX="14.0" layoutY="46.0" text="Turma" />
-            <ComboBox layoutX="14.0" layoutY="74.0" prefHeight="21.0" prefWidth="320.0">
-              <items>
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
-              </items>
-            </ComboBox>
-          </children>
-        </Pane>
-        <Pane id="inserFrequenciaPane" fx:id="inserirFrequenciaPane" prefHeight="200.0" prefWidth="200.0" visible="false">
-          <children>
-            <Label font="$x3" layoutX="14.0" layoutY="14.0" text="Inserir Frequencia de Aula" />
-            <ComboBox layoutX="13.0" layoutY="60.0" prefHeight="21.0" prefWidth="321.0">
-              <items>
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
-              </items>
-            </ComboBox>
-            <Label layoutX="14.0" layoutY="44.0" text="Turma:" />
-            <Label layoutX="13.0" layoutY="102.0" text="Aluno:" />
-            <ComboBox layoutX="13.0" layoutY="118.0" prefHeight="21.0" prefWidth="321.0">
-              <items>
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Item 1" />
-                  <String fx:value="Item 2" />
-                  <String fx:value="Item 3" />
-                </FXCollections>
-              </items>
-            </ComboBox>
-            <Label layoutX="12.0" layoutY="159.0" text="Data:" />
-            <TextField layoutX="13.0" layoutY="184.0" prefWidth="320.0" />
-            <Button layoutX="14.0" layoutY="241.0" mnemonicParsing="false" text="Salvar" />
-            <Label layoutX="13.0" layoutY="213.0" text="Por favor coloque uma data invalida." textFill="RED" />
-          </children>
-        </Pane>
-        <Pane id="inserFrequenciaPane" fx:id="inserirAvaliacaoPane" prefHeight="200.0" prefWidth="200.0" visible="true">
-          <children>
-            <Label font="$x3" layoutX="14.0" layoutY="14.0" text="Inserir Avaliação" />
             <ComboBox layoutX="13.0" layoutY="60.0" prefHeight="21.0" prefWidth="321.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
@@ -163,6 +79,33 @@
             <Label layoutX="13.0" layoutY="305.0" text="Por favor coloque uma data invalida." textFill="RED" />
             <Label layoutX="13.0" layoutY="158.0" text="Descriçao:" />
             <TextArea layoutX="12.0" layoutY="184.0" prefHeight="53.0" prefWidth="321.0" wrapText="true" />
+          </children>
+        </Pane>
+        <Pane id="inserFrequenciaPane" fx:id="listExamsPane" prefHeight="200.0" prefWidth="200.0" visible="true">
+          <children>
+            <Label font="$x3" layoutX="14.0" layoutY="14.0" text="Listar Avaliações" />
+            <ComboBox id="turmaListarComboBox" fx:id="classListComboBox" layoutX="13.0" layoutY="60.0" onAction="#handleClassSelected" prefHeight="21.0" prefWidth="321.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <Label layoutX="14.0" layoutY="44.0" text="Turma:" />
+            <Label layoutX="13.0" layoutY="102.0" text="Aluno:" />
+            <ComboBox layoutX="13.0" layoutY="118.0" prefHeight="21.0" prefWidth="321.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <Button layoutX="13.0" layoutY="354.0" mnemonicParsing="false" text="Salvar" />
+            <ListView layoutX="13.0" layoutY="146.0" prefHeight="200.0" prefWidth="321.0" />
           </children>
         </Pane>
       </children>

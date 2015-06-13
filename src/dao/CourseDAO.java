@@ -82,6 +82,36 @@ public class CourseDAO extends DataAccessObject{
        
    }
    
+   public static Course getCourseById(int id) throws SQLException{
+       
+       initConnection();
+        Connection connection = getConnection();
+        String query = "SELECT * FROM courses WHERE id = ?";
+        PreparedStatement st = connection.prepareStatement(query);
+        st.setInt(1, id);
+        
+        ResultSet rs = st.executeQuery();
+        
+        try{
+            if (rs.next()) {
+                String name = rs.getString("name");
+                String code = rs.getString("code");
+                String description = rs.getString("description");
+                
+    
+                Course c = new Course(id, name, description, code);
+                return c;
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();     
+        return null;
+       
+   }
+   
     public void insertCourse(String code, String description, String name){
         
         

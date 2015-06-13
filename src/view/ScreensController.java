@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import model.User;
 
 /**
  *
@@ -19,6 +20,18 @@ import javafx.util.Duration;
  */
 public class ScreensController  extends StackPane {
     //Holds the screens to be displayed
+    
+    public User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    
 
     public HashMap<String, Node> screens = new HashMap<>();
     

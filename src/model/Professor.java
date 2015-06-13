@@ -11,7 +11,6 @@ package model;
  */
 public class Professor extends Type {
     
-    private int id;
     private String register;
     private String room;
     private String telephone;
@@ -78,6 +77,11 @@ public class Professor extends Type {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Professor{" + "id=" + id + ", register=" + register + ", room=" + room + ", telephone=" + telephone + ", lattes=" + lattes + ", name=" + name + '}';
     }
     
     

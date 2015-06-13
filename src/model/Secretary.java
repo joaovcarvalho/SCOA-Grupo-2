@@ -12,7 +12,6 @@ package model;
 public class Secretary extends Type {
     
     private String name;
-    private int id;
 
     public Secretary(String name, int id) {
         this.name = name;
@@ -38,6 +37,11 @@ public class Secretary extends Type {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Secretary{" + "name=" + name + ", id=" + id + '}';
     }
     
     
