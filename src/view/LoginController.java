@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import model.Professor;
 import model.Secretary;
+import model.Student;
 import model.User;
 
 
@@ -56,6 +57,9 @@ public class LoginController implements Initializable, ControlledScreen {
            
            if(user.getType() instanceof Professor){
                myController.setScreen(ScreensFramework.screen3ID);
+           }
+            if(user.getType() instanceof Student){
+               myController.setScreen(ScreensFramework.screen4ID);
            }
           
           

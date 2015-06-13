@@ -20,6 +20,9 @@ public class ScreensFramework extends Application {
     public static String screen3ID = "professor";
     public static String screen3File = "Professor.fxml";
     
+    public static String screen4ID = "student";
+    public static String screen4File = "Student.fxml";
+    
     @Override
     public void start(Stage primaryStage) {
         
