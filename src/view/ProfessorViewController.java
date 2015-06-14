@@ -27,6 +27,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -203,6 +204,24 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         }
     }
     
+    // *****************************  DELETAR AVALIAÇÃO ***************************** 
+    @FXML
+    private Button deleteBtn;
+    
+    @FXML
+    private Button editBtn;
+    
+    @FXML
+    public void handleDeleteBtn(ActionEvent event){
+        Exam exam = (Exam) examsTable.getSelectionModel().getSelectedItem();
+        System.out.println(exam.toString());    
+    }
+    
+    @FXML
+    public void handleEditBtn(ActionEvent event){
+        
+    }
+    
     // *****************************  INSERIR AVALIAÇÃO ***************************** 
     @FXML
     private Pane insertExamPane;
@@ -262,8 +281,6 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     @FXML
     public void handleInsertBtn(ActionEvent event){
         try {
-            System.out.println(selectedStudent.toString());
-            System.out.println(selectedClass.toString());
             Registration registration = RegistrationDAO.getRegistrationByStudentIdAndClassId(
                     selectedStudent.getId(), selectedClass.getId());
             String date = dateTextField.getText();
@@ -281,4 +298,6 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
             Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
 }

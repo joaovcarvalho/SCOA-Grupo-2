@@ -43,7 +43,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        name.setCellValueFactory(new PropertyValueFactory("name"));
+ //        name.setCellValueFactory(new PropertyValueFactory("name"));
 
     }
     
@@ -99,15 +99,51 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         //Pane dentro de editProfessor, responsavel pela exibicao do listar
        
         ArrayList<Professor> profs_list = SecretaryController.listProf();
-        ObservableList<Professor> profs = FXCollections.observableArrayList(profs_list);
+        
         
         professorsTable.setEditable(false);
         
        //professorsTable.getColumns().setAll(profs);
-        
+        professorsTable.setEditable(true);
+              
+        TableColumn nameCol = new TableColumn("Nome");
+       nameCol.setCellValueFactory(
+                        new PropertyValueFactory<Professor,String>("name")
+        );
+        TableColumn telephoneCol = new TableColumn("Telefone");
+        telephoneCol.setCellValueFactory(
+                         new PropertyValueFactory<Professor,String>("telephone")
+        );
+
+       TableColumn lattesCol = new TableColumn("Lattes");
+       lattesCol.setCellValueFactory(
+                         new PropertyValueFactory<Professor,String>("lattes")
+        );
+
+        TableColumn registerCol = new TableColumn("Registro");
+        registerCol.setCellValueFactory(
+                         new PropertyValueFactory<Professor,String>("register")
+        );
+                
+        TableColumn roomCol = new TableColumn("Sala");
+                roomCol.setCellValueFactory(
+                        new PropertyValueFactory<Professor,String>("room")
+        );
+                
+      
+                
+                if(profs_list != null){
+                    ObservableList<Professor> profs = FXCollections.observableArrayList(profs_list);
+                    profs.addAll(profs_list);
+
+                    professorsTable.setItems(profs);
+                }
+
+
+                professorsTable.getColumns().addAll(nameCol, telephoneCol, lattesCol, registerCol, roomCol);
  
-        professorsTable.setItems(profs);
-        professorsTable.getItems().setAll(profs);
+       // professorsTable.setItems(profs);
+        //professorsTable.getItems().setAll(profs);
         ListProfessor.setVisible(true); 
         EditProfessor.setVisible(true); 
     }
@@ -147,11 +183,56 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     private TextField CourseDescription;
     @FXML
     private TextField CourseCode;
+    @FXML
+    private Pane EditCourse;
+    @FXML
+    private Pane ListCourse;
+    @FXML 
+    private TableView coursesTable;
+    
     
     @FXML
     public void showInsertCourse(ActionEvent event) {
         hideAllPanes();
         InsertCourse.setVisible(true);
+    }
+    
+     @FXML
+    public void showEditCourses(ActionEvent event) throws SQLException {
+         ArrayList<Course> course_list = SecretaryController.listCourse();
+        
+        
+        coursesTable.setEditable(true);
+              
+        TableColumn nameCol = new TableColumn("Nome");
+        nameCol.setCellValueFactory(
+                        new PropertyValueFactory<Course,String>("name")
+        );
+        TableColumn codeCol = new TableColumn("Código");
+        codeCol.setCellValueFactory(
+                         new PropertyValueFactory<Course,String>("code")
+        );
+
+       TableColumn descriptionCol = new TableColumn("Descrição");
+       descriptionCol.setCellValueFactory(
+                         new PropertyValueFactory<Course,String>("description")
+        );
+
+                
+                if(course_list != null){
+                    ObservableList<Course> courses = FXCollections.observableArrayList(course_list);
+                    courses.addAll(course_list);
+
+                    coursesTable.setItems(courses);
+                }
+
+
+                coursesTable.getColumns().addAll(nameCol, codeCol, descriptionCol);
+ 
+       // professorsTable.setItems(profs);
+        //professorsTable.getItems().setAll(profs);
+        ListCourse.setVisible(true); 
+        EditCourse.setVisible(true); 
     }
     
      @FXML
@@ -178,6 +259,13 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
      private TextField SubjectCredits;
     @FXML
      private ComboBox SubjectCourse;
+    @FXML
+     private TableView subjectTable;
+    @FXML
+     private Pane EditSubject;
+    @FXML
+     private Pane ListSubject;
+    
     
     @FXML
     public void showInsertSubject(ActionEvent event) throws SQLException {
@@ -203,6 +291,53 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          
           
          SecretaryController.insertSubject(code, description, name, credits, courseName);
+    }
+    
+     @FXML
+    public void showEditSubject(ActionEvent event) throws SQLException {
+         ArrayList<Subject> sub_list = SecretaryController.listSubject();
+        
+        
+        subjectTable.setEditable(true);
+              //name, description, course, code, credits
+        TableColumn nameCol = new TableColumn("Nome");
+        nameCol.setCellValueFactory(
+                        new PropertyValueFactory<Subject,String>("name")
+        );
+        TableColumn codeCol = new TableColumn("Código");
+        codeCol.setCellValueFactory(
+                         new PropertyValueFactory<Subject,String>("code")
+        );
+
+       TableColumn descriptionCol = new TableColumn("Descrição");
+       descriptionCol.setCellValueFactory(
+                         new PropertyValueFactory<Subject,String>("description")
+        );
+       TableColumn courseCol = new TableColumn("Curso");
+        courseCol.setCellValueFactory(
+                         new PropertyValueFactory<Subject,String>("course")
+        );
+
+       TableColumn creditsCol = new TableColumn("Créditos");
+       creditsCol.setCellValueFactory(
+                         new PropertyValueFactory<Subject,String>("credits")
+        );
+
+                
+                if(sub_list != null){
+                    ObservableList<Subject> subs = FXCollections.observableArrayList(sub_list);
+                    subs.addAll(sub_list);
+
+                    subjectTable.setItems(subs);
+                }
+
+
+                subjectTable.getColumns().addAll(nameCol, codeCol, descriptionCol,courseCol, creditsCol);
+ 
+       // professorsTable.setItems(profs);
+        //professorsTable.getItems().setAll(profs);
+        ListSubject.setVisible(true); 
+        EditSubject.setVisible(true); 
     }
     
     // ***************************** TURMAS *****************************
@@ -279,10 +414,16 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         InsertProfessor.setVisible(false);
         InsertCourse.setVisible(false);
         EditProfessor.setVisible(false);
+        EditCourse.setVisible(false);
+        ListProfessor.setVisible(false);
+        ListCourse.setVisible(false);
         InsertCourse.setVisible(false);
         InsertSubject.setVisible(false);
         InsertClass.setVisible(false);
         InsertRoom.setVisible(false);
+        EditSubject.setVisible(false);
+        ListSubject.setVisible(false);
+        
     }
     
  

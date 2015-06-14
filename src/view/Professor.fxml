@@ -46,7 +46,7 @@
     </Accordion>
     <StackPane layoutX="308.0" layoutY="73.0" prefHeight="389.0" prefWidth="348.0">
       <children>
-        <Pane id="inserFrequenciaPane" fx:id="insertExamPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="true">
+        <Pane id="inserFrequenciaPane" fx:id="insertExamPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="false">
           <children>
             <Label layoutX="14.0" layoutY="14.0" text="Inserir Avaliação">
               <font>
@@ -82,7 +82,7 @@
             <TextField id="dateTextField" fx:id="gradeTextField" layoutX="12.0" layoutY="323.0" prefWidth="320.0" />
           </children>
         </Pane>
-        <Pane id="inserFrequenciaPane" fx:id="listExamsPane" prefHeight="200.0" prefWidth="200.0" visible="false">
+        <Pane id="inserFrequenciaPane" fx:id="listExamsPane" prefHeight="200.0" prefWidth="200.0" visible="true">
           <children>
             <Label font="$x3" layoutX="14.0" layoutY="14.0" text="Listar Avaliações" />
             <ComboBox id="turmaListarComboBox" fx:id="classListComboBox" layoutX="13.0" layoutY="60.0" onAction="#handleClassSelected" prefHeight="21.0" prefWidth="321.0">
@@ -105,8 +105,9 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <Button layoutX="13.0" layoutY="354.0" mnemonicParsing="false" text="Salvar" />
+            <Button layoutX="275.0" layoutY="365.0" mnemonicParsing="false" text="Deletar" />
             <TableView fx:id="examsTable" layoutX="14.0" layoutY="154.0" prefHeight="200.0" prefWidth="320.0" />
+            <Button layoutX="208.0" layoutY="365.0" mnemonicParsing="false" text="Editar" />
           </children>
         </Pane>
       </children>
