@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tools;
+package tests;
 
 /**
  *
- * @author Amanda
+ * @author JoãoVitor
  */
-public class Validator {
-    
-    public static boolean cpf(){
-        return false;
-    }
+public class testValidator {
     
 }
