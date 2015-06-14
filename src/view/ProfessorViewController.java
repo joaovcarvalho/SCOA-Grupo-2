@@ -124,6 +124,8 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         hideAllPanels();
         listExamsPane.setVisible(true);
         
+        studentListComboBox.getItems().clear();
+        examsTable.getItems().clear();
         populateClassesComboBoxByProfessorLogged(classListComboBox);
     }
     
@@ -189,10 +191,11 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
                     ObservableList<Exam> list = observableArrayList();
                     list.addAll(exams);
 
+                    examsTable.getItems().clear();
                     examsTable.setItems(list);
                 }
 
-
+                examsTable.getColumns().clear();
                 examsTable.getColumns().addAll(idCol, descriptionCol, deliveryCol, gradeCol);
             } catch (SQLException ex) {
                 Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
