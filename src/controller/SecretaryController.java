@@ -53,6 +53,14 @@ public class SecretaryController {
         return ProfessorDAO.listProfessors();
     }
      
+     public static ArrayList<Course>listCourse() throws SQLException{
+         return CourseDAO.listCourses();
+     }
+     
+     public static ArrayList<Subject>listSubject() throws SQLException{
+         return SubjectDAO.listSubjects();
+     }
+     
      public static void insertRoom(String number, String capacity) throws SQLException{
         r.insertRoom(number, capacity);     
      }
