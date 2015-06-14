@@ -46,14 +46,14 @@
     </Accordion>
     <StackPane layoutX="308.0" layoutY="73.0" prefHeight="389.0" prefWidth="348.0">
       <children>
-        <Pane id="inserFrequenciaPane" fx:id="insertExamPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="false">
+        <Pane id="inserFrequenciaPane" fx:id="insertExamPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="true">
           <children>
             <Label layoutX="14.0" layoutY="14.0" text="Inserir Avaliação">
               <font>
                 <Font name="System Bold" size="15.0" fx:id="x3" />
               </font>
             </Label>
-            <ComboBox layoutX="13.0" layoutY="60.0" prefHeight="21.0" prefWidth="321.0">
+            <ComboBox fx:id="insertClassComboBox" layoutX="13.0" layoutY="60.0" onAction="#handleClassSelectedInsert" prefHeight="21.0" prefWidth="321.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
@@ -64,7 +64,7 @@
             </ComboBox>
             <Label layoutX="14.0" layoutY="44.0" text="Turma:" />
             <Label layoutX="13.0" layoutY="102.0" text="Aluno:" />
-            <ComboBox layoutX="13.0" layoutY="118.0" prefHeight="21.0" prefWidth="321.0">
+            <ComboBox fx:id="insertSudentsComboBox" layoutX="13.0" layoutY="118.0" onAction="#handleStudentSelectedInsert" prefHeight="21.0" prefWidth="321.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
@@ -74,14 +74,15 @@
               </items>
             </ComboBox>
             <Label layoutX="12.0" layoutY="251.0" text="Data:" />
-            <TextField layoutX="13.0" layoutY="276.0" prefWidth="320.0" />
-            <Button layoutX="14.0" layoutY="333.0" mnemonicParsing="false" text="Salvar" />
-            <Label layoutX="13.0" layoutY="305.0" text="Por favor coloque uma data invalida." textFill="RED" />
+            <TextField fx:id="dateTextField" layoutX="13.0" layoutY="276.0" prefWidth="320.0" />
+            <Button layoutX="13.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleInsertBtn" text="Salvar" />
             <Label layoutX="13.0" layoutY="158.0" text="Descriçao:" />
-            <TextArea layoutX="12.0" layoutY="184.0" prefHeight="53.0" prefWidth="321.0" wrapText="true" />
+            <TextArea fx:id="descriptionTextArea" layoutX="12.0" layoutY="184.0" prefHeight="53.0" prefWidth="321.0" wrapText="true" />
+            <Label layoutX="13.0" layoutY="307.0" text="Nota:" />
+            <TextField id="dateTextField" fx:id="gradeTextField" layoutX="12.0" layoutY="323.0" prefWidth="320.0" />
           </children>
         </Pane>
-        <Pane id="inserFrequenciaPane" fx:id="listExamsPane" prefHeight="200.0" prefWidth="200.0" visible="true">
+        <Pane id="inserFrequenciaPane" fx:id="listExamsPane" prefHeight="200.0" prefWidth="200.0" visible="false">
           <children>
             <Label font="$x3" layoutX="14.0" layoutY="14.0" text="Listar Avaliações" />
             <ComboBox id="turmaListarComboBox" fx:id="classListComboBox" layoutX="13.0" layoutY="60.0" onAction="#handleClassSelected" prefHeight="21.0" prefWidth="321.0">
@@ -95,7 +96,7 @@
             </ComboBox>
             <Label layoutX="14.0" layoutY="44.0" text="Turma:" />
             <Label layoutX="13.0" layoutY="102.0" text="Aluno:" />
-            <ComboBox layoutX="13.0" layoutY="118.0" prefHeight="21.0" prefWidth="321.0">
+            <ComboBox id="classList" fx:id="studentListComboBox" layoutX="13.0" layoutY="118.0" onAction="#handleStudentSelected" prefHeight="21.0" prefWidth="321.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
@@ -105,7 +106,7 @@
               </items>
             </ComboBox>
             <Button layoutX="13.0" layoutY="354.0" mnemonicParsing="false" text="Salvar" />
-            <ListView layoutX="13.0" layoutY="146.0" prefHeight="200.0" prefWidth="321.0" />
+            <TableView fx:id="examsTable" layoutX="14.0" layoutY="154.0" prefHeight="200.0" prefWidth="320.0" />
           </children>
         </Pane>
       </children>

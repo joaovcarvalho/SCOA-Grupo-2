@@ -98,7 +98,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         
         //Pane dentro de editProfessor, responsavel pela exibicao do listar
        
-        
         ArrayList<Professor> profs_list = SecretaryController.listProf();
         ObservableList<Professor> profs = FXCollections.observableArrayList(profs_list);
         
