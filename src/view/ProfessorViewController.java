@@ -214,7 +214,8 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     @FXML
     public void handleDeleteBtn(ActionEvent event){
         Exam exam = (Exam) examsTable.getSelectionModel().getSelectedItem();
-        System.out.println(exam.toString());    
+        ProfessorController.deleteExam(exam);
+        handleStudentSelected(event);
     }
     
     @FXML
@@ -281,21 +282,15 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     @FXML
     public void handleInsertBtn(ActionEvent event){
         try {
-            Registration registration = RegistrationDAO.getRegistrationByStudentIdAndClassId(
-                    selectedStudent.getId(), selectedClass.getId());
-            String date = dateTextField.getText();
-            
-            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-            Date myDate = formatter.parse(date);
-            java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
-            
-            Exam exam = new Exam(descriptionTextArea.getText(), gradeTextField.getText(), sqlDate , registration);
-            ExamDAO.insertExam(exam);
-            
-                    } catch (SQLException ex) {
+            ProfessorController.insertExam(selectedStudent, selectedClass, dateTextField.getText(),
+                    descriptionTextArea.getText(), gradeTextField.getText());
+        } catch (SQLException ex) {
             Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+            // TODO aqui colocar a exibição dos erros
+            
         } catch (ParseException ex) {
             Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+            // TODO aqui colocar a exibição dos erros
         }
     }
     

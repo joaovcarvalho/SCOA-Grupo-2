@@ -105,9 +105,9 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <Button layoutX="275.0" layoutY="365.0" mnemonicParsing="false" text="Deletar" />
+            <Button fx:id="deleteBtn" layoutX="275.0" layoutY="365.0" mnemonicParsing="false" onAction="#handleDeleteBtn" text="Deletar" />
             <TableView fx:id="examsTable" layoutX="14.0" layoutY="154.0" prefHeight="200.0" prefWidth="320.0" />
-            <Button layoutX="208.0" layoutY="365.0" mnemonicParsing="false" text="Editar" />
+            <Button fx:id="editBtn" layoutX="208.0" layoutY="365.0" mnemonicParsing="false" onAction="#handleEditBtn" text="Editar" />
           </children>
         </Pane>
       </children>

@@ -74,6 +74,11 @@ public class Exam {
     public void setRegistration(Registration registration) {
         this.registration = registration;
     }
+
+    @Override
+    public String toString() {
+        return "Exam{" + "id=" + id + ", description=" + description + ", grade=" + grade + ", delivery_date=" + delivery_date + ", registration=" + registration + '}';
+    }
     
     
 }
