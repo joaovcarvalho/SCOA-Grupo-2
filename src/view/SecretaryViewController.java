@@ -43,7 +43,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        name.setCellValueFactory(new PropertyValueFactory("name"));
+ //        name.setCellValueFactory(new PropertyValueFactory("name"));
 
     }
     
@@ -95,19 +95,53 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
     public void showEditProfessor(ActionEvent event) throws SQLException {
         hideAllPanes();
-        
+        System.out.println("edit prof");
         //Pane dentro de editProfessor, responsavel pela exibicao do listar
        
         ArrayList<Professor> profs_list = SecretaryController.listProf();
-        ObservableList<Professor> profs = FXCollections.observableArrayList(profs_list);
+        
         
         professorsTable.setEditable(false);
         
        //professorsTable.getColumns().setAll(profs);
-        
+        professorsTable.setEditable(true);
+              
+        TableColumn nameCol = new TableColumn("Name");
+       nameCol.setCellValueFactory(
+                        new PropertyValueFactory<Professor,String>("name")
+        );
+        TableColumn telephoneCol = new TableColumn("Telefone");
+        telephoneCol.setCellValueFactory(
+                         new PropertyValueFactory<Professor,String>("telephone")
+        );
+
+       TableColumn lattesCol = new TableColumn("Lattes");
+       lattesCol.setCellValueFactory(
+                         new PropertyValueFactory<Professor,String>("lattes")
+        );
+
+        TableColumn registerCol = new TableColumn("Registro");
+        registerCol.setCellValueFactory(
+                         new PropertyValueFactory<Professor,String>("register")
+        );
+                
+        TableColumn roomCol = new TableColumn("Sala");
+                roomCol.setCellValueFactory(
+                        new PropertyValueFactory<Professor,String>("room")
+        );
+                
+                if(profs_list != null){
+                    ObservableList<Professor> profs = FXCollections.observableArrayList(profs_list);
+                    profs.addAll(profs_list);
+
+                    professorsTable.setItems(profs);
+                }
+
+
+                professorsTable.getColumns().addAll(nameCol, telephoneCol, lattesCol, registerCol, roomCol);
  
-        professorsTable.setItems(profs);
-        professorsTable.getItems().setAll(profs);
+       // professorsTable.setItems(profs);
+        //professorsTable.getItems().setAll(profs);
         ListProfessor.setVisible(true); 
         EditProfessor.setVisible(true); 
     }
