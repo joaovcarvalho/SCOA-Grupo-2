@@ -42,4 +42,8 @@ public class ProfessorController {
         ExamDAO.deleteExam(exam);
     }
     
+    public static void editExam(Exam exam){
+        
+    }
+    
 }

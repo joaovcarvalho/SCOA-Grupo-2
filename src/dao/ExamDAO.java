@@ -85,6 +85,32 @@ public class ExamDAO extends DataAccessObject {
         closeConnection();
       
     }
+    
+    public static void editExam(Exam exam){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "UPDATE exams SET grade = ?, description = ? , delivery_date = ?, id_registration = ? WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, exam.getGrade());
+            statement.setString(2, exam.getDescription());
+            statement.setDate(3, exam.getDelivery_date());
+            statement.setInt(4, exam.getRegistration().getId());
+            statement.setInt(5, exam.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+      
+    }
 
     public static void deleteExam(Exam exam) {
         initConnection();

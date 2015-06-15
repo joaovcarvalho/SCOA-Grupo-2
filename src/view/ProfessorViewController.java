@@ -66,6 +66,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     private void hideAllPanels(){
         insertExamPane.setVisible(false);
         listExamsPane.setVisible(false);
+        editExamPane.setVisible(false);
     }
     
     
@@ -209,18 +210,113 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     private Button deleteBtn;
     
     @FXML
-    private Button editBtn;
-    
-    @FXML
     public void handleDeleteBtn(ActionEvent event){
         Exam exam = (Exam) examsTable.getSelectionModel().getSelectedItem();
         ProfessorController.deleteExam(exam);
         handleStudentSelected(event);
     }
     
+    // *****************************  EDITAR AVALIAÇÃO ***************************** 
+    private Exam selectedExam;
+    
+    @FXML
+    private Button editBtn;
+    
+    @FXML
+    private Pane editExamPane;
+    
+    @FXML
+    private ComboBox editClassesComboBox;
+    
+    @FXML
+    private ComboBox editStudentsComboBox;
+    
+    @FXML
+    private TextArea editDescriptionText;
+    
+    @FXML
+    private TextField editDateText;
+    
+    @FXML
+    private TextField editGradeText;
+    
     @FXML
     public void handleEditBtn(ActionEvent event){
+        Exam exam = (Exam) examsTable.getSelectionModel().getSelectedItem();
+        selectedExam = exam;
+        hideAllPanels();
+        editExamPane.setVisible(true);
         
+        populateClassesComboBoxByProfessorLogged(editClassesComboBox);
+        editClassesComboBox.getSelectionModel().select(selectedClass.getSubject().getName());
+        
+        populateStudentsComboBoxByClass(editStudentsComboBox, selectedClass);
+        editStudentsComboBox.getSelectionModel().select(selectedStudent.getName());
+        
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date myDate;
+        try {
+            myDate = formatter.parse(exam.getDelivery_date().toString());
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            editDateText.setText(format.format(myDate));
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        editDescriptionText.setText(exam.getDescription());
+        
+        editGradeText.setText(exam.getGrade());
+    }
+    
+    @FXML
+    public void handleClassSelectedEdit(ActionEvent event){
+        selectedClass = null;
+        for (Class next : tmpListClasses) {
+            if(next.getSubject().getName().equals( classListComboBox.getValue() )){
+                selectedClass = next;
+                break;
+            }
+        }
+        
+        if(selectedClass == null)
+           return;
+        
+        populateStudentsComboBoxByClass(editStudentsComboBox, selectedClass);
+    }
+    
+    @FXML
+    private void handleStudentSelectedEdit(ActionEvent event){
+        selectedStudent = null;
+        for (Student next : tmpListStudents) {
+            if(next.getName().equals( insertSudentsComboBox.getValue() )){
+                selectedStudent = next;
+                break;
+            }
+        }
+    }
+    
+    @FXML
+    public void handleSaveBtn(ActionEvent event){
+        
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date myDate;
+        try {
+            myDate = formatter.parse(editDateText.getText());
+            java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
+            selectedExam.setDelivery_date(sqlDate);
+            
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        selectedExam.setDescription(editDescriptionText.getText());
+        selectedExam.setGrade(editGradeText.getText());
+        ExamDAO.editExam(selectedExam);
+        handleListExamLink(event);
     }
     
     // *****************************  INSERIR AVALIAÇÃO ***************************** 
