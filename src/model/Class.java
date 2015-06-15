@@ -26,7 +26,7 @@ public class Class {
         this.semester = semester;
     }
     
-    
+   
 
     public int getId() {
         return id;

@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.ClassDAO;
 import dao.CourseDAO;
 import dao.ProfessorDAO;
 import dao.RoomDAO;
@@ -60,7 +61,13 @@ public class SecretaryController {
      public static ArrayList<Subject>listSubject() throws SQLException{
          return SubjectDAO.listSubjects();
      }
+      public static ArrayList<model.Class>listClass() throws SQLException{
+         return ClassDAO.listClasses();
+     }
      
+     public static ArrayList<Room>listRoom() throws SQLException{
+         return RoomDAO.listRooms();
+     }
      public static void insertRoom(String number, String capacity) throws SQLException{
         r.insertRoom(number, capacity);     
      }
