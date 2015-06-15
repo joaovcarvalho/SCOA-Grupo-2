@@ -95,7 +95,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
     public void showEditProfessor(ActionEvent event) throws SQLException {
         hideAllPanes();
-        
+        professorsTable.getColumns().clear();
         //Pane dentro de editProfessor, responsavel pela exibicao do listar
        
         ArrayList<Professor> profs_list = SecretaryController.listProf();
@@ -199,6 +199,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
      @FXML
     public void showEditCourses(ActionEvent event) throws SQLException {
+        hideAllPanes();
+        coursesTable.getColumns().clear();
          ArrayList<Course> course_list = SecretaryController.listCourse();
         
         
@@ -295,6 +297,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
      @FXML
     public void showEditSubject(ActionEvent event) throws SQLException {
+        hideAllPanes();
+        subjectTable.getColumns().clear();
          ArrayList<Subject> sub_list = SecretaryController.listSubject();
         
         
@@ -353,6 +357,13 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
      private ComboBox ClassSubject;
     @FXML
      private ComboBox ClassRoom;
+    @FXML
+     private Pane EditClass;
+    @FXML
+     private Pane ListClass;
+    @FXML
+     private TableView classTable;
+    
     
     @FXML
     public void showInsertClass(ActionEvent event) throws SQLException {
@@ -386,6 +397,51 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         
     }
     
+    @FXML
+    public void showEditClass(ActionEvent event) throws SQLException {
+         hideAllPanes();
+         classTable.getColumns().clear();
+         ArrayList<model.Class> class_list = SecretaryController.listClass();
+        
+        
+        classTable.setEditable(true);
+              
+        TableColumn profCol = new TableColumn("Professor");
+        profCol.setCellValueFactory(
+                        new PropertyValueFactory<Class,String>("professorName")
+        );
+        TableColumn roomCol = new TableColumn("Sala");
+        roomCol.setCellValueFactory(
+                         new PropertyValueFactory<Class,Room>("room")
+        );
+
+       TableColumn subjectCol = new TableColumn("Disciplina");
+       subjectCol.setCellValueFactory(
+                         new PropertyValueFactory<Class,Subject>("subject")
+        );
+       TableColumn semesterCol = new TableColumn("Semestre");
+       /* semesterCol.setCellValueFactory(
+                         new PropertyValueFactory<Class,int>("semester")
+        );*/
+
+       
+
+                
+                if(class_list != null){
+                    ObservableList<model.Class> classes = FXCollections.observableArrayList(class_list);
+                    classes.addAll(class_list);
+
+                   classTable.setItems(classes);
+                }
+
+
+                classTable.getColumns().addAll(profCol);
+ 
+       
+        ListClass.setVisible(true); 
+        EditClass.setVisible(true); 
+    }
+    
     //***************************** SALAS *****************************
     @FXML
     private Pane InsertRoom;
@@ -393,6 +449,46 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     private TextField RoomCapacity;
     @FXML
     private TextField RoomNumber;
+    @FXML
+    private Pane EditRoom;
+    @FXML
+    private Pane ListRoom;
+    @FXML
+    private TableView roomTable;
+    
+     @FXML
+    public void showEditRoom(ActionEvent event) throws SQLException {
+        hideAllPanes();
+        roomTable.getColumns().clear();
+         ArrayList<Room> room_list = SecretaryController.listRoom();
+        
+        
+        roomTable.setEditable(true);
+              
+        TableColumn numberCol = new TableColumn("Número");
+        numberCol.setCellValueFactory(
+                        new PropertyValueFactory<Room,String>("number")
+        );
+        TableColumn capacityCol = new TableColumn("Capacidade");
+        capacityCol.setCellValueFactory(
+                         new PropertyValueFactory<Room,String>("capacity")
+        );
+
+   
+        if(room_list != null){
+            ObservableList<Room> rooms = FXCollections.observableArrayList(room_list);
+            rooms.addAll(room_list);
+            roomTable.setItems(rooms);
+        }
+
+
+        roomTable.getColumns().addAll(numberCol, capacityCol);
+ 
+       
+        ListRoom.setVisible(true); 
+        EditRoom.setVisible(true); 
+    }
+    
     
      @FXML
     public void showInsertRoom(ActionEvent event) {
@@ -413,17 +509,22 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     public void hideAllPanes() {
         InsertProfessor.setVisible(false);
         InsertCourse.setVisible(false);
-        EditProfessor.setVisible(false);
-        EditCourse.setVisible(false);
-        ListProfessor.setVisible(false);
-        ListCourse.setVisible(false);
         InsertCourse.setVisible(false);
         InsertSubject.setVisible(false);
         InsertClass.setVisible(false);
         InsertRoom.setVisible(false);
-        EditSubject.setVisible(false);
-        ListSubject.setVisible(false);
         
+        EditProfessor.setVisible(false);
+        EditCourse.setVisible(false);
+        EditSubject.setVisible(false);
+        EditClass.setVisible(false);
+        EditRoom.setVisible(false);
+        
+        ListProfessor.setVisible(false);
+        ListCourse.setVisible(false);      
+        ListSubject.setVisible(false);
+        ListClass.setVisible(false);
+        ListRoom.setVisible(false);
     }
     
  

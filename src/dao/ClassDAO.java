@@ -62,4 +62,39 @@ public class ClassDAO extends DataAccessObject {
     }
     
     
+     public static ArrayList<model.Class> listClasses() throws SQLException{ 
+        initConnection();
+        
+        Connection connection = getConnection();
+        String query = "SELECT * FROM classes";
+        Statement st = connection.prepareStatement(query);
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<model.Class> classes = new ArrayList<>();
+        try{
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int id_professor = rs.getInt("id_professor");
+                int id_room = rs.getInt("id_room");
+                int id_subject = rs.getInt("id_subject");
+                int semester = rs.getInt("semester");
+     
+                Professor p = ProfessorDAO.getProfessorById(id_professor);
+                Room r = RoomDAO.getRoomById(id_room);
+                Subject s = SubjectDAO.getSubjectById(id_subject);
+                 
+                Class c = new Class(id, p, r, s, semester);
+               
+    
+                classes.add(c);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();     
+        return classes;
+    }
+    
+    
 }
