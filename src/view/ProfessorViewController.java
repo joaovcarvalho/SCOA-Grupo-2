@@ -27,6 +27,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -65,6 +66,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     private void hideAllPanels(){
         insertExamPane.setVisible(false);
         listExamsPane.setVisible(false);
+        editExamPane.setVisible(false);
     }
     
     
@@ -124,6 +126,8 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         hideAllPanels();
         listExamsPane.setVisible(true);
         
+        studentListComboBox.getItems().clear();
+        examsTable.getItems().clear();
         populateClassesComboBoxByProfessorLogged(classListComboBox);
     }
     
@@ -189,15 +193,130 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
                     ObservableList<Exam> list = observableArrayList();
                     list.addAll(exams);
 
+                    examsTable.getItems().clear();
                     examsTable.setItems(list);
                 }
 
-
+                examsTable.getColumns().clear();
                 examsTable.getColumns().addAll(idCol, descriptionCol, deliveryCol, gradeCol);
             } catch (SQLException ex) {
                 Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    // *****************************  DELETAR AVALIAÇÃO ***************************** 
+    @FXML
+    private Button deleteBtn;
+    
+    @FXML
+    public void handleDeleteBtn(ActionEvent event){
+        Exam exam = (Exam) examsTable.getSelectionModel().getSelectedItem();
+        ProfessorController.deleteExam(exam);
+        handleStudentSelected(event);
+    }
+    
+    // *****************************  EDITAR AVALIAÇÃO ***************************** 
+    private Exam selectedExam;
+    
+    @FXML
+    private Button editBtn;
+    
+    @FXML
+    private Pane editExamPane;
+    
+    @FXML
+    private ComboBox editClassesComboBox;
+    
+    @FXML
+    private ComboBox editStudentsComboBox;
+    
+    @FXML
+    private TextArea editDescriptionText;
+    
+    @FXML
+    private TextField editDateText;
+    
+    @FXML
+    private TextField editGradeText;
+    
+    @FXML
+    public void handleEditBtn(ActionEvent event){
+        Exam exam = (Exam) examsTable.getSelectionModel().getSelectedItem();
+        selectedExam = exam;
+        hideAllPanels();
+        editExamPane.setVisible(true);
+        
+        populateClassesComboBoxByProfessorLogged(editClassesComboBox);
+        editClassesComboBox.getSelectionModel().select(selectedClass.getSubject().getName());
+        
+        populateStudentsComboBoxByClass(editStudentsComboBox, selectedClass);
+        editStudentsComboBox.getSelectionModel().select(selectedStudent.getName());
+        
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date myDate;
+        try {
+            myDate = formatter.parse(exam.getDelivery_date().toString());
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            editDateText.setText(format.format(myDate));
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        editDescriptionText.setText(exam.getDescription());
+        
+        editGradeText.setText(exam.getGrade());
+    }
+    
+    @FXML
+    public void handleClassSelectedEdit(ActionEvent event){
+        selectedClass = null;
+        for (Class next : tmpListClasses) {
+            if(next.getSubject().getName().equals( classListComboBox.getValue() )){
+                selectedClass = next;
+                break;
+            }
+        }
+        
+        if(selectedClass == null)
+           return;
+        
+        populateStudentsComboBoxByClass(editStudentsComboBox, selectedClass);
+    }
+    
+    @FXML
+    private void handleStudentSelectedEdit(ActionEvent event){
+        selectedStudent = null;
+        for (Student next : tmpListStudents) {
+            if(next.getName().equals( insertSudentsComboBox.getValue() )){
+                selectedStudent = next;
+                break;
+            }
+        }
+    }
+    
+    @FXML
+    public void handleSaveBtn(ActionEvent event){
+        
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date myDate;
+        try {
+            myDate = formatter.parse(editDateText.getText());
+            java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
+            selectedExam.setDelivery_date(sqlDate);
+            
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        selectedExam.setDescription(editDescriptionText.getText());
+        selectedExam.setGrade(editGradeText.getText());
+        ExamDAO.editExam(selectedExam);
+        handleListExamLink(event);
     }
     
     // *****************************  INSERIR AVALIAÇÃO ***************************** 
@@ -259,23 +378,17 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     @FXML
     public void handleInsertBtn(ActionEvent event){
         try {
-            System.out.println(selectedStudent.toString());
-            System.out.println(selectedClass.toString());
-            Registration registration = RegistrationDAO.getRegistrationByStudentIdAndClassId(
-                    selectedStudent.getId(), selectedClass.getId());
-            String date = dateTextField.getText();
-            
-            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-            Date myDate = formatter.parse(date);
-            java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
-            
-            Exam exam = new Exam(descriptionTextArea.getText(), gradeTextField.getText(), sqlDate , registration);
-            ExamDAO.insertExam(exam);
-            
-                    } catch (SQLException ex) {
+            ProfessorController.insertExam(selectedStudent, selectedClass, dateTextField.getText(),
+                    descriptionTextArea.getText(), gradeTextField.getText());
+        } catch (SQLException ex) {
             Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+            // TODO aqui colocar a exibição dos erros
+            
         } catch (ParseException ex) {
             Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+            // TODO aqui colocar a exibição dos erros
         }
     }
+    
+    
 }
