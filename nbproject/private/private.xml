@@ -5,8 +5,12 @@
         <group>
             <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/dao/ExamDAO.java</file>
             <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/model/Exam.java</file>
+            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/exceptions/InvalidFieldException.java</file>
+            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/tests/testValidator.java</file>
+            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/test/tools/ValidatorTest.java</file>
             <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/view/ProfessorViewController.java</file>
             <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/controller/ProfessorController.java</file>
+            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/exceptions/MissingFieldException.java</file>
         </group>
     </open-files>
 </project-private>

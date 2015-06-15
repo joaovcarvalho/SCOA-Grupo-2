@@ -10,6 +10,7 @@ import dao.ClassDAO;
 import dao.ExamDAO;
 import dao.RegistrationDAO;
 import dao.StudentDAO;
+import exceptions.InvalidFieldException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -17,11 +18,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,14 +28,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javax.swing.JOptionPane;
 import model.Class;
 import model.Exam;
 import model.Registration;
@@ -53,12 +51,17 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
      * Initializes the controller class.
      */
     
+    private final String ERROR_TITLE_EXAM = "Erro - Avaliação";
+    private final String ERROR_DATE_FORMAT = "Data em formato inválido. Por favor use dd/MM/yyyy. Ex: 30/11/2015";
+    private final String ERROR_MISSING_FIELD = "Por favor preencha todos os campos.";
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         hideAllPanels();
     }
     
+    @Override
     public void setScreenParent(ScreensController screenParent){
         myController = screenParent;
     }
@@ -69,6 +72,10 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         editExamPane.setVisible(false);
     }
     
+    public static void infoBox(String infoMessage, String titleBar)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
     
     // *****************************  LIST AVALIAÇÕES *****************************   
     @FXML
@@ -92,11 +99,9 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
             classes = ClassDAO.getClassByProfessorId(myController.getUser().getType().getId());
             
             cb.getItems().clear();
-            for (Iterator<model.Class> iterator = classes.iterator(); iterator.hasNext();) {
-                model.Class next = iterator.next();
-                
+            classes.stream().forEach((next) -> {
                 cb.getItems().add(next.getSubject().getName());
-            }
+            });
             
             tmpListClasses = classes;
             
@@ -214,6 +219,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         Exam exam = (Exam) examsTable.getSelectionModel().getSelectedItem();
         ProfessorController.deleteExam(exam);
         handleStudentSelected(event);
+        infoBox("Avaliação deletada com sucesso", "Avaliação");
     }
     
     // *****************************  EDITAR AVALIAÇÃO ***************************** 
@@ -261,7 +267,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
             editDateText.setText(format.format(myDate));
             
         } catch (ParseException ex) {
-            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+            infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_EXAM);
         }
         
         
@@ -308,15 +314,16 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
             java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
             selectedExam.setDelivery_date(sqlDate);
             
+            selectedExam.setDescription(editDescriptionText.getText());
+            selectedExam.setGrade(editGradeText.getText());
+            ExamDAO.editExam(selectedExam);
+            handleListExamLink(event);
             
         } catch (ParseException ex) {
-            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+            infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_EXAM);
         }
        
-        selectedExam.setDescription(editDescriptionText.getText());
-        selectedExam.setGrade(editGradeText.getText());
-        ExamDAO.editExam(selectedExam);
-        handleListExamLink(event);
+        
     }
     
     // *****************************  INSERIR AVALIAÇÃO ***************************** 
@@ -380,13 +387,24 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         try {
             ProfessorController.insertExam(selectedStudent, selectedClass, dateTextField.getText(),
                     descriptionTextArea.getText(), gradeTextField.getText());
+            
+            infoBox("Avaliação inserida com sucesso.", "Info - Avaliação");
         } catch (SQLException ex) {
             Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
-            // TODO aqui colocar a exibição dos erros
+            infoBox("Erro ao inserir avaliação no banco.", ERROR_TITLE_EXAM);
             
         } catch (ParseException ex) {
             Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
             // TODO aqui colocar a exibição dos erros
+            infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_EXAM);
+        } catch (exceptions.MissingFieldException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+            
+            infoBox(ERROR_MISSING_FIELD, ERROR_TITLE_EXAM);
+        } catch (InvalidFieldException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+            
+            infoBox(ex.getMessage(), ERROR_TITLE_EXAM);
         }
     }
     

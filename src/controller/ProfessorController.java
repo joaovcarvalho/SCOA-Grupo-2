@@ -7,6 +7,8 @@ package controller;
 
 import dao.ExamDAO;
 import dao.RegistrationDAO;
+import exceptions.InvalidFieldException;
+import exceptions.MissingFieldException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,6 +20,7 @@ import model.Exam;
 import model.Registration;
 import model.Student;
 import model.Class;
+import tools.Validator;
 
 /**
  *
@@ -25,7 +28,22 @@ import model.Class;
  */
 public class ProfessorController {
     
-    public static void insertExam(Student selectedStudent, Class selectedClass, String date, String description, String grade) throws SQLException, ParseException{
+    public static void insertExam(Student selectedStudent, Class selectedClass, String date, String description, String grade) throws SQLException, ParseException, MissingFieldException, InvalidFieldException{
+        if(selectedClass == null || 
+                selectedStudent == null || 
+                !Validator.validateRequired(date) || 
+                !Validator.validateRequired(description) ||
+                !Validator.validateRequired(grade))
+            throw new MissingFieldException();
+        
+        if(!Validator.validateDate(date))
+            throw new ParseException("", 0);
+        
+        if(!Validator.validateNumber(grade))
+            throw new InvalidFieldException("Nota deve ser um número.");
+        
+        
+        
         Registration registration;
         registration = RegistrationDAO.getRegistrationByStudentIdAndClassId(
                 selectedStudent.getId(), selectedClass.getId());
