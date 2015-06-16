@@ -49,7 +49,6 @@ public class LoginController implements Initializable, ControlledScreen {
        
        User user = UserController.login(CPF, password);
        if(user != null){
-           
            myController.setUser(user);
            if(user.getType() instanceof Secretary){
                myController.setScreen(ScreensFramework.screen2ID);
