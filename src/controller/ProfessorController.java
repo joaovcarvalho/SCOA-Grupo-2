@@ -60,7 +60,11 @@ public class ProfessorController {
         ExamDAO.deleteExam(exam);
     }
     
-    public static void editExam(Exam exam){
+    public static void editExam(Exam exam, String description, String grade, String date) throws ParseException{
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date myDate = formatter.parse(date);
+            java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
+            exam.setDelivery_date(sqlDate);
         
     }
     
