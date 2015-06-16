@@ -114,7 +114,7 @@ public class Student extends Type {
 
     @Override
     public String toString() {
-        return "Student{" + "name=" + name + ", telephone=" + telephone + ", register=" + register + ", address=" + address + ", email=" + email + ", birth_date=" + birth_date + ", semester=" + semester + '}';
+        return "Student{" + "name=" + getName() + ", telephone=" + getTelephone() + ", register=" + getRegister() + ", address=" + getAddress() + ", email=" + getEmail() + ", birth_date=" + getBirth_date() + ", semester=" + getSemester() + '}';
     }
     
     

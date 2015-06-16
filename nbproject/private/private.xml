@@ -3,19 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/dao/ExamDAO.java</file>
-            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/model/Exam.java</file>
-            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/exceptions/InvalidFieldException.java</file>
-            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/tests/testValidator.java</file>
-            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/test/tools/ValidatorTest.java</file>
-            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/view/ProfessorViewController.java</file>
-            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/controller/ProfessorController.java</file>
-            <file>file:/C:/Users/JoãoVitor/Documents/SCOA-Grupo-2/src/exceptions/MissingFieldException.java</file>
-=======
-            <file>file:/C:/Users/Amanda/Desktop/ScoaTrabFes/src/view/SecretaryViewController.java</file>
-            <file>file:/C:/Users/Amanda/Desktop/ScoaTrabFes/src/view/ProfessorViewController.java</file>
->>>>>>> 6c7a0dd0ab05f54ca18efb71f8763c643a6f810e
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/dao/UserDAO.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/view/ProfessorViewController.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/dao/DataAccessObject.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/view/ScreensController.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/controller/StudentController.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/view/ControlledScreen.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/controller/SecretaryController.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/model/Student.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/view/LoginController.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/controller/UserController.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/view/SecretaryViewController.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/view/StudentViewController.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/view/ScreensFramework.java</file>
+            <file>file:/C:/Users/dougl_000/Desktop/SCOA-Grupo-2/src/dao/SubjectDAO.java</file>
         </group>
     </open-files>
 </project-private>
