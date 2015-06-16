@@ -10,6 +10,8 @@ import dao.CourseDAO;
 import dao.ProfessorDAO;
 import dao.RoomDAO;
 import dao.SubjectDAO;
+import exceptions.InvalidFieldException;
+import exceptions.MissingFieldException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
@@ -18,6 +20,7 @@ import model.Course;
 import model.Professor;
 import model.Room;
 import model.Subject;
+import tools.Validator;
 
 /**
  *
@@ -30,8 +33,14 @@ public class SecretaryController {
     static SubjectDAO s = new SubjectDAO();
     static RoomDAO r = new RoomDAO();
     
-    public static void insertCourse(String name, String code, String description){
-           
+    public static void insertCourse(String name, String code, String description) throws MissingFieldException{
+        
+        if(     !Validator.validateRequired(name) || 
+                !Validator.validateRequired(description) ||
+                !Validator.validateRequired(code))
+            throw new MissingFieldException();
+      
+       
            c.insertCourse(code, description, name);
        }
        

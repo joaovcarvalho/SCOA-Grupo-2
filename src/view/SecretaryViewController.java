@@ -8,10 +8,14 @@ package view;
 import controller.SecretaryController;
 import dao.UserDAO;
 import controller.UserController;
+import exceptions.InvalidFieldException;
+import exceptions.MissingFieldException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,6 +31,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javax.swing.JOptionPane;
 import model.Course;
 import model.Professor;
 import model.Room;
@@ -236,7 +241,10 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         ListCourse.setVisible(true); 
         EditCourse.setVisible(true); 
     }
-    
+    public static void infoBox(String infoMessage, String titleBar)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
      @FXML
     private void handleInsertCourseButton(ActionEvent event) throws SQLException{
         System.out.println("cliquei em inserir curso");
@@ -244,7 +252,11 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         String description = CourseDescription.getText() ;
         String name = CourseName.getText() ;
         String code = CourseCode.getText() ;
-        SecretaryController.insertCourse(name, code, description);
+        try{
+            SecretaryController.insertCourse(name, code, description);
+        } catch (exceptions.MissingFieldException ex) {
+           infoBox("Todos campos são de preenchimento obrigatório", "Erro de validação");
+        }
        
     }
     
