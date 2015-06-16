@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,6 +40,8 @@ import model.Class;
 import model.Exam;
 import model.Registration;
 import model.Student;
+import controller.StudentController;
+import exceptions.MissingFieldException;
 
 /**
  * FXML Controller class
@@ -67,346 +70,51 @@ public class StudentViewController implements Initializable, ControlledScreen {
     }
     
     private void hideAllPanels(){
-        insertExamPane.setVisible(false);
-        listExamsPane.setVisible(false);
-        editExamPane.setVisible(false);
+        insertFeedbackPane.setVisible(false);
+
     }
     
-    public static void infoBox(String infoMessage, String titleBar)
-    {
-        JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    
+    // *****************************  INSERIR FEEDBACK ***************************** 
+    @FXML
+    private Pane insertFeedbackPane;
+    @FXML
+    private ComboBox feedbackTypeComboBox; 
+    @FXML
+    private TextArea feedbackTextArea;
+    @FXML
+    private Button sendFeedbackButton;
+    
+    
+    @FXML
+    private void handleInsertFeedbackLink(ActionEvent event) throws SQLException{
+        hideAllPanels();
+        insertFeedbackPane.setVisible(true);
+        populateFeedbackCombox(feedbackTypeComboBox);
+        
     }
     
-    // *****************************  LIST AVALIAÇÕES *****************************   
-    @FXML
-    private Pane listExamsPane;
+    private void populateFeedbackCombox(ComboBox cb){
+        ObservableList<String> options = 
+            FXCollections.observableArrayList(
+                "Sugestão",
+                "Reclamação"
+            );
+        cb.getItems().addAll(options);
+    }
     
     @FXML
-    private ComboBox classListComboBox;
-    
-    @FXML
-    private ComboBox studentListComboBox;
-    
-    @FXML
-    private TableView examsTable;
-    
-    private ArrayList<model.Class> tmpListClasses;
-    private ArrayList<model.Student> tmpListStudents;
-    
-    private void populateClassesComboBoxByProfessorLogged(ComboBox cb){
-        ArrayList<model.Class> classes;
-        try {
-            classes = ClassDAO.getClassByProfessorId(myController.getUser().getType().getId());
-            
-            cb.getItems().clear();
-            classes.stream().forEach((next) -> {
-                cb.getItems().add(next.getSubject().getName());
-            });
-            
-            tmpListClasses = classes;
-            
-        } catch (SQLException ex) {
+    private void handleSendFeedbackButton(ActionEvent event) throws SQLException{
+        try{
+            StudentController.insertFeedback((String) feedbackTypeComboBox.getValue(),feedbackTextArea.getText());
+        }catch (SQLException ex) {
+            Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (ParseException ex) {
+            Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (MissingFieldException ex) {
+            Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (InvalidFieldException ex) {
             Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void populateStudentsComboBoxByClass(ComboBox cb, Class selectedClass){
-        ArrayList<Student> students;
-        try {
-            students = StudentDAO.getStudentsByClassId(selectedClass.getId());
-            
-            cb.getItems().clear();
-            for(Student student : students){
-                cb.getItems().add(student.getName());
-            }
-
-            tmpListStudents = students;
-        } catch (SQLException ex) {
-            Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @FXML 
-    private void handleListExamLink(ActionEvent event){
-        hideAllPanels();
-        listExamsPane.setVisible(true);
-        
-        studentListComboBox.getItems().clear();
-        examsTable.getItems().clear();
-        populateClassesComboBoxByProfessorLogged(classListComboBox);
-    }
-    
-    Class selectedClass = null;
-    @FXML 
-    private void handleClassSelected(ActionEvent event){
-        selectedClass = null;
-        for (Class next : tmpListClasses) {
-            if(next.getSubject().getName().equals( classListComboBox.getValue() )){
-                selectedClass = next;
-                break;
-            }
-        }
-        
-        if(selectedClass == null)
-           return;
-        
-        populateStudentsComboBoxByClass(studentListComboBox, selectedClass);
-    }
-    
-    @FXML 
-    private void handleStudentSelected(ActionEvent event){
-        selectedStudent = null;
-        for (Student next : tmpListStudents) {
-            if(next.getName().equals( studentListComboBox.getValue() )){
-                selectedStudent = next;
-                break;
-            }
-        }
-        
-        if(selectedStudent != null){
-            try {
-                Registration registration = RegistrationDAO.getRegistrationByStudentIdAndClassId(
-                        selectedStudent.getId(), selectedClass.getId());
-                
-                ArrayList<Exam> exams = ExamDAO.getExamsByRegistrationId(registration.getId());
-            
-                examsTable.setEditable(true);
-
-                TableColumn idCol = new TableColumn("Id");
-
-                idCol.setCellValueFactory(
-                        new PropertyValueFactory<Student,String>("id")
-                );
-
-                TableColumn descriptionCol = new TableColumn("Description");
-                descriptionCol.setCellValueFactory(
-                        new PropertyValueFactory<Student,String>("description")
-                );
-
-                TableColumn deliveryCol = new TableColumn("Data de Entrega");
-                deliveryCol.setCellValueFactory(
-                        new PropertyValueFactory<Student,String>("delivery_date")
-                );
-
-                TableColumn gradeCol = new TableColumn("Nota");
-                gradeCol.setCellValueFactory(
-                        new PropertyValueFactory<Student,String>("grade")
-                );
-                
-                
-                if(exams != null){
-                    ObservableList<Exam> list = observableArrayList();
-                    list.addAll(exams);
-
-                    examsTable.getItems().clear();
-                    examsTable.setItems(list);
-                }
-
-                examsTable.getColumns().clear();
-                examsTable.getColumns().addAll(idCol, descriptionCol, deliveryCol, gradeCol);
-            } catch (SQLException ex) {
-                Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-    
-    // *****************************  DELETAR AVALIAÇÃO ***************************** 
-    @FXML
-    private Button deleteBtn;
-    
-    @FXML
-    public void handleDeleteBtn(ActionEvent event){
-        Exam exam = (Exam) examsTable.getSelectionModel().getSelectedItem();
-        //ProfessorController.deleteExam(exam);
-        handleStudentSelected(event);
-        infoBox("Avaliação deletada com sucesso", "Avaliação");
-    }
-    
-    // *****************************  EDITAR AVALIAÇÃO ***************************** 
-    private Exam selectedExam;
-    
-    @FXML
-    private Button editBtn;
-    
-    @FXML
-    private Pane editExamPane;
-    
-    @FXML
-    private ComboBox editClassesComboBox;
-    
-    @FXML
-    private ComboBox editStudentsComboBox;
-    
-    @FXML
-    private TextArea editDescriptionText;
-    
-    @FXML
-    private TextField editDateText;
-    
-    @FXML
-    private TextField editGradeText;
-    
-    @FXML
-    public void handleEditBtn(ActionEvent event){
-        Exam exam = (Exam) examsTable.getSelectionModel().getSelectedItem();
-        selectedExam = exam;
-        hideAllPanels();
-        editExamPane.setVisible(true);
-        
-        populateClassesComboBoxByProfessorLogged(editClassesComboBox);
-        editClassesComboBox.getSelectionModel().select(selectedClass.getSubject().getName());
-        
-        populateStudentsComboBoxByClass(editStudentsComboBox, selectedClass);
-        editStudentsComboBox.getSelectionModel().select(selectedStudent.getName());
-        
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date myDate;
-        try {
-            myDate = formatter.parse(exam.getDelivery_date().toString());
-            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            editDateText.setText(format.format(myDate));
-            
-        } catch (ParseException ex) {
-            infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_EXAM);
-        }
-        
-        
-        
-        editDescriptionText.setText(exam.getDescription());
-        
-        editGradeText.setText(exam.getGrade());
-    }
-    
-    @FXML
-    public void handleClassSelectedEdit(ActionEvent event){
-        selectedClass = null;
-        for (Class next : tmpListClasses) {
-            if(next.getSubject().getName().equals( classListComboBox.getValue() )){
-                selectedClass = next;
-                break;
-            }
-        }
-        
-        if(selectedClass == null)
-           return;
-        
-        populateStudentsComboBoxByClass(editStudentsComboBox, selectedClass);
-    }
-    
-    @FXML
-    private void handleStudentSelectedEdit(ActionEvent event){
-        selectedStudent = null;
-        for (Student next : tmpListStudents) {
-            if(next.getName().equals( insertSudentsComboBox.getValue() )){
-                selectedStudent = next;
-                break;
-            }
-        }
-    }
-    
-    @FXML
-    public void handleSaveBtn(ActionEvent event){
-        
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date myDate;
-        try {
-            myDate = formatter.parse(editDateText.getText());
-            java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
-            selectedExam.setDelivery_date(sqlDate);
-            
-            selectedExam.setDescription(editDescriptionText.getText());
-            selectedExam.setGrade(editGradeText.getText());
-            ExamDAO.editExam(selectedExam);
-            handleListExamLink(event);
-            
-        } catch (ParseException ex) {
-            infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_EXAM);
-        }
-       
-        
-    }
-    
-    // *****************************  INSERIR AVALIAÇÃO ***************************** 
-    @FXML
-    private Pane insertExamPane;
-    
-    @FXML
-    private ComboBox insertClassComboBox;
-    
-    @FXML
-    private ComboBox insertSudentsComboBox;
-    
-    @FXML
-    private TextArea descriptionTextArea;
-    
-    @FXML 
-    private TextField dateTextField;
-    
-    @FXML
-    private TextField gradeTextField;
-    
-    private Student selectedStudent;
-    
-    @FXML
-    private void handleInsertExamLink(ActionEvent event) throws SQLException{
-        hideAllPanels();
-        insertExamPane.setVisible(true);
-        
-        populateClassesComboBoxByProfessorLogged(insertClassComboBox);
-    }
-    
-    @FXML
-    private void handleClassSelectedInsert(ActionEvent event){
-        selectedClass = null;
-        for (Class next : tmpListClasses) {
-            if(next.getSubject().getName().equals( insertClassComboBox.getValue() )){
-                selectedClass = next;
-                break;
-            }
-        }
-        
-        if(selectedClass == null)
-           return;
-        
-        populateStudentsComboBoxByClass(insertSudentsComboBox, selectedClass);
-    }
-    
-    @FXML
-    private void handleStudentSelectedInsert(ActionEvent event){
-        selectedStudent = null;
-        for (Student next : tmpListStudents) {
-            if(next.getName().equals( insertSudentsComboBox.getValue() )){
-                selectedStudent = next;
-                break;
-            }
-        }
-    }
-    
-    @FXML
-    public void handleInsertBtn(ActionEvent event){
-//        try {
-//           ProfessorController.insertExam(selectedStudent, selectedClass, dateTextField.getText(),
-//                    descriptionTextArea.getText(), gradeTextField.getText());
-//            
-//            infoBox("Avaliação inserida com sucesso.", "Info - Avaliação");
-//        } catch (SQLException ex) {
-//            Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
-//            infoBox("Erro ao inserir avaliação no banco.", ERROR_TITLE_EXAM);
-//            
-//        } catch (ParseException ex) {
-//            Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
-//            // TODO aqui colocar a exibição dos erros
-//            infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_EXAM);
-//        } catch (exceptions.MissingFieldException ex) {
-//            Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
-//            
-//            infoBox(ERROR_MISSING_FIELD, ERROR_TITLE_EXAM);
-//        } catch (InvalidFieldException ex) {
-//            Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
-//            
-//            infoBox(ex.getMessage(), ERROR_TITLE_EXAM);
-//        }
-    }
-    
-    
 }

@@ -21,6 +21,8 @@ import model.Registration;
 import model.Student;
 import model.Class;
 import tools.Validator;
+import model.Feedback;
+import dao.FeedbackDAO;
 
 /**
  *
@@ -28,40 +30,21 @@ import tools.Validator;
  */
 public class StudentController {
     
-    public static void insertExam(Student selectedStudent, Class selectedClass, String date, String description, String grade) throws SQLException, ParseException, MissingFieldException, InvalidFieldException{
-        if(selectedClass == null || 
-                selectedStudent == null || 
-                !Validator.validateRequired(date) || 
-                !Validator.validateRequired(description) ||
-                !Validator.validateRequired(grade))
+    public static void insertFeedback(String type, String description)throws SQLException, ParseException, MissingFieldException, InvalidFieldException{
+        if( !Validator.validateRequired(type) || !Validator.validateRequired(description)){
             throw new MissingFieldException();
-        
-        if(!Validator.validateDate(date))
-            throw new ParseException("", 0);
-        
-        if(!Validator.validateNumber(grade))
-            throw new InvalidFieldException("Nota deve ser um número.");
-        
-        
-        
-        Registration registration;
-        registration = RegistrationDAO.getRegistrationByStudentIdAndClassId(
-                selectedStudent.getId(), selectedClass.getId());
-
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date myDate = formatter.parse(date);
-        java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
-
-        Exam exam = new Exam(description, grade, sqlDate , registration);
-        ExamDAO.insertExam(exam);
-    }
-    
-    public static void deleteExam(Exam exam) {
-        ExamDAO.deleteExam(exam);
-    }
-    
-    public static void editExam(Exam exam){
-        
+        }
+        String s;
+        if(type.equals("Reclamação")){
+            s = "complaint";
+        }
+        else if(type.equals("Sugestão")){
+            s = "suggestion";
+        }else{
+            s = "";
+        }
+        Feedback f = new Feedback(description,s);
+        FeedbackDAO.insertFeedback(f);
     }
     
 }
