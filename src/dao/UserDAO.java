@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Professor;
 import model.Secretary;
+import model.Student;
 import model.User;
 
 
@@ -56,7 +57,7 @@ public class UserDAO extends DataAccessObject {
             statement.setString(1, CPF);
             statement.setString(2, password);
             
-            ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery(); 
             if(rs.next()){
                 int id = rs.getInt("id");
                 String cpf = rs.getString("cpf");
@@ -79,9 +80,26 @@ public class UserDAO extends DataAccessObject {
                     
                     closeConnection();
                     return new User(id, cpf, user_password, new Secretary(name, type_id));   
-                }/*else if(type.equals("student")){
-                   return new User(id, cpf, user_password, new Secretary());
-                }*/else if(type.equals("professor")){
+                }else if(type.equals("student")){
+                    String queryType = "SELECT * FROM students WHERE id = ?";
+                    PreparedStatement typeStatment = connection.prepareStatement(queryType);
+                    typeStatment.setInt(1, type_id);
+                    ResultSet r = typeStatment.executeQuery();
+                    Student student = null;
+                   
+                    if(r.next()){
+                        student = new Student();
+                        student.setName(r.getString("name"));
+                        student.setAddress(r.getString("address"));
+                        student.setBirth_date(r.getString("birth_date"));
+                        student.setEmail(r.getString("email"));
+                        student.setRegister(r.getString("register"));
+                        student.setSemester(r.getInt("semester"));
+                        student.setTelephone(r.getString("telephone"));
+                                               
+                    }
+                    return new User(id, cpf, user_password, student);
+                }else if(type.equals("professor")){
                     String queryType = "SELECT * FROM professors WHERE id = ?";
                     PreparedStatement typeStatment = connection.prepareStatement(queryType);
                     typeStatment.setInt(1, type_id);

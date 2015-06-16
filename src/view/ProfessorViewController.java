@@ -270,8 +270,6 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
             infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_EXAM);
         }
         
-        
-        
         editDescriptionText.setText(exam.getDescription());
         
         editGradeText.setText(exam.getGrade());
@@ -306,24 +304,12 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
     
     @FXML
     public void handleSaveBtn(ActionEvent event){
-        
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date myDate;
         try {
-            myDate = formatter.parse(editDateText.getText());
-            java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
-            selectedExam.setDelivery_date(sqlDate);
-            
-            selectedExam.setDescription(editDescriptionText.getText());
-            selectedExam.setGrade(editGradeText.getText());
-            ExamDAO.editExam(selectedExam);
+            ProfessorController.editExam(selectedExam, editDescriptionText.getText(),editGradeText.getText(), editDateText.getText());
             handleListExamLink(event);
-            
         } catch (ParseException ex) {
             infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_EXAM);
         }
-       
-        
     }
     
     // *****************************  INSERIR AVALIAÇÃO ***************************** 
@@ -408,5 +394,5 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         }
     }
     
-    
+    // *****************************  LISTAR DIÁRIOS DE CLASSE *****************************
 }
