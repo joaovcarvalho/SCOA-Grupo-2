@@ -42,6 +42,7 @@ import model.Registration;
 import model.Student;
 import controller.StudentController;
 import exceptions.MissingFieldException;
+import static view.ProfessorViewController.infoBox;
 
 /**
  * FXML Controller class
@@ -54,7 +55,7 @@ public class StudentViewController implements Initializable, ControlledScreen {
      * Initializes the controller class.
      */
     
-    private final String ERROR_TITLE_EXAM = "Erro - Avaliação";
+    private final String ERROR_TITLE_FEEDBACK = "Erro - Feedback";
     private final String ERROR_DATE_FORMAT = "Data em formato inválido. Por favor use dd/MM/yyyy. Ex: 30/11/2015";
     private final String ERROR_MISSING_FIELD = "Por favor preencha todos os campos.";
     
@@ -107,14 +108,18 @@ public class StudentViewController implements Initializable, ControlledScreen {
     private void handleSendFeedbackButton(ActionEvent event) throws SQLException{
         try{
             StudentController.insertFeedback((String) feedbackTypeComboBox.getValue(),feedbackTextArea.getText());
+            infoBox("Feedback inserido com sucesso.", "Info - Feedback");
         }catch (SQLException ex) {
             Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
+            infoBox("Erro ao inserir feedback no banco.", ERROR_TITLE_FEEDBACK);
         }catch (ParseException ex) {
             Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
         }catch (MissingFieldException ex) {
             Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
+            infoBox(ERROR_MISSING_FIELD, ERROR_TITLE_FEEDBACK);
         }catch (InvalidFieldException ex) {
             Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
+            infoBox(ex.getMessage(), ERROR_TITLE_FEEDBACK);
         }
     }
 }
