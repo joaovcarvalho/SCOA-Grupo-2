@@ -116,6 +116,38 @@ public class SubjectDAO extends DataAccessObject{
         return null;
     }
     
+    public static ArrayList<Subject> getSubjectByCourseId(int id) throws SQLException{
+        initConnection();
+        
+        Connection connection = getConnection();
+        String query = "SELECT * FROM subjects WHERE course_id = ?";
+        
+        PreparedStatement st = connection.prepareStatement(query);
+        st.setInt(1, id);
+        
+        ResultSet rs = st.executeQuery();
+        ArrayList<Subject> subjects = new ArrayList<>();
+        try{
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                Course course = CourseDAO.getCourseById( rs.getInt("course_id"));
+                String code = rs.getString("code");
+                String credits = rs.getString("credits");
+                 
+                Subject sub = new Subject(id, name, description, code, credits, -1);
+               
+                subjects.add( sub);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();
+        return subjects;
+    }
+    
      
      
      
