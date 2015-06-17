@@ -54,7 +54,32 @@ public class ProfessorDAO extends DataAccessObject{
         return profs;
     }
     
-    
+        public static void updateProfessor(Professor prof){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "UPDATE professors SET register = ?, room = ? , telephone = ?, lattes = ?,  name = ? WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, prof.getRegister());
+            statement.setString(2, prof.getRoom());
+            statement.setString(3, prof.getTelephone());
+            statement.setString(4, prof.getLattes());
+            statement.setString(5, prof.getName());
+            statement.setInt(6, prof.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+      
+    }
     
     public void insertProfessor(String cpf, String password, String register, String room, String telephone, String lattes, String name){
         

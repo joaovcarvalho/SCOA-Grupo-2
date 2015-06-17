@@ -9,11 +9,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Professor;
 import model.Secretary;
 import model.Student;
+import model.Type;
 import model.User;
 
 
@@ -43,6 +45,64 @@ public class UserDAO extends DataAccessObject {
         }
         closeConnection();
         
+    }
+    
+     public static void updateUser(User u){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "UPDATE users SET cpf = ?, password = ? WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, u.getCpf());
+            statement.setString(2, u.getPassword());
+            statement.setInt(3, u.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+      
+    }
+    
+    
+    public static User getUserByType(Type t){
+        initConnection();
+        
+        Connection connection = getConnection();
+        String query = "SELECT * FROM Users WHERE type_id = ? AND type = ?";
+        
+        try {
+            PreparedStatement st = connection.prepareStatement(query);
+            st.setInt(1, t.getId());
+            if(t instanceof Professor)
+               st.setString(2, "professor");
+            else if(t instanceof Student)
+                st.setString(2, "student");
+       
+        
+          ResultSet rs = st.executeQuery();
+        
+            if (rs.next()) {
+                String cpf = rs.getString("cpf");
+                String password = rs.getString("password");
+                User u = new User(t.getId(), cpf, password,t);
+               
+                return u;
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();     
+        return null;
     }
     
     public User getUserByCPFandPassword(String CPF, String password){
