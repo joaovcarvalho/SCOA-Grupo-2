@@ -33,6 +33,8 @@ public class SecretaryController {
     static SubjectDAO s = new SubjectDAO();
     static RoomDAO r = new RoomDAO();
     
+    /******************************INSERIR****************************************/
+
     public static void insertCourse(String name, String code, String description) throws MissingFieldException{
         
         if(     !Validator.validateRequired(name) || 
@@ -48,7 +50,8 @@ public class SecretaryController {
            // Validar os campos também, nesse if
           if(password.equals(confirm) && !cpf.isEmpty()&& !password.isEmpty()&& !confirm.isEmpty()&& !register.isEmpty()
                   && !room.isEmpty()&& !telephone.isEmpty()&& !lattes.isEmpty()&& !name.isEmpty()){
-             p.insertProfessor(cpf, password, register, room, telephone, lattes, name);
+            
+              p.insertProfessor(cpf, password, register, room, telephone, lattes, name);
             
              return 1;
           }else if(!password.equals(confirm)){
@@ -59,7 +62,51 @@ public class SecretaryController {
           }
     }
        
-     public static ArrayList<Professor>listProf() throws SQLException{
+    
+     public static void insertRoom(String number, String capacity) throws SQLException, MissingFieldException, InvalidFieldException{
+          if(   !Validator.validateRequired(number) || 
+                !Validator.validateRequired(capacity) )
+            throw new MissingFieldException();
+          
+            if(!Validator.validateRequired(capacity)|| !Validator.validateNumber(number))
+               throw new InvalidFieldException("Todos os campos devem ser preenchidos com números.");
+            
+        r.insertRoom(number, capacity);     
+     }
+     
+     public static void insertSubject(String code, String description, String name, String credits, String courseName) throws SQLException, MissingFieldException, InvalidFieldException{
+         if(     !Validator.validateRequired(code) || 
+                 !Validator.validateRequired(description) ||
+                 !Validator.validateRequired(name) ||
+                 !Validator.validateRequired(credits) ||
+                 !Validator.validateRequired(courseName))
+            throw new MissingFieldException();
+         
+         if (!Validator.validateRequired(credits)) {
+             throw new InvalidFieldException("Todos os campos devem ser preenchidos com números.");
+         }
+         
+         
+         
+         s.insertSubject(code, description, name, credits, courseName);
+     }
+     
+     
+     
+     /******************************LISTAR****************************************/
+     
+     public static ArrayList<Course>listCourses() throws SQLException{
+        return CourseDAO.selectAllCourses();
+    }
+     
+     public static ArrayList<Room>listRooms() throws SQLException{
+         return RoomDAO.listRooms();
+     }
+       
+     public static ArrayList<Subject>listSubjects() throws SQLException{
+         return SubjectDAO.listSubjects();
+     }
+      public static ArrayList<Professor>listProf() throws SQLException{
         return ProfessorDAO.listProfessors();
     }
      
@@ -77,26 +124,6 @@ public class SecretaryController {
      public static ArrayList<Room>listRoom() throws SQLException{
          return RoomDAO.listRooms();
      }
-     public static void insertRoom(String number, String capacity) throws SQLException{
-        r.insertRoom(number, capacity);     
-     }
-     
-     public static void insertSubject(String code, String description, String name, String credits, String courseName) throws SQLException{
-         s.insertSubject(code, description, name, credits, courseName);
-     }
-     
-     public static ArrayList<Course>listCourses() throws SQLException{
-        return CourseDAO.selectAllCourses();
-    }
-     
-     public static ArrayList<Room>listRooms() throws SQLException{
-         return RoomDAO.listRooms();
-     }
-       
-     public static ArrayList<Subject>listSubjects() throws SQLException{
-         return SubjectDAO.listSubjects();
-     }
-     
      
   }  
      

@@ -8,6 +8,7 @@ package view;
 import controller.SecretaryController;
 import dao.UserDAO;
 import controller.UserController;
+import dao.ProfessorDAO;
 import exceptions.InvalidFieldException;
 import exceptions.MissingFieldException;
 import java.net.URL;
@@ -90,6 +91,40 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     private TableView professorsTable;
     @FXML
     private TableColumn name;
+    @FXML 
+    private Pane inputProfessor;
+    @FXML
+    private TextField nameProfTA;
+    @FXML
+    private TextField regProfTA;
+    @FXML
+    private TextField cpfProfTA;
+    @FXML
+    private TextField telProfTA;
+    @FXML
+    private TextField lattesProfTA;
+    @FXML
+    private TextField roomProfTA;
+    Professor selectedProf;
+    
+    @FXML
+    public void handleEditProfButton(){
+        Professor prof = (Professor) professorsTable.getSelectionModel().getSelectedItem();
+        
+        hideAllPanes();
+        selectedProf = prof;
+        nameProfTA.setText(prof.getName());
+   
+        regProfTA.setText(prof.getName());
+        User u = UserDAO.getUserByType(prof);
+        cpfProfTA.setText(u.getCpf());
+        telProfTA.setText(prof.getTelephone());
+        lattesProfTA.setText(prof.getLattes());
+        roomProfTA.setText(prof.getRoom());
+        
+        EditProfessor.setVisible(true);
+        inputProfessor.setVisible(true);
+    } 
     
     @FXML
     public void showInsertProfessor(ActionEvent event) {
@@ -105,13 +140,9 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
        
         ArrayList<Professor> profs_list = SecretaryController.listProf();
         
-        
-        professorsTable.setEditable(false);
-        
-       //professorsTable.getColumns().setAll(profs);
         professorsTable.setEditable(true);
               
-        TableColumn nameCol = new TableColumn("Nome");
+       TableColumn nameCol = new TableColumn("Nome");
        nameCol.setCellValueFactory(
                         new PropertyValueFactory<Professor,String>("name")
         );
@@ -135,23 +166,52 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
                         new PropertyValueFactory<Professor,String>("room")
         );
                 
-      
-                
-                if(profs_list != null){
-                    ObservableList<Professor> profs = FXCollections.observableArrayList(profs_list);
-                    profs.addAll(profs_list);
 
-                    professorsTable.setItems(profs);
-                }
+        if(profs_list != null){
+            ObservableList<Professor> profs = FXCollections.observableArrayList(profs_list);
+            profs.addAll(profs_list);
+            professorsTable.getItems().clear();
+            professorsTable.setItems(profs);
+        }
 
-
-                professorsTable.getColumns().addAll(nameCol, telephoneCol, lattesCol, registerCol, roomCol);
+        
+        professorsTable.getColumns().addAll(nameCol, telephoneCol, lattesCol, registerCol, roomCol);
  
        // professorsTable.setItems(profs);
         //professorsTable.getItems().setAll(profs);
         ListProfessor.setVisible(true); 
         EditProfessor.setVisible(true); 
     }
+    
+    @FXML
+    private void handleUpdateProfButton(){
+         String name = ProfName.getText();
+         String cpf = ProfCPF.getText() ;
+         String reg = ProfReg.getText() ;
+         String password = ProfPassword.getText() ;
+         String tel = ProfTel.getText() ;
+         String lattes = ProfLattes.getText() ;
+         String room = ProfRoom.getText() ;
+         String confirm = ProfConfirm.getText() ;
+         
+         selectedProf.setName(name);
+         selectedProf.setLattes(lattes);
+         selectedProf.setRegister(reg);
+         selectedProf.setTelephone(tel);
+         selectedProf.setRoom(room);
+         
+         User u = UserDAO.getUserByType(selectedProf);
+        
+         u.setCpf(cpf);
+         if(!password.equals(confirm)){
+             infoBox("Senha e confirmação não batem.", "Editar Professor - Error");
+             return;
+         }
+         u.setPassword(password);
+         UserDAO.updateUser(u);
+         ProfessorDAO.updateProfessor(selectedProf);
+    }
+    
     
     @FXML
     private void handleInsertProfButton(ActionEvent event) throws SQLException{
@@ -173,7 +233,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          if(result == 1){
              statusSuccess.setVisible(true);
          }else if(result == 2){
-           statusEmpty.setVisible(true);
+             statusEmpty.setVisible(true);
          }else if(result ==3){
              statusPassword.setVisible(true); 
          }
@@ -303,8 +363,15 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          String credits = SubjectCredits.getText();
          String courseName = SubjectCourse.getSelectionModel().selectedItemProperty().getValue().toString();
          
-          
-         SecretaryController.insertSubject(code, description, name, credits, courseName);
+           
+        try{
+            SecretaryController.insertSubject(code, description, name, credits, courseName);
+        } catch (exceptions.MissingFieldException ex) {
+           infoBox("Todos os campos são de preechimento obrigatório.", "Erro de validação");
+        }catch(exceptions.InvalidFieldException ex){
+            infoBox(ex.getMessage(), "Erro de validação");
+        }
+         
     }
     
      @FXML
@@ -513,7 +580,17 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          String number = RoomNumber.getText();
          String capacity = RoomCapacity.getText();
           
-         SecretaryController.insertRoom(number, capacity);
+         
+        try{
+            SecretaryController.insertRoom(number, capacity);
+        } catch (exceptions.MissingFieldException ex) {
+           infoBox("Todos os campos são de preechimento obrigatório.insert", "Erro de validação");
+        }catch(exceptions.InvalidFieldException ex){
+            infoBox(ex.getMessage(), "Erro de validação");
+        }
+         
+         
+         
     }
     
     // ***************************** 
@@ -537,6 +614,9 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         ListSubject.setVisible(false);
         ListClass.setVisible(false);
         ListRoom.setVisible(false);
+        
+        
+        inputProfessor.setVisible(false);
     }
     
  
