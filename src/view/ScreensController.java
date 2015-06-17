@@ -99,6 +99,7 @@ public class ScreensController  extends StackPane {
                         new KeyFrame(new Duration(1000), new KeyValue(opacity, 1.0)));
                 fadeIn.play();
             }
+            
             return true;
         } else {
             System.out.println("screen hasn't been loaded!!! \n");

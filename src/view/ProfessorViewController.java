@@ -6,6 +6,7 @@
 package view;
 
 import controller.ProfessorController;
+import dao.AgendaDAO;
 import dao.ClassDAO;
 import dao.ExamDAO;
 import dao.RegistrationDAO;
@@ -24,16 +25,28 @@ import java.util.logging.Logger;
 import static javafx.collections.FXCollections.observableArrayList;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javax.swing.JOptionPane;
 import model.Class;
 import model.Exam;
@@ -70,6 +83,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         insertExamPane.setVisible(false);
         listExamsPane.setVisible(false);
         editExamPane.setVisible(false);
+        listAgendaPane.setVisible(false);
     }
     
     public static void infoBox(String infoMessage, String titleBar)
@@ -394,5 +408,110 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         }
     }
     
-    // *****************************  LISTAR DIÁRIOS DE CLASSE *****************************
+    // *****************************  LISTAR DIÁRIOS DE CLASSE *****************************    
+    @FXML
+    private Pane listAgendaPane;
+    
+    private ComboBox classesComboBox;
+    
+    private TableView agendaTable;
+    
+    private void makeTopPane(String title, Pane pane){
+        VBox innerPane = new VBox(8);
+        pane.getChildren().setAll(innerPane);
+        
+        innerPane.setPadding( new Insets(10));
+        
+        Label titleLabel = new Label();
+        titleLabel.setText(title);
+        titleLabel.setFont(Font.font("system", FontWeight.BOLD, 15));
+        innerPane.getChildren().add(titleLabel);
+    }
+    
+    private void addElementToPane(Pane pane, Node n){
+        VBox innerPane = (VBox) pane.getChildren().get(0);
+        innerPane.getChildren().add(n);
+    }
+    
+    private void createTableViewAgendas(Pane pane){
+        agendaTable = new TableView();
+        agendaTable.setMaxSize(200, 200);
+        
+        TableColumn idCol = new TableColumn("Id");
+
+        idCol.setCellValueFactory(
+                new PropertyValueFactory<>("id")
+        );
+        
+        TableColumn dateCol = new TableColumn("Data");
+
+        dateCol.setCellValueFactory(
+                new PropertyValueFactory<>("date")
+        );
+        
+        agendaTable.getColumns().addAll(idCol, dateCol);
+        
+        addElementToPane(pane, agendaTable);
+    }
+    
+    private void createClassesComboBox(Pane pane, ArrayList<Class> classes){
+        classesComboBox.getItems().clear();
+        classes.stream().forEach((next) -> {
+            classesComboBox.getItems().add(next.getSubject().getName());
+        });
+        
+        classesComboBox.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                selectedClass = null;
+                for (Class next : tmpListClasses) {
+                    if(next.getSubject().getName().equals( classesComboBox.getValue() )){
+                        selectedClass = next;
+                        break;
+                    }
+                }
+                try {
+                    agendaTable.getItems().addAll(AgendaDAO.getAgendasByClassId(selectedClass.getId()));
+                } catch (SQLException ex) {
+                    Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
+        tmpListClasses = classes;
+    }
+    
+    private void createActions(Pane pane){
+        HBox actions = new HBox(5);
+        Button editBtn = new Button("Editar");
+        actions.getChildren().add(editBtn);
+        Button deleteBtn = new Button("Excluir");
+        actions.getChildren().add(deleteBtn);
+        
+        addElementToPane(pane, actions);
+    }
+    
+    @FXML
+    public void handleListAgendaLink(ActionEvent event){
+        hideAllPanels();
+        makeTopPane("Listar Diários de Classe", listAgendaPane);
+        classesComboBox = new ComboBox();
+        Label classLabel = new Label("Turma: ");
+        addElementToPane(listAgendaPane, classLabel);
+        
+        try {
+            ArrayList<Class> classes = ClassDAO.getClassByProfessorId(myController.getUser().getType().getId());
+
+            createClassesComboBox(listAgendaPane, classes);
+            addElementToPane(listAgendaPane, classesComboBox);
+            createTableViewAgendas(listAgendaPane);
+
+            createActions(listAgendaPane);
+            listAgendaPane.setVisible(true);
+
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    } 
 }
