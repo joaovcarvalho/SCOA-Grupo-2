@@ -41,7 +41,10 @@ import model.Exam;
 import model.Registration;
 import model.Student;
 import controller.StudentController;
+import dao.CourseDAO;
+import dao.SubjectDAO;
 import exceptions.MissingFieldException;
+import model.Course;
 import static view.ProfessorViewController.infoBox;
 
 /**
@@ -52,8 +55,8 @@ public class StudentViewController implements Initializable, ControlledScreen {
     
     ScreensController myController;
     /**
-     * Initializes the controller class.
-     */
+     * Initializes the controller class. 
+    */
     
     private final String ERROR_TITLE_FEEDBACK = "Erro - Feedback";
     private final String ERROR_DATE_FORMAT = "Data em formato inválido. Por favor use dd/MM/yyyy. Ex: 30/11/2015";
@@ -72,6 +75,7 @@ public class StudentViewController implements Initializable, ControlledScreen {
     
     private void hideAllPanels(){
         insertFeedbackPane.setVisible(false);
+        signUpPane.setVisible(false);
 
     }
     
@@ -122,4 +126,85 @@ public class StudentViewController implements Initializable, ControlledScreen {
             infoBox(ex.getMessage(), ERROR_TITLE_FEEDBACK);
         }
     }
+    
+    
+    // *****************************  INSCREVER-SE NUMA TURMA ***************************** 
+    @FXML
+    private Pane signUpPane;
+    
+    @FXML
+    private Button signUpButton;
+    @FXML
+    private ComboBox classComboBox; 
+    @FXML
+    private ComboBox courseComboBox; 
+    @FXML
+    private ComboBox subjectComboBox; 
+    
+    private ArrayList<model.Course> tmpListCourses;
+    private ArrayList<model.Subject> tmpListSubjects;
+    
+    @FXML
+    private void  handleSignUpLink(ActionEvent event){
+        hideAllPanels();
+        signUpPane.setVisible(true);
+        populateCourseComboBox(courseComboBox);
+        
+        
+    }
+    
+    @FXML
+    private void  handleSignUpClassButton(ActionEvent event){
+        
+    }
+    
+    private void populateSubjectComboBoxByCourseId(ComboBox cb, int course_id){
+        ArrayList<model.Subject> subjects;
+        try {
+            subjects = SubjectDAO.getSubjectByCourseId(course_id);
+            
+            cb.getItems().clear();
+            subjects.stream().forEach((next) -> {
+                cb.getItems().add(next.getName());
+            });
+            tmpListSubjects = subjects;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    private void populateCourseComboBox(ComboBox cb){
+        ArrayList<model.Course> courses;
+        try {
+            courses = CourseDAO.selectAllCourses();
+            
+            cb.getItems().clear();
+            courses.stream().forEach((next) -> {
+                cb.getItems().add(next.getName());
+            });
+            
+            tmpListCourses = courses;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    @FXML
+    Course selectedCourse = null;
+    public void handleCourseSelected(ActionEvent event){
+        selectedCourse = null;
+        for (Course next : tmpListCourses) {
+            if(next.getName().equals( courseComboBox.getValue() )){
+                selectedCourse = next;
+                break;
+            }
+        }
+        
+        if(selectedCourse == null)
+           return;
+        
+        populateSubjectComboBoxByCourseId(subjectComboBox, selectedCourse.getId());
+    }
+    
 }

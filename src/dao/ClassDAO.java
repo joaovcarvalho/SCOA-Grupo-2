@@ -62,6 +62,7 @@ public class ClassDAO extends DataAccessObject {
     }
     
     
+    
      public static ArrayList<model.Class> listClasses() throws SQLException{ 
         initConnection();
         
