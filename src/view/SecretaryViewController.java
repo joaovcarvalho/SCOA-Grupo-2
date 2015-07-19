@@ -195,16 +195,22 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     }
     
     @FXML
+    public TextField ProfessorEditPassword;
+    
+    @FXML
+    public TextField ProfessorConfirmPasswordEdit;
+    
+    @FXML
     private void handleUpdateProfButton(){
         System.out.println("cliquei em salvar prof editado");
          String name = nameProfTA.getText();
          String cpf = cpfProfTA.getText() ;
          String reg = regProfTA.getText() ;
-         String password = ProfPassword.getText() ;
+         String password = ProfessorEditPassword.getText() ;
          String tel = telProfTA.getText() ;
          String lattes = lattesProfTA.getText() ;
          String room = roomProfTA.getText() ;
-         String confirm = ProfConfirm.getText() ;
+         String confirm = ProfessorConfirmPasswordEdit.getText() ;
          
          selectedProf.setName(name);
          selectedProf.setLattes(lattes);
@@ -532,8 +538,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          //course !! 
          selectedSubject.setCredits(credits);
          
-           
-    
          SubjectDAO.updateSubject(selectedSubject);
     }
     
