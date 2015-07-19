@@ -8,6 +8,7 @@ package view;
 import controller.SecretaryController;
 import dao.UserDAO;
 import controller.UserController;
+import dao.CourseDAO;
 import dao.ProfessorDAO;
 import exceptions.InvalidFieldException;
 import exceptions.MissingFieldException;
@@ -106,6 +107,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
     private TextField roomProfTA;
     Professor selectedProf;
+    Course selectedCourse;
     
     @FXML
     public void handleEditProfButton(){
@@ -185,14 +187,18 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
     @FXML
     private void handleUpdateProfButton(){
-         String name = ProfName.getText();
-         String cpf = ProfCPF.getText() ;
-         String reg = ProfReg.getText() ;
+        System.out.println("cliquei em salvar prof editado");
+         String name = nameProfTA.getText();
+         String cpf = cpfProfTA.getText() ;
+         String reg = regProfTA.getText() ;
          String password = ProfPassword.getText() ;
-         String tel = ProfTel.getText() ;
-         String lattes = ProfLattes.getText() ;
-         String room = ProfRoom.getText() ;
+         String tel = telProfTA.getText() ;
+         String lattes = lattesProfTA.getText() ;
+         String room = roomProfTA.getText() ;
          String confirm = ProfConfirm.getText() ;
+         
+         
+    
          
          selectedProf.setName(name);
          selectedProf.setLattes(lattes);
@@ -252,8 +258,16 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     private Pane EditCourse;
     @FXML
     private Pane ListCourse;
+    @FXML
+    private Pane inputCourse;
     @FXML 
     private TableView coursesTable;
+    @FXML
+    private TextField nameCourseTA;
+    @FXML
+    private TextField descriptionCourseTA;
+    @FXML
+    private TextField codeCourseTA;
     
     
     @FXML
@@ -301,6 +315,42 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         ListCourse.setVisible(true); 
         EditCourse.setVisible(true); 
     }
+    
+    
+     @FXML
+    public void handleEditCourseButton(){
+        Course course = (Course) coursesTable.getSelectionModel().getSelectedItem();
+        
+        hideAllPanes();
+        selectedCourse = course;
+        nameCourseTA.setText(course.getName());
+   
+        codeCourseTA.setText(course.getCode());
+        descriptionCourseTA.setText(course.getDescription());
+        
+        EditCourse.setVisible(true);
+        inputCourse.setVisible(true);
+    } 
+    
+     @FXML
+    private void handleUpdateCourseButton(){
+        System.out.println("cliquei em salvar curso editado");
+         String name = nameCourseTA.getText();
+         String code = codeCourseTA.getText() ;
+         String description = descriptionCourseTA.getText() ;
+        
+         selectedCourse.setName(name);
+         selectedCourse.setCode(code);
+         selectedCourse.setDescription(description);
+         
+           
+    
+         CourseDAO.updateCourse(selectedCourse);
+    }
+    
+    
+    
+    
     public static void infoBox(String infoMessage, String titleBar)
     {
         JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
@@ -617,6 +667,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         
         
         inputProfessor.setVisible(false);
+        inputCourse.setVisible(false);
     }
     
  
