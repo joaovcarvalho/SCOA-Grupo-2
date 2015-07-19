@@ -105,6 +105,30 @@ public class RoomDAO extends DataAccessObject{
         closeConnection();     
         return null;
     }
+     
+      public static void updateRoom(Room room){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "UPDATE rooms SET number  = ?, capacity = ? WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, room.getNumber());
+            statement.setString(2, room.getCapacity());
+            statement.setInt(3, room.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(RoomDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+      
+    }
     
     
     

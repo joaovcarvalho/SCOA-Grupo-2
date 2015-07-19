@@ -148,7 +148,32 @@ public class SubjectDAO extends DataAccessObject{
         return subjects;
     }
     
-     
+      public static void updateSubject(Subject subject){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "UPDATE subjects SET name  = ?, code = ?, description = ?, credits = ? WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, subject.getName());
+            statement.setString(2, subject.getCode());
+            statement.setString(3, subject.getDescription());
+            statement.setString(4, subject.getCredits());
+            //statement.setString(2, subject.getCourse());
+            statement.setInt(5, subject.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+      
+    }
      
      
     
