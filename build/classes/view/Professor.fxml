@@ -142,9 +142,15 @@
             <TextField id="dateTextField" fx:id="editGradeText" layoutX="12.0" layoutY="323.0" prefWidth="320.0" />
           </children>
         </Pane>
-        <Pane id="inserFrequenciaPane" fx:id="listAgendaPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="true">
+        <Pane id="inserFrequenciaPane" fx:id="listAgendaPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="false">
           <children>
             <Label font="$x3" layoutX="14.0" layoutY="14.0" text="Listar Diarios" />
+            <Label layoutX="14.0" layoutY="44.0" text="Turma:" />
+          </children>
+        </Pane>
+        <Pane id="inserFrequenciaPane" fx:id="formAgendaPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="false">
+          <children>
+            <Label font="$x3" layoutX="14.0" layoutY="14.0" text="Formulário Diário" />
             <Label layoutX="14.0" layoutY="44.0" text="Turma:" />
           </children>
         </Pane>

@@ -12,6 +12,7 @@ import dao.ExamDAO;
 import dao.RegistrationDAO;
 import dao.StudentDAO;
 import exceptions.InvalidFieldException;
+import exceptions.MissingFieldException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -30,7 +31,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -40,14 +40,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javax.swing.JOptionPane;
+import model.Agenda;
 import model.Class;
 import model.Exam;
 import model.Registration;
@@ -65,6 +64,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
      */
     
     private final String ERROR_TITLE_EXAM = "Erro - Avaliação";
+    private final String ERROR_TITLE_AGENDA = "Erro - Diário";
     private final String ERROR_DATE_FORMAT = "Data em formato inválido. Por favor use dd/MM/yyyy. Ex: 30/11/2015";
     private final String ERROR_MISSING_FIELD = "Por favor preencha todos os campos.";
     
@@ -84,6 +84,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         listExamsPane.setVisible(false);
         editExamPane.setVisible(false);
         listAgendaPane.setVisible(false);
+        formAgendaPane.setVisible(false);
     }
     
     public static void infoBox(String infoMessage, String titleBar)
@@ -321,6 +322,8 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         try {
             ProfessorController.editExam(selectedExam, editDescriptionText.getText(),editGradeText.getText(), editDateText.getText());
             handleListExamLink(event);
+            
+            infoBox("Avaliação alterada com sucesso.", "Avaliação");
         } catch (ParseException ex) {
             infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_EXAM);
         }
@@ -440,7 +443,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         TableColumn idCol = new TableColumn("Id");
 
         idCol.setCellValueFactory(
-                new PropertyValueFactory<>("id")
+                new PropertyValueFactory<Agenda,String>("id")
         );
         
         TableColumn dateCol = new TableColumn("Data");
@@ -449,7 +452,13 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
                 new PropertyValueFactory<>("date")
         );
         
-        agendaTable.getColumns().addAll(idCol, dateCol);
+        TableColumn descriptionCol = new TableColumn("Descrição");
+
+        descriptionCol.setCellValueFactory(
+                new PropertyValueFactory<>("description")
+        );
+        
+        agendaTable.getColumns().addAll(idCol, dateCol, descriptionCol);
         
         addElementToPane(pane, agendaTable);
     }
@@ -470,7 +479,9 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
                         break;
                     }
                 }
+                
                 try {
+                    agendaTable.getItems().clear();
                     agendaTable.getItems().addAll(AgendaDAO.getAgendasByClassId(selectedClass.getId()));
                 } catch (SQLException ex) {
                     Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -481,12 +492,108 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         tmpListClasses = classes;
     }
     
+
+    
     private void createActions(Pane pane){
         HBox actions = new HBox(5);
+        
         Button editBtn = new Button("Editar");
         actions.getChildren().add(editBtn);
+        
+        editBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                Agenda agenda = (Agenda) agendaTable.getSelectionModel().getSelectedItem();
+                selectedClass = null;
+                
+                for (Class next : tmpListClasses) {
+                    if(next.getSubject().getName().equals( classesComboBox.getValue() )){
+                        selectedClass = next;
+                        break;
+                    }
+                }
+                
+                createFormAgenda();
+                descriptionAgenda.setText(agenda.getDescription());
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");                
+                
+                dateAgenda.setText(formatter.format(agenda.getDate()) );
+                createConfirmButton(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                        Agenda agenda = (Agenda) agendaTable.getSelectionModel().getSelectedItem();
+                        try {
+                            ProfessorController.editAgenda(agenda, descriptionAgenda.getText(), dateAgenda.getText(), selectedClass);
+                            
+                            handleListAgendaLink(event);
+                            infoBox("Avaliação alterada com sucesso", "Avaliação");
+                        } catch (ParseException ex) {
+                            infoBox(ERROR_DATE_FORMAT,ERROR_TITLE_AGENDA);
+                        } catch (MissingFieldException ex) {
+                            infoBox(ERROR_MISSING_FIELD,ERROR_TITLE_AGENDA);
+                        }
+                        
+                    }
+                });
+            }
+        });
+        
         Button deleteBtn = new Button("Excluir");
         actions.getChildren().add(deleteBtn);
+        
+        deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                Agenda agenda = (Agenda) agendaTable.getSelectionModel().getSelectedItem();
+                ProfessorController.deleteAgenda(agenda);
+                
+                handleListAgendaLink(event);
+                infoBox("Avaliação excluída com sucesso", "Avaliação");
+            }
+        });
+        
+        Button insertBtn = new Button("Inserir");
+        actions.getChildren().add(insertBtn);
+        
+        insertBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                selectedClass = null;
+                for (Class next : tmpListClasses) {
+                    if(next.getSubject().getName().equals( classesComboBox.getValue() )){
+                        selectedClass = next;
+                        break;
+                    }
+                }
+                
+                createFormAgenda();
+                createConfirmButton(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                        try {
+                            ProfessorController.insertAgenda(selectedClass, dateAgenda.getText(), descriptionAgenda.getText());
+
+                            infoBox("Diário Inserido com sucesso", "Info - Diário");
+                            handleListAgendaLink(event);
+
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ParseException ex) {
+                            infoBox(ex.getMessage(),ERROR_TITLE_AGENDA);
+                        } catch (MissingFieldException ex) {
+                            infoBox( ex.getMessage(), ERROR_TITLE_AGENDA);
+                        } catch (InvalidFieldException ex) {
+                            infoBox(ex.getMessage(),ERROR_TITLE_AGENDA);
+                        }
+                    }
+                });
+            }
+        });
         
         addElementToPane(pane, actions);
     }
@@ -501,7 +608,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         
         try {
             ArrayList<Class> classes = ClassDAO.getClassByProfessorId(myController.getUser().getType().getId());
-
+            
             createClassesComboBox(listAgendaPane, classes);
             addElementToPane(listAgendaPane, classesComboBox);
             createTableViewAgendas(listAgendaPane);
@@ -514,4 +621,44 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
             Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
+    
+    // *****************************  INSERIR DIARIO DE CLASSE *****************************    
+    @FXML
+    public Pane formAgendaPane;
+    
+    public TextField descriptionAgenda;
+    public TextField dateAgenda;
+    
+    public void createFormAgenda(){
+        hideAllPanels();
+        formAgendaPane.setVisible(true);
+        
+        makeTopPane("Formulário Diário", formAgendaPane);
+        
+        Label classLabel = new Label("Turma: "+selectedClass.getSubject().getName());
+        addElementToPane(formAgendaPane, classLabel);
+        descriptionAgenda = createFormInput("Descrição: ");
+        
+        dateAgenda = createFormInput("Data: ");
+        
+
+    }
+    
+    private void createConfirmButton(EventHandler<ActionEvent> handler){
+        Button confirmBtn = new Button("Confirmar");
+        addElementToPane(formAgendaPane, confirmBtn);
+        
+        confirmBtn.setOnAction(handler);
+    }
+    
+    
+    private TextField createFormInput(String name){
+        Label l = new Label(name);
+        addElementToPane(formAgendaPane, l);
+        
+        TextField tf = new TextField();
+        addElementToPane(formAgendaPane, tf);
+        return tf;
+    }
+    
 }

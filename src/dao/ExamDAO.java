@@ -83,7 +83,6 @@ public class ExamDAO extends DataAccessObject {
         }
         
         closeConnection();
-      
     }
     
     public static void editExam(Exam exam){
