@@ -25,6 +25,14 @@ public class Agenda {
         this.myClass = myClass;
     }
 
+    public Agenda(String description, Date date, Class myClass) {
+        this.description = description;
+        this.date = date;
+        this.myClass = myClass;
+    }
+    
+    
+
     public int getId() {
         return id;
     }

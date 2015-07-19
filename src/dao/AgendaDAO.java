@@ -13,10 +13,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Agenda;
+import model.Exam;
 import model.Professor;
 import model.Room;
 import model.Subject;
@@ -42,7 +44,7 @@ public class AgendaDAO extends DataAccessObject{
                 int id_agenda = rs.getInt("id");
                 String description = rs.getString("description");
                 model.Class myClass = ClassDAO.getClassById(rs.getInt("id_class"));
-                Agenda a = new Agenda(id, description, date, myClass);
+                Agenda a = new Agenda(id_agenda, description, date, myClass);
  
                 agendas.add(a);
             }
@@ -53,5 +55,74 @@ public class AgendaDAO extends DataAccessObject{
         }
         closeConnection();     
         return agendas;
+    }
+    
+    public static void deleteAgenda(Agenda agenda){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "DELETE FROM agendas WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, agenda.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+    }
+    
+    public static void insertAgenda(Agenda agenda){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "INSERT INTO agendas (description, date, id_class) VALUES (?, ?, ?)";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, agenda.getDescription());
+            statement.setDate(2, agenda.getDate());
+            statement.setInt(3, agenda.getMyClass().getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+    }
+    
+    public static void editAgenda(Agenda agenda){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "UPDATE agendas SET description = ? , date = ?, id_class = ? WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, agenda.getDescription());
+            statement.setDate(2, agenda.getDate());
+            statement.setInt(3, agenda.getMyClass().getId());
+            statement.setInt(4, agenda.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+      
     }
 }

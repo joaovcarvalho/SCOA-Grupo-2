@@ -33,10 +33,10 @@ public class ClassDAO extends DataAccessObject {
         initConnection();
         
         Connection connection = getConnection();
-        String query = "SELECT * FROM classes LEFT JOIN professors ON professors.id = classes.id_professor"
+        String query = "SELECT * FROM classes JOIN professors ON professors.id = classes.id_professor"
                 + " WHERE professors.id = ?";
         
-        PreparedStatement st = connection.prepareStatement(query);
+        PreparedStatement st = connection.prepareStatement(query) ;
         st.setInt(1, id);
         ResultSet rs = st.executeQuery();
         ArrayList<Class> classes = new ArrayList<>();

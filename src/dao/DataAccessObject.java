@@ -5,11 +5,8 @@
  */
 package dao;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 /**
  *
  * @author JoãoVitor
@@ -31,7 +28,7 @@ public class DataAccessObject {
             String db_name = "scoa";       //Nome do seu banco de dados, schema
             String url = "jdbc:mysql://" + server + ":" + port + "/" + db_name;
             String user = "root";        //Nome do usuário de seu BD
-            String password = "";      //Senha do usuario
+            String password = "1234";      //Senha do usuario
             connection = DriverManager.getConnection(url, user, password);
 
             //Teste de conexão  
@@ -72,18 +69,6 @@ public class DataAccessObject {
             return false;
         }
     }
-    
-    //Exemplo de consulta ao banco, deve ser utilizada de base para fazer
-    //todas as operacoes necessarias para o CRUD e depois removida daqui.
-    //Exemplo de codigo para consulta:
-    //ConexaoDB.iniciaConexao();
-    //if(ConexaoDB.getConexao()){
-    //  ConexaoDB.listaUsuarios;
-    //  ConexaoDB.fechaConexao();
-    //}
-    //else{
-    //  System.out.println("Nao existe conexao ativa com o banco!");
-    //}
     
     public static Connection getConnection(){
         return connection;

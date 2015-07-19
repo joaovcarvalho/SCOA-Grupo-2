@@ -125,7 +125,7 @@ public class ProfessorDAO extends DataAccessObject{
         initConnection();
         
         Connection connection = getConnection();
-        String query = "SELECT * FROM Professors WHERE id = ? ";
+        String query = "SELECT * FROM professors WHERE id = ? ";
         
         PreparedStatement st = connection.prepareStatement(query);
         st.setInt(1, id);
