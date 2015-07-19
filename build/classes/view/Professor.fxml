@@ -17,12 +17,11 @@
     </Label>
     <Accordion layoutX="22.0" layoutY="73.0" minWidth="173.0" prefHeight="391.0" prefWidth="278.0">
       <expandedPane>
-        <TitledPane fx:id="x4" animated="false" prefWidth="249.0" text="Gerenciar Avaliações">
+        <TitledPane fx:id="x1" animated="false" prefWidth="278.0" text="Gerenciar Diario de Classe">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Hyperlink id="inserirAvaliacaoLink" layoutX="13.0" layoutY="13.0" onAction="#handleInsertExamLink" text="Inserir" />
-                <Hyperlink id="inserirAvaliacaoLink" layoutX="14.0" layoutY="50.0" onAction="#handleListExamLink" text="Listar" />
+                <Hyperlink id="inserirPautaLink" layoutX="10.0" layoutY="14.0" onAction="#handleListAgendaLink" text="Listar" />
               </children>
             </AnchorPane>
           </content>
@@ -32,16 +31,17 @@
         </TitledPane>
       </expandedPane>
       <panes>
-        <TitledPane fx:id="x1" animated="false" font="$x2" prefWidth="278.0" text="Gerenciar Diario de Classe">
+        <fx:reference source="x1" />
+        <TitledPane fx:id="x4" animated="false" font="$x2" prefWidth="249.0" text="Gerenciar Avaliações">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Hyperlink fx:id="inserirPautaLink" layoutX="10.0" layoutY="13.0" text="Inserir" />
+                <Hyperlink id="inserirAvaliacaoLink" layoutX="13.0" layoutY="13.0" onAction="#handleInsertExamLink" text="Inserir" />
+                <Hyperlink id="inserirAvaliacaoLink" layoutX="14.0" layoutY="50.0" onAction="#handleListExamLink" text="Listar" />
               </children>
             </AnchorPane>
           </content>
         </TitledPane>
-        <fx:reference source="x4" />
       </panes>
     </Accordion>
     <StackPane layoutX="308.0" layoutY="73.0" prefHeight="389.0" prefWidth="348.0">
@@ -110,7 +110,7 @@
             <Button fx:id="editBtn" layoutX="208.0" layoutY="365.0" mnemonicParsing="false" onAction="#handleEditBtn" text="Editar" />
           </children>
         </Pane>
-        <Pane id="inserFrequenciaPane" fx:id="editExamPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="true">
+        <Pane id="inserFrequenciaPane" fx:id="editExamPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="false">
           <children>
             <Label font="$x3" layoutX="14.0" layoutY="14.0" text="Editar Avaliação" />
             <ComboBox id="insertClassComboBox" fx:id="editClassesComboBox" layoutX="13.0" layoutY="60.0" onAction="#handleClassSelectedEdit" prefHeight="21.0" prefWidth="321.0">
@@ -140,6 +140,12 @@
             <TextArea id="descriptionTextArea" fx:id="editDescriptionText" layoutX="12.0" layoutY="184.0" prefHeight="53.0" prefWidth="321.0" wrapText="true" />
             <Label layoutX="13.0" layoutY="307.0" text="Nota:" />
             <TextField id="dateTextField" fx:id="editGradeText" layoutX="12.0" layoutY="323.0" prefWidth="320.0" />
+          </children>
+        </Pane>
+        <Pane id="inserFrequenciaPane" fx:id="listAgendaPane" disable="false" prefHeight="200.0" prefWidth="200.0" visible="true">
+          <children>
+            <Label font="$x3" layoutX="14.0" layoutY="14.0" text="Listar Diarios" />
+            <Label layoutX="14.0" layoutY="44.0" text="Turma:" />
           </children>
         </Pane>
       </children>

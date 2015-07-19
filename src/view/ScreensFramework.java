@@ -42,7 +42,12 @@ public class ScreensFramework extends Application {
         root.getChildren().addAll(mainContainer);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        
+        primaryStage.setMinHeight(550);
+        primaryStage.setMinWidth(750);
         primaryStage.show();
+        
+        
     }
 
     public static void main(String[] args) {
