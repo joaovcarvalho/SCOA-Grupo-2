@@ -110,6 +110,32 @@ public class CourseDAO extends DataAccessObject{
        
    }
    
+   public static void updateCourse(Course course){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "UPDATE courses SET name = ?, code = ? , description = ? WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, course.getName());
+            statement.setString(2, course.getCode());
+            statement.setString(3, course.getDescription());
+            statement.setInt(4, course.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+      
+    }
+   
+   
    public static Course getCourseById(int id) throws SQLException{
        
        initConnection();
