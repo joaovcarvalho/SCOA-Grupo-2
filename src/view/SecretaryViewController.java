@@ -10,6 +10,8 @@ import dao.UserDAO;
 import controller.UserController;
 import dao.CourseDAO;
 import dao.ProfessorDAO;
+import dao.RoomDAO;
+import dao.SubjectDAO;
 import exceptions.InvalidFieldException;
 import exceptions.MissingFieldException;
 import java.net.URL;
@@ -37,6 +39,7 @@ import javax.swing.JOptionPane;
 import model.Course;
 import model.Professor;
 import model.Room;
+import model.Student;
 import model.Subject;
 import model.User;
 /**
@@ -106,8 +109,14 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     private TextField lattesProfTA;
     @FXML
     private TextField roomProfTA;
+    
+    
     Professor selectedProf;
     Course selectedCourse;
+    Room selectedRoom;
+    Subject selectedSubject;
+    Student selectedStudent;
+    Class selectedClass;
     
     @FXML
     public void handleEditProfButton(){
@@ -387,6 +396,20 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
      private Pane EditSubject;
     @FXML
      private Pane ListSubject;
+    @FXML
+     private Pane inputSubject;
+    @FXML
+     private TextField descriptionSubjectTA;
+    @FXML
+     private TextField nameSubjectTA;
+    @FXML
+     private TextField codeSubjectTA;
+    @FXML
+     private TextField creditsSubjectTA;
+   
+    
+ 
+
     
     
     @FXML
@@ -470,6 +493,48 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         //professorsTable.getItems().setAll(profs);
         ListSubject.setVisible(true); 
         EditSubject.setVisible(true); 
+    }
+    
+     @FXML
+    public void handleEditSubjectButton(){
+        System.out.println("editar materia");
+        Subject subject = (Subject) subjectTable.getSelectionModel().getSelectedItem();
+        
+        hideAllPanes();
+        selectedSubject = subject;
+        
+        
+        descriptionSubjectTA.setText(subject.getDescription());
+        nameSubjectTA.setText(subject.getName());   
+        codeSubjectTA.setText(subject.getCode());   
+        creditsSubjectTA.setText(subject.getCredits());
+        
+        
+       // courseSubjectComboBox
+        
+        
+        EditSubject.setVisible(true);
+        inputSubject.setVisible(true); 
+    } 
+    
+     @FXML
+    private void handleUpdateSubjectButton(){
+        System.out.println("cliquei em salvar disciplina editada");
+        
+         String name = nameSubjectTA.getText();
+         String code = codeSubjectTA.getText() ;
+         String description = descriptionSubjectTA.getText() ;
+         String credits = creditsSubjectTA.getText() ;
+        
+         selectedSubject.setName(name);
+         selectedSubject.setCode(code);
+         selectedSubject.setDescription(description);
+         //course !! 
+         selectedSubject.setCredits(credits);
+         
+           
+    
+         SubjectDAO.updateSubject(selectedSubject);
     }
     
     // ***************************** TURMAS *****************************
@@ -581,8 +646,17 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     private Pane EditRoom;
     @FXML
     private Pane ListRoom;
+     @FXML
+    private Pane inputRoom;
     @FXML
     private TableView roomTable;
+    @FXML
+    private TextField numberRoomTA;
+    @FXML
+    private TextField capacityRoomTA;
+    
+    
+    
     
      @FXML
     public void showEditRoom(ActionEvent event) throws SQLException {
@@ -642,6 +716,35 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          
     }
     
+     @FXML
+    public void handleEditRoomButton(){
+        Room room = (Room) roomTable.getSelectionModel().getSelectedItem();
+        
+        hideAllPanes();
+        selectedRoom = room;
+        numberRoomTA.setText(room.getNumber());
+   
+        capacityRoomTA.setText(room.getCapacity());
+        
+        EditRoom.setVisible(true);
+        inputRoom.setVisible(true);
+    } 
+    
+     @FXML
+    private void handleUpdateRoomButton(){
+        System.out.println("cliquei em salvar sala editada");
+        
+         String number = numberRoomTA.getText();
+         String capacity = capacityRoomTA.getText() ;
+        
+         selectedRoom.setNumber(number);
+         selectedRoom.setCapacity(capacity);
+         
+           
+    
+         RoomDAO.updateRoom(selectedRoom);
+    }
+    
     // ***************************** 
     
     public void hideAllPanes() {
@@ -667,6 +770,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         
         inputProfessor.setVisible(false);
         inputCourse.setVisible(false);
+        inputRoom.setVisible(false);
+        inputSubject.setVisible(false);
     }
     
  
