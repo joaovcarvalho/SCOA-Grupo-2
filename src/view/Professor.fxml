@@ -21,8 +21,7 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Hyperlink fx:id="inserirPautaLink" layoutX="10.0" layoutY="13.0" text="Inserir" />
-                <Hyperlink id="inserirPautaLink" layoutX="10.0" layoutY="37.0" onAction="#handleListAgendaLink" text="Listar" />
+                <Hyperlink id="inserirPautaLink" layoutX="10.0" layoutY="14.0" onAction="#handleListAgendaLink" text="Listar" />
               </children>
             </AnchorPane>
           </content>

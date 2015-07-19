@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 14-Jun-2015 às 18:04
+-- Generation Time: 17-Jun-2015 às 02:51
 -- Versão do servidor: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -29,8 +29,16 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `agendas` (
   `id` int(11) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `id_class` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id_class` int(11) NOT NULL,
+  `date` date NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `agendas`
+--
+
+INSERT INTO `agendas` (`id`, `description`, `id_class`, `date`) VALUES
+(1, 'description', 1, '2015-06-16');
 
 -- --------------------------------------------------------
 
@@ -96,7 +104,14 @@ CREATE TABLE IF NOT EXISTS `exams` (
   `description` varchar(255) NOT NULL,
   `delivery_date` date NOT NULL,
   `id_registration` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `exams`
+--
+
+INSERT INTO `exams` (`id`, `grade`, `description`, `delivery_date`, `id_registration`) VALUES
+(6, '10', 'P3', '1993-11-30', 1);
 
 -- --------------------------------------------------------
 
@@ -108,7 +123,15 @@ CREATE TABLE IF NOT EXISTS `feedbacks` (
   `id` int(11) NOT NULL,
   `description` varchar(255) NOT NULL,
   `type` enum('suggestion','complaint','','') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `feedbacks`
+--
+
+INSERT INTO `feedbacks` (`id`, `description`, `type`) VALUES
+(1, 'dsadsadsa', 'suggestion'),
+(2, 'dsadsadsa', 'complaint');
 
 -- --------------------------------------------------------
 
@@ -119,8 +142,16 @@ CREATE TABLE IF NOT EXISTS `feedbacks` (
 CREATE TABLE IF NOT EXISTS `presences` (
   `id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `id_registration` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id_registration` int(11) NOT NULL,
+  `id_class` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `presences`
+--
+
+INSERT INTO `presences` (`id`, `date`, `id_registration`, `id_class`) VALUES
+(1, '2015-06-16', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -259,14 +290,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) NOT NULL,
   `type` enum('secretary','professor','student','') NOT NULL,
   `type_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `users`
 --
 
 INSERT INTO `users` (`id`, `cpf`, `password`, `type`, `type_id`) VALUES
-(26, '1234', '1234', 'professor', 1);
+(26, '1234', '1234', 'professor', 1),
+(27, '4321', '1234', 'secretary', 1),
+(28, '3214', '1234', 'student', 1);
 
 --
 -- Indexes for dumped tables
@@ -364,7 +397,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `agendas`
 --
 ALTER TABLE `agendas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `classes`
 --
@@ -379,17 +412,17 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `exams`
 --
 ALTER TABLE `exams`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `feedbacks`
 --
 ALTER TABLE `feedbacks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `presences`
 --
 ALTER TABLE `presences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `professors`
 --
@@ -424,7 +457,7 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
