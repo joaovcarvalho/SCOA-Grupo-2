@@ -62,7 +62,7 @@ public class UserDAO extends DataAccessObject {
             closeConnection();
         }
             
-         catch (SQLException ex) {
+        catch (SQLException ex) {
             Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
           
         }
@@ -76,7 +76,7 @@ public class UserDAO extends DataAccessObject {
         initConnection();
         
         Connection connection = getConnection();
-        String query = "SELECT * FROM Users WHERE type_id = ? AND type = ?";
+        String query = "SELECT * FROM users WHERE type_id = ? AND type = ?";
         
         try {
             PreparedStatement st = connection.prepareStatement(query);
@@ -92,7 +92,8 @@ public class UserDAO extends DataAccessObject {
             if (rs.next()) {
                 String cpf = rs.getString("cpf");
                 String password = rs.getString("password");
-                User u = new User(t.getId(), cpf, password,t);
+                int id = rs.getInt("id");
+                User u = new User(id, cpf, password,t);
                
                 return u;
             }

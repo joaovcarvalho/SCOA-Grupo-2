@@ -326,6 +326,10 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
             infoBox("Avaliação alterada com sucesso.", "Avaliação");
         } catch (ParseException ex) {
             infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_EXAM);
+        } catch (MissingFieldException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidFieldException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
