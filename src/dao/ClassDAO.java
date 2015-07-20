@@ -123,6 +123,34 @@ public class ClassDAO extends DataAccessObject {
         closeConnection();     
         return classes;
     }
+     
+       public static void insertClass(int profId, int roomId, int subjectId, String semester) throws SQLException{
+        initConnection();
+        Connection connection = getConnection();
+        
+        
+        String query = "INSERT INTO classes (id_professor, id_room, id_subject, semester) VALUES (?,?,?,?)";
+        
+        
+        
+         try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, profId);
+            statement.setInt(2, roomId);
+            statement.setInt(3, subjectId);
+            statement.setString(4, semester);
+            statement.execute();
+           
+            closeConnection();
+            
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        closeConnection();  
+     }
     
     
 }
