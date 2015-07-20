@@ -178,4 +178,27 @@ public class ClassDAO extends DataAccessObject {
         closeConnection();
       
     }
+    
+     public static void deleteClass(Class c) {
+        initConnection();
+        Connection connection = getConnection();
+        String query = "DELETE FROM classes WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, c.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+    }
+    
+    
 }

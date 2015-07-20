@@ -150,5 +150,30 @@ public class ProfessorDAO extends DataAccessObject{
         closeConnection();     
         return null;
     }
+    
+    
+    
+     public static void deleteProfessor(Professor professor) {
+        initConnection();
+        Connection connection = getConnection();
+        String query = "DELETE FROM professors WHERE id = ?";
+        User u = UserDAO.getUserByType(professor);
+        UserDAO.deleteUser(u);
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, professor.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+    }
 }
 

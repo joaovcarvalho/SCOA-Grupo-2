@@ -213,7 +213,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
     @FXML
     private void handleUpdateProfButton(){
-        System.out.println("cliquei em salvar prof editado");
          String name = nameProfTA.getText();
          String cpf = cpfProfTA.getText() ;
          String reg = regProfTA.getText() ;
@@ -358,7 +357,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
      @FXML
     private void handleUpdateCourseButton(){
-        System.out.println("cliquei em salvar curso editado");
          String name = nameCourseTA.getText();
          String code = codeCourseTA.getText() ;
          String description = descriptionCourseTA.getText() ;
@@ -381,7 +379,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     }
      @FXML
     private void handleInsertCourseButton(ActionEvent event) throws SQLException{
-        System.out.println("cliquei em inserir curso");
+       
         
         String description = CourseDescription.getText() ;
         String name = CourseName.getText() ;
@@ -564,7 +562,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
      @FXML
     private void handleUpdateSubjectButton(){
-        System.out.println("cliquei em salvar disciplina editada");
         
          String name = nameSubjectTA.getText();
          String code = codeSubjectTA.getText() ;
@@ -587,6 +584,16 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          selectedSubject.setCredits(credits);
          
          SubjectDAO.updateSubject(selectedSubject);
+    }
+    
+    @FXML
+    public void handleDeleteSubjectButton(ActionEvent event) throws SQLException{
+        Subject subject = (Subject) subjectTable.getSelectionModel().getSelectedItem();
+        SubjectDAO.deleteSubject(subject);
+        showEditSubject(event);
+        infoBox("Disciplina deletada com sucesso", "Disciplina");
+     
+        
     }
     
     // ***************************** TURMAS *****************************
@@ -815,12 +822,11 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
      @FXML
     private void handleUpdateClassButton(){
-        System.out.println("cliquei em salvar sala editada");
       
-         String semester = semesterClassTA.getText() ;
+       
          
-        
-        // selectedClass.setSemester((int) semester);
+        int semester = Integer.parseInt(semesterClassTA.getText());
+        selectedClass.setSemester(semester);
          
     
         for (Professor next : tmpListProfs) {
@@ -845,7 +851,15 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          ClassDAO.updateClass(selectedClass);
     }
    
-    
+     @FXML
+    public void handleDeleteClassButton(ActionEvent event) throws SQLException{
+        Class c = (Class) classTable.getSelectionModel().getSelectedItem();
+        ClassDAO.deleteClass(c);
+        showEditSubject(event);
+        infoBox("Turma deletada com sucesso", "Turma");
+     
+        
+    }
     
     //***************************** SALAS *****************************
     @FXML
@@ -941,7 +955,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
      @FXML
     private void handleUpdateRoomButton(){
-        System.out.println("cliquei em salvar sala editada");
         
          String number = numberRoomTA.getText();
          String capacity = capacityRoomTA.getText() ;

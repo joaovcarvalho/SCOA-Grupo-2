@@ -193,6 +193,25 @@ public class UserDAO extends DataAccessObject {
         return null;
     }
     
-    
+     public static void deleteUser(User user) {
+        initConnection();
+        Connection connection = getConnection();
+        String query = "DELETE FROM users WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, user.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+    }
     
 }

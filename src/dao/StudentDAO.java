@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -94,5 +95,28 @@ public class StudentDAO extends DataAccessObject {
         }
         closeConnection();     
         return students;
+    }
+    
+     public static void deleteStudent(Student student) {
+        initConnection();
+        Connection connection = getConnection();
+        String query = "DELETE FROM students WHERE id = ?";
+        User s = UserDAO.getUserByType(student);
+        UserDAO.deleteUser(s);
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, student.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
     }
 }
