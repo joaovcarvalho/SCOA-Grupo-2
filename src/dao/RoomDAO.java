@@ -53,7 +53,7 @@ public class RoomDAO extends DataAccessObject{
      public static ArrayList<Room> listRooms() throws SQLException{ //throws SQLException {
         initConnection();
         Connection connection = getConnection();
-        String query = "SELECT * FROM Rooms";
+        String query = "SELECT * FROM rooms";
         Statement st = connection.prepareStatement(query);
         ResultSet rs = st.executeQuery(query);
         ArrayList<Room> rooms = new ArrayList<>();

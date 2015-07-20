@@ -12,6 +12,7 @@ import dao.ClassDAO;
 import dao.CourseDAO;
 import dao.ProfessorDAO;
 import dao.RoomDAO;
+import dao.StudentDAO;
 import dao.SubjectDAO;
 import exceptions.InvalidFieldException;
 import exceptions.MissingFieldException;
@@ -24,8 +25,12 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -35,7 +40,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javax.swing.JOptionPane;
 import model.Course;
 import model.Professor;
@@ -734,10 +743,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
     private TextField capacityRoomTA;
     
-    
-    
-    
-     @FXML
+    @FXML
     public void showEditRoom(ActionEvent event) throws SQLException {
         hideAllPanes();
         roomTable.getColumns().clear();
@@ -824,6 +830,111 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          RoomDAO.updateRoom(selectedRoom);
     }
     
+    //***************************** ALUNOS *****************************
+    @FXML public Pane StudentPane;
+    
+    @FXML public TableView studentsTable;
+    
+    @FXML public AnchorPane alunoEditPane;
+    
+    @FXML public TextField register;
+    
+    @FXML public TextField telephone;
+    
+    @FXML public TextField address;
+    
+    @FXML public TextField email;
+    
+    @FXML public TextField birth_date;
+
+    @FXML public TextField semester;
+    
+    @FXML public AnchorPane studentsTablePane;
+    
+    
+    private void makeTopPane(String title, Pane pane){
+        VBox innerPane = new VBox(8);
+        pane.getChildren().setAll(innerPane);
+        
+        innerPane.setPadding( new Insets(10));
+        
+        Label titleLabel = new Label();
+        titleLabel.setText(title);
+        titleLabel.setFont(Font.font("system", FontWeight.BOLD, 15));
+        innerPane.getChildren().add(titleLabel);
+    }
+    
+    private void addElementToPane(Pane pane, Node n){
+        VBox innerPane = (VBox) pane.getChildren().get(0);
+        innerPane.getChildren().add(n);
+    }
+    
+    public void createFormAluno(){
+        makeTopPane("Formulário Aluno", alunoEditPane);
+        
+        register = createFormInput("Registro: ", alunoEditPane);
+        telephone = createFormInput("Telefone: ", alunoEditPane);
+        address = createFormInput("Endereço: ", alunoEditPane);
+        email = createFormInput("Email: ", alunoEditPane);
+        birth_date = createFormInput("Data de Nascimento: ", alunoEditPane);
+        semester = createFormInput("Semestre: ", alunoEditPane);
+    }
+    
+    private void createConfirmButton(EventHandler<ActionEvent> handler, Pane pane){
+        Button confirmBtn = new Button("Confirmar");
+        addElementToPane(pane, confirmBtn);
+        
+        confirmBtn.setOnAction(handler);
+    }
+    
+    
+    private TextField createFormInput(String name, Pane pane){
+        Label l = new Label(name);
+        addElementToPane(pane, l);
+        
+        TextField tf = new TextField();
+        addElementToPane(pane, tf);
+        return tf;
+    }
+    
+    private void createTableViewStudents(Pane pane){
+        studentsTable = new TableView();
+        
+        TableColumn idCol = new TableColumn("Id");
+
+        idCol.setCellValueFactory(
+                new PropertyValueFactory<>("id")
+        );
+        
+        TableColumn registerCol = new TableColumn("Registro");
+
+        registerCol.setCellValueFactory(
+                new PropertyValueFactory<>("register")
+        );
+        
+        TableColumn emailCol = new TableColumn("Email");
+
+        emailCol.setCellValueFactory(
+                new PropertyValueFactory<>("email")
+        );
+        
+        studentsTable.getColumns().addAll(idCol, registerCol , emailCol);
+        try {
+            studentsTable.getItems().addAll(StudentDAO.all());
+        } catch (SQLException ex) {
+            Logger.getLogger(SecretaryViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        pane.getChildren().add(studentsTable);
+    }
+    
+    @FXML public void handleListStudents(ActionEvent event){
+        StudentPane.setVisible(true);
+        createTableViewStudents(studentsTablePane);
+        createFormAluno();
+    }
+    
+    
     // ***************************** 
     
     public void hideAllPanes() {
@@ -846,16 +957,15 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         ListClass.setVisible(false);
         ListRoom.setVisible(false);
         
-        
         inputProfessor.setVisible(false);
         inputCourse.setVisible(false);
         inputRoom.setVisible(false);
         inputSubject.setVisible(false);
+        StudentPane.setVisible(false);
     }
     
- 
     
-    }
+ }
 
    
 
