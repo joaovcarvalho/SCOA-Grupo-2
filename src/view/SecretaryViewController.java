@@ -501,6 +501,27 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         EditSubject.setVisible(true); 
     }
     
+    private ArrayList<Course> tmpListCourses; 
+    
+    private void populateCoursesComboBox(ComboBox cb){
+        try {
+            ArrayList<Course> courses = CourseDAO.listCourses();
+            cb.getItems().clear();
+            
+            for(Course course : courses){
+                cb.getItems().add(course.getName());
+            }
+
+            tmpListCourses = courses;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @FXML
+    ComboBox courseSubjectComboBox;
+    
      @FXML
     public void handleEditSubjectButton(){
         System.out.println("editar materia");
@@ -515,7 +536,10 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         codeSubjectTA.setText(subject.getCode());   
         creditsSubjectTA.setText(subject.getCredits());
         
-        
+ 
+        populateCoursesComboBox(courseSubjectComboBox);
+            
+            
        // courseSubjectComboBox
         
         
