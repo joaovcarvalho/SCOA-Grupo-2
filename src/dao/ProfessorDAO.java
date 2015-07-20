@@ -27,7 +27,7 @@ public class ProfessorDAO extends DataAccessObject{
       public static ArrayList<Professor> listProfessors() throws SQLException{ //throws SQLException {
         initConnection();
         Connection connection = getConnection();
-        String query = "SELECT * FROM Professors";
+        String query = "SELECT * FROM professors";
         Statement st = connection.prepareStatement(query);
         ResultSet rs = st.executeQuery(query);
         ArrayList<Professor> profs = new ArrayList<>();

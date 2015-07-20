@@ -65,14 +65,12 @@ public class SubjectDAO extends DataAccessObject{
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String description = rs.getString("description");
-                //String course_id = rs.getString("course_id");
+                int course_id = rs.getInt("course_id");
                 String code = rs.getString("code");
                 String credits = rs.getString("credits");
      
-                
-                 
-                Subject sub = new Subject(id, name, description, code, credits, -1);
-               
+                Subject sub = new Subject(id, name, description, code, credits, course_id);
+                sub.setCourse(CourseDAO.getCourseById(course_id));
     
                 subs.add(sub);
             }

@@ -26,7 +26,7 @@ public class CourseDAO extends DataAccessObject{
    public static ArrayList<Course> selectAllCourses() throws SQLException{
         initConnection();
         Connection connection = getConnection();
-        String query = "SELECT * FROM Courses";
+        String query = "SELECT * FROM courses";
         Statement st = connection.prepareStatement(query);
         ResultSet rs = st.executeQuery(query);
         ArrayList<Course> courses = new ArrayList<>();
@@ -55,7 +55,7 @@ public class CourseDAO extends DataAccessObject{
     public static ArrayList<Course> listCourses() throws SQLException{ //throws SQLException {
         initConnection();
         Connection connection = getConnection();
-        String query = "SELECT * FROM Courses";
+        String query = "SELECT * FROM courses";
         Statement st = connection.prepareStatement(query);
         ResultSet rs = st.executeQuery(query);
         ArrayList<Course> courses = new ArrayList<>();

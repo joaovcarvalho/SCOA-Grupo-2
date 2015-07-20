@@ -179,7 +179,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
                 
 
         if(profs_list != null){
-            ObservableList<Professor> profs = FXCollections.observableArrayList(profs_list);
+            ObservableList<Professor> profs = FXCollections.observableArrayList();
             profs.addAll(profs_list);
             professorsTable.getItems().clear();
             professorsTable.setItems(profs);
@@ -195,19 +195,22 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     }
     
     @FXML
+    public TextField ProfessorEditPassword;
+    
+    @FXML
+    public TextField ProfessorConfirmPasswordEdit;
+    
+    @FXML
     private void handleUpdateProfButton(){
         System.out.println("cliquei em salvar prof editado");
          String name = nameProfTA.getText();
          String cpf = cpfProfTA.getText() ;
          String reg = regProfTA.getText() ;
-         String password = ProfPassword.getText() ;
+         String password = ProfessorEditPassword.getText() ;
          String tel = telProfTA.getText() ;
          String lattes = lattesProfTA.getText() ;
          String room = roomProfTA.getText() ;
-         String confirm = ProfConfirm.getText() ;
-         
-         
-    
+         String confirm = ProfessorConfirmPasswordEdit.getText() ;
          
          selectedProf.setName(name);
          selectedProf.setLattes(lattes);
@@ -222,6 +225,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
              infoBox("Senha e confirmação não batem.", "Editar Professor - Error");
              return;
          }
+         
          u.setPassword(password);
          UserDAO.updateUser(u);
          ProfessorDAO.updateProfessor(selectedProf);
@@ -310,7 +314,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
 
                 
                 if(course_list != null){
-                    ObservableList<Course> courses = FXCollections.observableArrayList(course_list);
+                    ObservableList<Course> courses = FXCollections.observableArrayList();
                     courses.addAll(course_list);
 
                     coursesTable.setItems(courses);
@@ -471,7 +475,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         );
        TableColumn courseCol = new TableColumn("Curso");
         courseCol.setCellValueFactory(
-                         new PropertyValueFactory<Subject,String>("course")
+                         new PropertyValueFactory<Subject,String>("courseName")
         );
 
        TableColumn creditsCol = new TableColumn("Créditos");
@@ -481,13 +485,14 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
 
                 
                 if(sub_list != null){
-                    ObservableList<Subject> subs = FXCollections.observableArrayList(sub_list);
+                    ObservableList<Subject> subs = FXCollections.observableArrayList();
                     subs.addAll(sub_list);
 
+                    subjectTable.getItems().clear();
                     subjectTable.setItems(subs);
                 }
 
-
+                subjectTable.getColumns().clear();
                 subjectTable.getColumns().addAll(nameCol, codeCol, descriptionCol,courseCol, creditsCol);
  
        // professorsTable.setItems(profs);
@@ -495,6 +500,27 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         ListSubject.setVisible(true); 
         EditSubject.setVisible(true); 
     }
+    
+    private ArrayList<Course> tmpListCourses; 
+    
+    private void populateCoursesComboBox(ComboBox cb){
+        try {
+            ArrayList<Course> courses = CourseDAO.listCourses();
+            cb.getItems().clear();
+            
+            for(Course course : courses){
+                cb.getItems().add(course.getName());
+            }
+
+            tmpListCourses = courses;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @FXML
+    ComboBox courseSubjectComboBox;
     
      @FXML
     public void handleEditSubjectButton(){
@@ -511,7 +537,10 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         codeSubjectTA.setText(subject.getCode());   
         creditsSubjectTA.setText(subject.getCredits());
         
-        
+ 
+        populateCoursesComboBox(courseSubjectComboBox);
+            
+            
        // courseSubjectComboBox
         
         
@@ -535,8 +564,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          //course !! 
          selectedSubject.setCredits(credits);
          
-           
-    
          SubjectDAO.updateSubject(selectedSubject);
     }
     
@@ -659,7 +686,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
 
                 
                 if(class_list != null){
-                    ObservableList<model.Class> classes = FXCollections.observableArrayList(class_list);
+                    ObservableList<model.Class> classes = FXCollections.observableArrayList();
                     classes.addAll(class_list);
 
                    classTable.setItems(classes);
@@ -716,7 +743,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
 
    
         if(room_list != null){
-            ObservableList<Room> rooms = FXCollections.observableArrayList(room_list);
+            ObservableList<Room> rooms = FXCollections.observableArrayList();
             rooms.addAll(room_list);
             roomTable.setItems(rooms);
         }

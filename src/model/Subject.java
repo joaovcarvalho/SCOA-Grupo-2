@@ -15,6 +15,7 @@ public class Subject {
     private String description;
     private String code;
     private String credits;
+    private Course course;
     private int course_id;
 
     public Subject(int id, String name, String description, String code, String credits, int course_id) {
@@ -72,6 +73,18 @@ public class Subject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+    
+    public String getCourseName(){
+        return course.getName();
     }
 
     @Override
