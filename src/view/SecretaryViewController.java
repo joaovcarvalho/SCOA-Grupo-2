@@ -540,8 +540,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         
  
         populateCoursesComboBox(courseSubjectComboBox);
-            
-            
+        courseSubjectComboBox.getSelectionModel().select(subject.getCourse().getName());
        // courseSubjectComboBox
         
         
@@ -562,6 +561,14 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          selectedSubject.setName(name);
          selectedSubject.setCode(code);
          selectedSubject.setDescription(description);
+         
+        for (Course next : tmpListCourses) {
+            if(next.getName().equals( courseSubjectComboBox.getValue() )){
+                selectedSubject.setCourse(next);
+                break;
+            }
+        }
+        
          //course !! 
          selectedSubject.setCredits(credits);
          

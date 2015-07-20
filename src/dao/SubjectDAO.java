@@ -149,7 +149,7 @@ public class SubjectDAO extends DataAccessObject{
       public static void updateSubject(Subject subject){
         initConnection();
         Connection connection = getConnection();
-        String query = "UPDATE subjects SET name  = ?, code = ?, description = ?, credits = ? WHERE id = ?";
+        String query = "UPDATE subjects SET name  = ?, code = ?, description = ?, credits = ?, course_id = ? WHERE id = ?";
         
         try {
             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -157,8 +157,8 @@ public class SubjectDAO extends DataAccessObject{
             statement.setString(2, subject.getCode());
             statement.setString(3, subject.getDescription());
             statement.setString(4, subject.getCredits());
-            //statement.setString(2, subject.getCourse());
-            statement.setInt(5, subject.getId());
+            statement.setInt(5, subject.getCourse().getId());
+            statement.setInt(6, subject.getId());
             statement.execute();
            
             closeConnection();
