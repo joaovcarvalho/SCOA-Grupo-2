@@ -100,12 +100,10 @@ public class StudentViewController implements Initializable, ControlledScreen {
     }
     
     private void populateFeedbackCombox(ComboBox cb){
-        ObservableList<String> options = 
-            FXCollections.observableArrayList(
-                "Sugestão",
-                "Reclamação"
-            );
-        cb.getItems().addAll(options);
+        String s1 = "Feedback";
+        String s2 =  "Reclamação";
+        cb.getItems().add(s1);
+        cb.getItems().add(s2);
     }
     
     @FXML
