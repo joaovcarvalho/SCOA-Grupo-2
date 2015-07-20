@@ -28,7 +28,7 @@ public class DataAccessObject {
             String db_name = "scoa";       //Nome do seu banco de dados, schema
             String url = "jdbc:mysql://" + server + ":" + port + "/" + db_name;
             String user = "root";        //Nome do usuário de seu BD
-            String password = "1234";      //Senha do usuario
+            String password = "";      //Senha do usuario
             connection = DriverManager.getConnection(url, user, password);
 
             //Teste de conexão  

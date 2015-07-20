@@ -2,13 +2,17 @@
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Scoa.jnlp">
   <information>
     <title>Scoa</title>
-    <vendor>Jo√£oVitor</vendor>
+    <vendor>Jo„oVitor</vendor>
     <description>null</description>
     <offline-allowed/>
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="Scoa.jar" size="84787" download="eager" />
+=======
+    <jar href="Scoa.jar" size="84960" download="eager" />
+>>>>>>> a58027d2b81277dd241b4141e6a9b505bfd889b5
     <jar href="lib/mysql-connector-java-5.1.23-bin.jar" size="827921" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Scoa" >

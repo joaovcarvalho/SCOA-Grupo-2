@@ -8,6 +8,7 @@ package view;
 import controller.SecretaryController;
 import dao.UserDAO;
 import controller.UserController;
+import dao.ClassDAO;
 import dao.CourseDAO;
 import dao.ProfessorDAO;
 import dao.RoomDAO;
@@ -593,6 +594,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
      private Pane ListClass;
     @FXML
      private TableView classTable;
+    @FXML
+    private TextField classSemester;
     
     
     @FXML
@@ -657,7 +660,11 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
             }
         }
         
-        System.out.println("Selected professor : " + selectedProf);
+        String semester = classSemester.getText();
+        
+      
+        ClassDAO.insertClass(selectedProf.getId(), selectedRoom.getId(), selectedSubject.getId(), semester);
+        
         
         
     }
