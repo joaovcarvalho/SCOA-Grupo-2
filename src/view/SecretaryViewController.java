@@ -47,6 +47,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javax.swing.JOptionPane;
 import model.Course;
+import model.Class;
 import model.Professor;
 import model.Room;
 import model.Student;
@@ -512,7 +513,11 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     }
     
     private ArrayList<Course> tmpListCourses; 
-    
+    private ArrayList<Subject> tmpListSubjects; 
+    private ArrayList<Room> tmpListRooms; 
+    private ArrayList<Professor> tmpListProfs; 
+     
+     
     private void populateCoursesComboBox(ComboBox cb){
         try {
             ArrayList<Course> courses = CourseDAO.listCourses();
@@ -602,10 +607,19 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
      private Pane ListClass;
     @FXML
+     private Pane inputClass;
+    @FXML
      private TableView classTable;
     @FXML
     private TextField classSemester;
-    
+    @FXML
+    private ComboBox profClassComboBox;
+    @FXML
+    private ComboBox subjectClassComboBox;
+    @FXML
+    private ComboBox roomClassComboBox;
+    @FXML
+    private TextField semesterClassTA;
     
     @FXML
     public void showInsertClass(ActionEvent event) throws SQLException {
@@ -725,6 +739,113 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         ListClass.setVisible(true); 
         EditClass.setVisible(true); 
     }
+    
+   
+    
+    private void populateProfsComboBox(ComboBox cb){
+        try {
+            ArrayList<Professor> profs = ProfessorDAO.listProfessors();
+            cb.getItems().clear();
+            
+            for(Professor p : profs){
+                cb.getItems().add(p.getName());
+            }
+
+            tmpListProfs = profs;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SecretaryViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+      private void populateSubjectsComboBox(ComboBox cb){
+        try {
+            ArrayList<Subject> subs = SubjectDAO.listSubjects();
+            cb.getItems().clear();
+            
+            for(Subject s : subs){
+                cb.getItems().add(s.getName());
+            }
+
+            tmpListSubjects = subs;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SecretaryViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+      private void populateRoomsComboBox(ComboBox cb){
+        try {
+            ArrayList<Room> rooms = RoomDAO.listRooms();
+            cb.getItems().clear();
+            
+            for(Room r : rooms){
+                cb.getItems().add(r.getNumber());
+            }
+
+            tmpListRooms = rooms;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SecretaryViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+      
+    @FXML
+    public void handleEditClassButton(){
+  
+        Class cl = (Class) classTable.getSelectionModel().getSelectedItem();
+
+        hideAllPanes();
+        selectedClass = cl;
+         
+         populateProfsComboBox(profClassComboBox);
+         profClassComboBox.getSelectionModel().select(cl.getProfessorName());
+         
+         populateSubjectsComboBox(subjectClassComboBox);
+         subjectClassComboBox.getSelectionModel().select(cl.getSubjectName());
+         
+         populateRoomsComboBox(roomClassComboBox);
+         roomClassComboBox.getSelectionModel().select(cl.getRoomNumber());
+      
+         semesterClassTA.setText("" + cl.getSemester());
+        
+        EditClass.setVisible(true);
+        inputClass.setVisible(true);
+    } 
+    
+     @FXML
+    private void handleUpdateClassButton(){
+        System.out.println("cliquei em salvar sala editada");
+      
+         String semester = semesterClassTA.getText() ;
+         
+        
+        // selectedClass.setSemester((int) semester);
+         
+    
+        for (Professor next : tmpListProfs) {
+            if(next.getName().equals(profClassComboBox.getValue() )){
+                selectedClass.setProfessor(next);
+                break;
+            }
+        }
+          for (Subject next : tmpListSubjects) {
+            if(next.getName().equals( subjectClassComboBox.getValue() )){
+                selectedClass.setSubject(next);
+                break;
+            }
+        }
+           for (Room next : tmpListRooms) {
+            if(next.getNumber().equals( roomClassComboBox.getValue() )){
+                selectedClass.setRoom(next);
+                break;
+            }
+        }
+         
+         ClassDAO.updateClass(selectedClass);
+    }
+   
+    
     
     //***************************** SALAS *****************************
     @FXML
@@ -963,6 +1084,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         inputProfessor.setVisible(false);
         inputCourse.setVisible(false);
         inputRoom.setVisible(false);
+        inputClass.setVisible(false);
         inputSubject.setVisible(false);
         StudentPane.setVisible(false);
     }

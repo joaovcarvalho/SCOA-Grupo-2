@@ -152,5 +152,30 @@ public class ClassDAO extends DataAccessObject {
         closeConnection();  
      }
     
-    
+    public static void updateClass(Class cl){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "UPDATE classes SET id_professor  = ?, id_subject = ?, id_room = ?, semester = ? WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, cl.getProfessor().getId());
+            statement.setInt(2, cl.getSubject().getId());
+            statement.setInt(3, cl.getRoom().getId());
+            statement.setInt(4, cl.getSemester());
+            statement.setInt(5, cl.getId());
+           
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+      
+    }
 }
