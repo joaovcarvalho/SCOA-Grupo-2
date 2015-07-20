@@ -17,6 +17,7 @@ public class Class {
     private Room room;
     private Subject subject;
     private int semester;
+    
       
     public Class(int id, Professor professor, Room room, Subject subject, int semester) {
         this.id = id;
@@ -27,7 +28,18 @@ public class Class {
     }
     
    
-
+    public String getProfessorName() {
+        return professor.getName();
+    }
+    
+     public String getRoomNumber() {
+        return room.getNumber();
+    }
+     
+     public String getSubjectName() {
+        return subject.getName();
+    }
+    
     public int getId() {
         return id;
     }
