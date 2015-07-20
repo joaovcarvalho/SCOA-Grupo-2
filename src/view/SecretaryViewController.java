@@ -268,6 +268,15 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          }
     }
     
+       @FXML
+    public void handleDeleteProfessorButton(ActionEvent event) throws SQLException{
+        Professor p = (Professor) professorsTable.getSelectionModel().getSelectedItem();
+        ProfessorDAO.deleteProfessor(p);
+        showEditProfessor(event);
+        infoBox("Professor deletado com sucesso", "Professor");
+     
+        
+    }
     // ***************************** CURSOS ******************************
     @FXML
     private Pane InsertCourse;
@@ -390,6 +399,16 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
            infoBox("Todos campos são de preenchimento obrigatório", "Erro de validação");
         }
        
+    }
+    
+      @FXML
+    public void handleDeleteCourseButton(ActionEvent event) throws SQLException{
+        Course c = (Course) coursesTable.getSelectionModel().getSelectedItem();
+        CourseDAO.deleteCourse(c);
+        showEditCourses(event);
+        infoBox("Curso deletado com sucesso", "Curso");
+     
+        
     }
     
     //***************************** DISCIPLINAS *****************************
@@ -855,7 +874,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     public void handleDeleteClassButton(ActionEvent event) throws SQLException{
         Class c = (Class) classTable.getSelectionModel().getSelectedItem();
         ClassDAO.deleteClass(c);
-        showEditSubject(event);
+        showEditClass(event);
         infoBox("Turma deletada com sucesso", "Turma");
      
         
@@ -966,6 +985,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
          RoomDAO.updateRoom(selectedRoom);
     }
+    
+    
     
     //***************************** ALUNOS *****************************
     @FXML public Pane StudentPane;
