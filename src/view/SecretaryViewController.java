@@ -498,8 +498,9 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
      @FXML
     public void handleEditSubjectButton(){
-        System.out.println("editar materia");
+      
         Subject subject = (Subject) subjectTable.getSelectionModel().getSelectedItem();
+        
         
         hideAllPanes();
         selectedSubject = subject;
@@ -526,6 +527,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          String code = codeSubjectTA.getText() ;
          String description = descriptionSubjectTA.getText() ;
          String credits = creditsSubjectTA.getText() ;
+         
         
          selectedSubject.setName(name);
          selectedSubject.setCode(code);
@@ -588,6 +590,41 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         
         
         InsertClass.setVisible(true);
+        
+    }
+    
+    @FXML
+    public void handleInsertClassButton(ActionEvent event) throws SQLException {
+         ArrayList<Professor> p_list = SecretaryController.listProf();
+         ArrayList<Subject> s_list = SecretaryController.listSubjects();
+         ArrayList<Room> r_list = SecretaryController.listRooms();         
+        
+        Professor selectedProf = null;
+        for (Professor next : p_list) {
+            if(next.getName().equals( ClassProfessor.getValue() )){
+                selectedProf = next;
+                break;
+            }
+        }
+        
+        Subject selectedSubject = null;
+        for (Subject next : s_list) {
+            if(next.getName().equals( ClassSubject.getValue() )){
+                selectedSubject = next;
+                break;
+            }
+        }
+        
+        Room selectedRoom = null;
+        for (Room next : r_list) {
+            if(next.getNumber().equals( ClassRoom.getValue() )){
+                selectedRoom = next;
+                break;
+            }
+        }
+        
+        System.out.println("Selected professor : " + selectedProf);
+        
         
     }
     
