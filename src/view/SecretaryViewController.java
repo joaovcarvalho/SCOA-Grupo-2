@@ -667,7 +667,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          hideAllPanes();
          classTable.getColumns().clear();
          ArrayList<model.Class> class_list = SecretaryController.listClass();
-        
+      
         
         classTable.setEditable(true);
               
@@ -675,19 +675,20 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         profCol.setCellValueFactory(
                         new PropertyValueFactory<Class,String>("professorName")
         );
+        
         TableColumn roomCol = new TableColumn("Sala");
         roomCol.setCellValueFactory(
-                         new PropertyValueFactory<Class,Room>("room")
+                         new PropertyValueFactory<Class,String>("roomNumber")
         );
 
        TableColumn subjectCol = new TableColumn("Disciplina");
        subjectCol.setCellValueFactory(
-                         new PropertyValueFactory<Class,Subject>("subject")
+                         new PropertyValueFactory<Class,String>("subjectName")
         );
-       TableColumn semesterCol = new TableColumn("Semestre");
-       /* semesterCol.setCellValueFactory(
-                         new PropertyValueFactory<Class,int>("semester")
-        );*/
+        TableColumn semesterCol = new TableColumn("Semestre");
+        semesterCol.setCellValueFactory(
+                         new PropertyValueFactory<Class,String>("semester")
+        );
 
        
 
@@ -701,8 +702,10 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
 
 
                 classTable.getColumns().addAll(profCol);
- 
-       
+                classTable.getColumns().addAll(roomCol);
+                classTable.getColumns().addAll(subjectCol);
+                classTable.getColumns().addAll(semesterCol);
+                
         ListClass.setVisible(true); 
         EditClass.setVisible(true); 
     }
