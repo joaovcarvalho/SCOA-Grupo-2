@@ -18,6 +18,8 @@ public class Student extends Type {
     private String email;
     private String birth_date;
     private int semester;
+    
+    private User user;
 
     public Student(String name, int id) {
         this.name = name;
@@ -33,6 +35,14 @@ public class Student extends Type {
         this.email = email;
         this.birth_date = birth_date;
         this.semester = semester;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     
     

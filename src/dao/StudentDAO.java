@@ -19,6 +19,7 @@ import model.Professor;
 import model.Room;
 import model.Student;
 import model.Subject;
+import model.User;
 
 /**
  *
@@ -48,6 +49,42 @@ public class StudentDAO extends DataAccessObject {
                 
                 Student s = new Student(id, name, telephone, register, address, email, birth_date, semester);
  
+                students.add(s);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();     
+        return students;
+    }
+    
+    public static ArrayList<Student> all() throws SQLException{
+        initConnection();
+        
+        Connection connection = getConnection();
+        String query = "SELECT * FROM students";
+        
+        PreparedStatement st = connection.prepareStatement(query);
+        ResultSet rs = st.executeQuery();
+        ArrayList<Student> students = new ArrayList<Student>();
+        try{
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String telephone = rs.getString("telephone");
+                String register = rs.getString("register");
+                String address = rs.getString("address");
+                String email = rs.getString("email");
+                String birth_date = rs.getString("birth_date");
+                int semester = rs.getInt("semester");
+                
+                Student s = new Student(id, name, telephone, register, address, email, birth_date, semester);
+ 
+                User u = UserDAO.getUserByType(s);
+                s.setUser(u);
+                
                 students.add(s);
             }
         }
