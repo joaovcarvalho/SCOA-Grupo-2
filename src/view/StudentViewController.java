@@ -46,6 +46,7 @@ import dao.SubjectDAO;
 import exceptions.MissingFieldException;
 import model.Course;
 import model.StudentGrade;
+import model.Subject;
 import model.User;
 import static view.ProfessorViewController.infoBox;
 
@@ -146,7 +147,7 @@ public class StudentViewController implements Initializable, ControlledScreen {
     
     private ArrayList<model.Course> tmpListCourses;
     private ArrayList<model.Subject> tmpListSubjects;
-    
+    private ArrayList<model.Class> tmpListClasses;
     @FXML
     private void  handleSignUpLink(ActionEvent event){
         hideAllPanels();
@@ -158,7 +159,32 @@ public class StudentViewController implements Initializable, ControlledScreen {
     
     @FXML
     private void  handleSignUpClassButton(ActionEvent event){
-        
+       Registration registration = new Registration(myController.getUser().getType_id(),selectedClass.getId());
+        try {
+             RegistrationDAO.insertRegistration(registration);
+        } catch (Exception e) {
+            
+        }
+           
+      
+       infoBox("Inscrito com sucesso!","Status");
+    }
+    
+    
+    
+    private void populateClassComboBoxBySubjectId(ComboBox cb, int subject_id){
+        ArrayList<model.Class> classes;
+        try {
+            classes = ClassDAO.getClassBySubjectId(subject_id);
+            
+            cb.getItems().clear();
+            classes.stream().forEach((next) -> {
+                cb.getItems().add(next.getProfessorName());
+            });
+            tmpListClasses = classes;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProfessorViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void populateSubjectComboBoxByCourseId(ComboBox cb, int course_id){
@@ -208,6 +234,39 @@ public class StudentViewController implements Initializable, ControlledScreen {
            return;
         
         populateSubjectComboBoxByCourseId(subjectComboBox, selectedCourse.getId());
+    }
+     
+    @FXML
+    Subject selectedSubject = null;
+    public void handleSubjectSelected(ActionEvent event){
+        selectedSubject = null;
+        for (Subject next : tmpListSubjects) {
+            if(next.getName().equals( subjectComboBox.getValue() )){
+                selectedSubject = next;
+                break;
+            }
+        }
+        
+        if(selectedSubject == null)
+           return;
+        
+        populateClassComboBoxBySubjectId(classComboBox, selectedSubject.getId());
+    }
+    
+    @FXML
+    Class selectedClass = null;
+    public void handleClassSelected (ActionEvent event){
+        selectedClass = null;
+        for (Class next : tmpListClasses) {
+            if(next.getProfessorName().equals( classComboBox.getValue() )){
+                selectedClass = next;
+                break;
+            }
+        }
+        
+        if(selectedClass == null)
+           return;
+        
     }
     
 

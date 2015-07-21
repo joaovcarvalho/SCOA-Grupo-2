@@ -19,6 +19,11 @@ public class Registration {
         this.id_student = id_student;
         this.id_class = id_class;
     }
+    
+    public Registration(int id_student, int id_class) {
+        this.id_student = id_student;
+        this.id_class = id_class;
+    }
 
     public int getId() {
         return id;

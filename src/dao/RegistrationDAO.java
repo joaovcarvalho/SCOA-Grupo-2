@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Professor;
@@ -77,5 +78,29 @@ public class RegistrationDAO extends DataAccessObject {
         }
         closeConnection();     
         return null;
+    }
+    
+     public static void insertRegistration(Registration registration){
+        initConnection();
+        Connection connection = getConnection();
+        String query = "INSERT INTO registration (id_student, id_class) VALUES (?, ?)";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            String id_student = "" + registration.getId_student();
+            String id_class = "" + registration.getId_class();
+            statement.setString(1,id_student );
+            statement.setString(2, id_class);
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(RegistrationDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
     }
 }
