@@ -239,6 +239,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          u.setPassword(password);
          UserDAO.updateUser(u);
          ProfessorDAO.updateProfessor(selectedProf);
+         
+         infoBox("Dados alterados com sucesso", "Atualizando professor");
     }
     
     
@@ -260,11 +262,11 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          
          
          if(result == 1){
-             statusSuccess.setVisible(true);
+             infoBox("Professor inserido com sucesso", "Professor");
          }else if(result == 2){
-             statusEmpty.setVisible(true);
+            infoBox("Os campos senha e confirmação de senha precisam ser iguais.", "Senha");
          }else if(result ==3){
-             statusPassword.setVisible(true); 
+             infoBox("Todos os campos são de preenchimento obrigatório.", "Preenchimento obrigatório");
          }
     }
     
@@ -377,6 +379,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
            
     
          CourseDAO.updateCourse(selectedCourse);
+         infoBox("Dados alterados com sucesso", "Curso");
     }
     
     
@@ -395,9 +398,11 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         String code = CourseCode.getText() ;
         try{
             SecretaryController.insertCourse(name, code, description);
+            infoBox("Curso inserido com sucesso", "Curso");
         } catch (exceptions.MissingFieldException ex) {
            infoBox("Todos campos são de preenchimento obrigatório", "Erro de validação");
         }
+        
        
     }
     
@@ -471,11 +476,14 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
            
         try{
             SecretaryController.insertSubject(code, description, name, credits, courseName);
+             infoBox("Disciplina inserida com sucesso", "Disciplina");
         } catch (exceptions.MissingFieldException ex) {
            infoBox("Todos os campos são de preechimento obrigatório.", "Erro de validação");
         }catch(exceptions.InvalidFieldException ex){
             infoBox(ex.getMessage(), "Erro de validação");
         }
+        
+        
          
     }
     
@@ -603,6 +611,12 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          selectedSubject.setCredits(credits);
          
          SubjectDAO.updateSubject(selectedSubject);
+         
+        infoBox("Dados atualizados com sucesso", "Disciplina");
+       
+         
+         
+         
     }
     
     @FXML
@@ -714,7 +728,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
       
         ClassDAO.insertClass(selectedProf.getId(), selectedRoom.getId(), selectedSubject.getId(), semester);
         
-        
+       infoBox("Turma inserida com sucesso", "Turma");
+      
         
     }
     
@@ -868,6 +883,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         }
          
          ClassDAO.updateClass(selectedClass);
+         infoBox("Dados atualizados com sucesso", "Turma");
     }
    
      @FXML
@@ -948,8 +964,9 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          
         try{
             SecretaryController.insertRoom(number, capacity);
+            infoBox("Sala inserida com sucesso", "Sala");
         } catch (exceptions.MissingFieldException ex) {
-           infoBox("Todos os campos são de preechimento obrigatório.insert", "Erro de validação");
+           infoBox("Todos os campos são de preechimento obrigatório.", "Erro de validação");
         }catch(exceptions.InvalidFieldException ex){
             infoBox(ex.getMessage(), "Erro de validação");
         }
@@ -984,9 +1001,18 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
            
     
          RoomDAO.updateRoom(selectedRoom);
+         infoBox("Dados atualizados com sucesso", "Turma");
     }
     
-    
+      @FXML
+    public void handleDeleteRoomButton(ActionEvent event) throws SQLException{
+        Room r = (Room) roomTable.getSelectionModel().getSelectedItem();
+        RoomDAO.deleteRoom(r);
+        showEditRoom(event);
+        infoBox("Sala deletada com sucesso", "Sala");
+     
+        
+    }
     
     //***************************** ALUNOS *****************************
     @FXML public Pane StudentPane;
