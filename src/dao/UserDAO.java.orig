@@ -93,8 +93,7 @@ public class UserDAO extends DataAccessObject {
                 String cpf = rs.getString("cpf");
                 String password = rs.getString("password");
                 int id = rs.getInt("id");
-                int type_id = rs.getInt("type_id");
-                User u = new User(id, cpf, password,t,type_id);
+                User u = new User(id, cpf, password,t);
                
                 return u;
             }
@@ -141,7 +140,7 @@ public class UserDAO extends DataAccessObject {
                     }
                     
                     closeConnection();
-                    return new User(id, cpf, user_password, new Secretary(name, type_id),type_id);   
+                    return new User(id, cpf, user_password, new Secretary(name, type_id));   
                 }else if(type.equals("student")){
                     String queryType = "SELECT * FROM students WHERE id = ?";
                     PreparedStatement typeStatment = connection.prepareStatement(queryType);
@@ -160,7 +159,7 @@ public class UserDAO extends DataAccessObject {
                         student.setTelephone(r.getString("telephone"));
                                                
                     }
-                    return new User(id, cpf, user_password, student,type_id);
+                    return new User(id, cpf, user_password, student);
                 }else if(type.equals("professor")){
                     String queryType = "SELECT * FROM professors WHERE id = ?";
                     PreparedStatement typeStatment = connection.prepareStatement(queryType);
@@ -178,7 +177,7 @@ public class UserDAO extends DataAccessObject {
                         professor.setTelephone(r.getString("telephone"));
                     }
                     
-                    return new User(id, cpf, user_password, professor,type_id);
+                    return new User(id, cpf, user_password, professor);
                 };
                                       
             }
@@ -194,7 +193,11 @@ public class UserDAO extends DataAccessObject {
         return null;
     }
     
+<<<<<<< HEAD
     public static void deleteUser(User user) {
+=======
+     public static void deleteUser(User user) {
+>>>>>>> e1a83bbb08ca64d964dedbbd2c4fb3ab3a3a99f9
         initConnection();
         Connection connection = getConnection();
         String query = "DELETE FROM users WHERE id = ?";
@@ -208,7 +211,11 @@ public class UserDAO extends DataAccessObject {
         }
             
          catch (SQLException ex) {
+<<<<<<< HEAD
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
+=======
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+>>>>>>> e1a83bbb08ca64d964dedbbd2c4fb3ab3a3a99f9
           
         }
         

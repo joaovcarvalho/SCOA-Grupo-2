@@ -9,16 +9,22 @@ import dao.ClassDAO;
 import dao.CourseDAO;
 import dao.ProfessorDAO;
 import dao.RoomDAO;
+import dao.StudentDAO;
 import dao.SubjectDAO;
 import exceptions.InvalidFieldException;
 import exceptions.MissingFieldException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import model.Course;
 import model.Professor;
 import model.Room;
+import model.Student;
 import model.Subject;
 import tools.Validator;
 
@@ -123,6 +129,55 @@ public class SecretaryController {
      
      public static ArrayList<Room>listRoom() throws SQLException{
          return RoomDAO.listRooms();
+     }
+     
+     /****************************** INSERIR ALUNO ****************************************/
+     public static void insertStudent(Student s) throws MissingFieldException, ParseException, InvalidFieldException{
+        if(!Validator.validateRequired(s.getRegister()) || 
+            !Validator.validateRequired(s.getEmail()) ||
+            !Validator.validateRequired(s.getAddress()) ||
+            !Validator.validateRequired(s.getBirth_date()) ||
+            !Validator.validateRequired(s.getName()) ||
+            !Validator.validateRequired(s.getTelephone()) ||
+            !Validator.validateRequired(String.valueOf(s.getSemester())) )
+            throw new MissingFieldException();
+        
+        if(!Validator.validateDate(s.getBirth_date()))
+            throw new ParseException("", 0);
+
+        if(!Validator.validateNumber( String.valueOf(s.getSemester()) ))
+            throw new InvalidFieldException("Semestre deve ser um número.");
+        
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date myDate = formatter.parse(s.getBirth_date());
+        java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
+        s.setBirthDate(sqlDate);
+         
+         StudentDAO.insertStudent(s);
+     }
+     
+     public static void updateStudent(Student s) throws MissingFieldException, ParseException, InvalidFieldException{
+        if(!Validator.validateRequired(s.getRegister()) || 
+            !Validator.validateRequired(s.getEmail()) ||
+            !Validator.validateRequired(s.getAddress()) ||
+            !Validator.validateRequired(s.getBirth_date()) ||
+            !Validator.validateRequired(s.getName()) ||
+            !Validator.validateRequired(s.getTelephone()) ||
+            !Validator.validateRequired(String.valueOf(s.getSemester())) )
+            throw new MissingFieldException();
+        
+        if(!Validator.validateDate(s.getBirth_date()))
+            throw new ParseException("", 0);
+
+        if(!Validator.validateNumber( String.valueOf(s.getSemester()) ))
+            throw new InvalidFieldException("Semestre deve ser um número.");
+        
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date myDate = formatter.parse(s.getBirth_date());
+        java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
+        s.setBirthDate(sqlDate);
+         
+         StudentDAO.updateStudent(s);
      }
      
   }  

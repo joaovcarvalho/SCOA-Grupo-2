@@ -133,6 +133,7 @@ public class StudentDAO extends DataAccessObject {
         return students;
     }
     
+<<<<<<< HEAD
     public static void insertStudent(Student s){
         initConnection();
         Connection connection = getConnection();
@@ -232,6 +233,25 @@ public class StudentDAO extends DataAccessObject {
             
          catch (SQLException ex) {
             Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
+=======
+     public static void deleteStudent(Student student) {
+        initConnection();
+        Connection connection = getConnection();
+        String query = "DELETE FROM students WHERE id = ?";
+        User s = UserDAO.getUserByType(student);
+        UserDAO.deleteUser(s);
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, student.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+>>>>>>> e1a83bbb08ca64d964dedbbd2c4fb3ab3a3a99f9
           
         }
         
