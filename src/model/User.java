@@ -9,6 +9,12 @@ public class User {
     private String password;
     private Type type;
 
+    public User(String cpf, String password, Type type) {
+        this.cpf = cpf;
+        this.password = password;
+        this.type = type;
+    }
+
     public User(int id, String cpf, String password, Type type) {
         this.id = id;
         this.cpf = cpf;

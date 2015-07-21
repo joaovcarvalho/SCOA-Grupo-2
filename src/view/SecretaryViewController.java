@@ -17,8 +17,13 @@ import dao.SubjectDAO;
 import exceptions.InvalidFieldException;
 import exceptions.MissingFieldException;
 import java.net.URL;
+
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +46,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -838,7 +844,13 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
     @FXML public TableView studentsTable;
     
-    @FXML public AnchorPane alunoEditPane;
+    @FXML public AnchorPane studentEditPane;
+    
+    @FXML public AnchorPane studentUserEditPane;
+    
+    @FXML public AnchorPane parentStudentEditPane;
+    
+    @FXML public TextField studentName;
     
     @FXML public TextField register;
     
@@ -852,11 +864,17 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
 
     @FXML public TextField semester;
     
+    @FXML public TextField cpf;
+    
+    @FXML public TextField password;
+    
+    @FXML public TextField confirmPassword;
+    
     @FXML public AnchorPane studentsTablePane;
     
     
     private void makeTopPane(String title, Pane pane){
-        VBox innerPane = new VBox(8);
+        VBox innerPane = new VBox(4);
         pane.getChildren().setAll(innerPane);
         
         innerPane.setPadding( new Insets(10));
@@ -872,33 +890,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         innerPane.getChildren().add(n);
     }
     
-    public void createFormAluno(){
-        makeTopPane("Formulário Aluno", alunoEditPane);
-        
-        register = createFormInput("Registro: ", alunoEditPane);
-        telephone = createFormInput("Telefone: ", alunoEditPane);
-        address = createFormInput("Endereço: ", alunoEditPane);
-        email = createFormInput("Email: ", alunoEditPane);
-        birth_date = createFormInput("Data de Nascimento: ", alunoEditPane);
-        semester = createFormInput("Semestre: ", alunoEditPane);
-    }
     
-    private void createConfirmButton(EventHandler<ActionEvent> handler, Pane pane){
-        Button confirmBtn = new Button("Confirmar");
-        addElementToPane(pane, confirmBtn);
-        
-        confirmBtn.setOnAction(handler);
-    }
-    
-    
-    private TextField createFormInput(String name, Pane pane){
-        Label l = new Label(name);
-        addElementToPane(pane, l);
-        
-        TextField tf = new TextField();
-        addElementToPane(pane, tf);
-        return tf;
-    }
     
     private void createTableViewStudents(Pane pane){
         studentsTable = new TableView();
@@ -929,12 +921,205 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         }
         
         pane.getChildren().add(studentsTable);
+        ( (AnchorPane) pane).setTopAnchor(studentsTable, 0.0);
+        ( (AnchorPane) pane).setLeftAnchor(studentsTable, 0.0);
+        ( (AnchorPane) pane).setRightAnchor(studentsTable, 0.0);
+        ( (AnchorPane) pane).setBottomAnchor(studentsTable, 50.0);
+        
+        createTableActions(pane);
+    }
+    
+    public void createFormAluno(){
+        makeTopPane("Formulário Aluno", studentEditPane);
+        
+        studentName = createFormInput("Nome: ", studentEditPane);
+        register = createFormInput("Registro: ", studentEditPane);
+        telephone = createFormInput("Telefone: ", studentEditPane);
+        address = createFormInput("Endereço: ", studentEditPane);
+        email = createFormInput("Email: ", studentEditPane);
+        birth_date = createFormInput("Data de Nascimento: ", studentEditPane);
+        semester = createFormInput("Semestre: ", studentEditPane);
+        
+        makeTopPane("Usuário", studentUserEditPane);
+        
+        cpf = createFormInput("CPF: ", studentUserEditPane);
+        password = createFormInput("Senha: ", studentUserEditPane);
+        confirmPassword = createFormInput("Confirmar Senha: ", studentUserEditPane);
+    }
+    
+    private void createConfirmButton(EventHandler<ActionEvent> handler, Pane pane){
+        Button confirmBtn = new Button("Confirmar");
+        addElementToPane(pane, confirmBtn);
+        
+        confirmBtn.setOnAction(handler);
+    }
+    
+    
+    private TextField createFormInput(String name, Pane pane){
+        Label l = new Label(name);
+        addElementToPane(pane, l);
+        
+        TextField tf = new TextField();
+        addElementToPane(pane, tf);
+        return tf;
+    }
+    
+    Button studentInsertBtn, studentEditBtn, studentDeleteBtn;
+    
+    Student selected;
+    
+    
+    private final String ERROR_TITLE_STUDENT = "Erro - Estudante";
+    private final String ERROR_DATE_FORMAT = "Data em formato inválido. Por favor use dd/MM/yyyy. Ex: 30/11/2015";
+    private final String ERROR_MISSING_FIELD = "Por favor preencha todos os campos.";
+    
+    private void createTableActions(Pane pane){
+        HBox buttonsBox = new HBox(8);
+        
+        studentInsertBtn = new Button("Inserir");
+        buttonsBox.getChildren().add(studentInsertBtn);
+        
+        studentInsertBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                studentsTablePane.setVisible(false);
+                
+                createFormAluno();
+                createConfirmButton(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                        Student student = new Student();
+                        student.setRegister(register.getText());
+                        student.setName(studentName.getText());
+                        student.setAddress(address.getText());
+                        student.setEmail(email.getText());
+                        student.setTelephone(telephone.getText());
+                        student.setBirth_date(birth_date.getText());
+                        student.setSemester( Integer.parseInt(semester.getText()) );
+                        
+                        User user = new User(cpf.getText(), password.getText(), student);
+                        student.setUser(user);
+                        
+                        try {
+                            SecretaryController.insertStudent(student);
+                        } catch (MissingFieldException ex) {
+                            Logger.getLogger(SecretaryViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ParseException ex) {
+                            Logger.getLogger(SecretaryViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (InvalidFieldException ex) {
+                            Logger.getLogger(SecretaryViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
+                        parentStudentEditPane.setVisible(false);
+                        handleListStudents(event);
+                    }
+                }, studentUserEditPane);
+                
+                
+                parentStudentEditPane.setVisible(true);
+            }
+        });
+        
+        studentEditBtn = new Button("Editar");
+        buttonsBox.getChildren().add(studentEditBtn);
+        
+
+        
+        studentEditBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                studentsTablePane.setVisible(false);
+                selected = (Student) studentsTable.getSelectionModel().getSelectedItem();
+
+                createFormAluno();
+                
+                register.setText(selected.getRegister());
+                studentName.setText(selected.getName());
+                address.setText(selected.getAddress());
+                email.setText(selected.getEmail());
+                telephone.setText(selected.getTelephone());
+                birth_date.setText(selected.getBirth_date());
+                
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date myDate;
+                try {
+                    myDate = formatter.parse(selected.getBirth_date().toString());
+                    DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                    birth_date.setText(format.format(myDate));
+
+                } catch (ParseException ex) {
+                    infoBox("Deu ruim", "Ruim");
+                }
+                semester.setText(String.valueOf(selected.getSemester()));
+                
+                cpf.setText(selected.getUser().getCpf());
+                password.setText(selected.getUser().getPassword());
+                
+                createConfirmButton(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                        Student student = selected;
+                        student.setRegister(register.getText());
+                        student.setName(studentName.getText());
+                        student.setAddress(address.getText());
+                        student.setEmail(email.getText());
+                        student.setTelephone(telephone.getText());
+                        student.setBirth_date(birth_date.getText());
+                        student.setSemester( Integer.parseInt(semester.getText()) );
+                        
+                        User user = new User(cpf.getText(), password.getText(), student);
+                        student.setUser(user);
+                        
+                        try {;
+                            SecretaryController.updateStudent(student);
+                            
+                            parentStudentEditPane.setVisible(false);
+                            handleListStudents(event);
+                        } catch (MissingFieldException ex) {
+                            infoBox(ERROR_MISSING_FIELD, ERROR_TITLE_STUDENT);
+                        } catch (ParseException ex) {
+                            infoBox(ERROR_DATE_FORMAT, ERROR_TITLE_STUDENT);
+                        } catch (InvalidFieldException ex) {
+                            infoBox(ex.getMessage(), ERROR_TITLE_STUDENT);
+                        }
+                        
+                        
+                    }
+                }, studentUserEditPane);
+                
+                
+                parentStudentEditPane.setVisible(true);
+            }
+        });
+        
+        studentDeleteBtn = new Button("Excluir");
+        buttonsBox.getChildren().add(studentDeleteBtn);
+        
+        studentDeleteBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                Student selected = (Student) studentsTable.getSelectionModel().getSelectedItem();
+                StudentDAO.deleteStudent(selected);
+                infoBox("Estudante deletado com sucesso", "Estudante");
+                handleListStudents(event);
+            }
+        });
+        
+        pane.getChildren().add(buttonsBox);
+        ( (AnchorPane) pane).setBottomAnchor(buttonsBox, 0.0);
     }
     
     @FXML public void handleListStudents(ActionEvent event){
         StudentPane.setVisible(true);
+        
+        parentStudentEditPane.setVisible(false);
         createTableViewStudents(studentsTablePane);
-        createFormAluno();
+        studentsTablePane.setVisible(true);
     }
     
     

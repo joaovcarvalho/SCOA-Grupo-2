@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.sql.Date;
+
 /**
  *
  * @author Douglas
@@ -18,6 +20,7 @@ public class Student extends Type {
     private String email;
     private String birth_date;
     private int semester;
+    private Date birthDate;
     
     private User user;
 
@@ -95,6 +98,14 @@ public class Student extends Type {
 
     public void setSemester(int semester) {
         this.semester = semester;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
 
