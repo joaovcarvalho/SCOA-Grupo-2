@@ -59,6 +59,7 @@ public class LoginController implements Initializable, ControlledScreen {
            }
             if(user.getType() instanceof Student){
                myController.setScreen(ScreensFramework.screen4ID);
+               
            }
           
           

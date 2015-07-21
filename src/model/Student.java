@@ -18,6 +18,7 @@ public class Student extends Type {
     private String email;
     private String birth_date;
     private int semester;
+    private int student_session_id;
 
     public Student(String name, int id) {
         this.name = name;
@@ -115,6 +116,20 @@ public class Student extends Type {
     @Override
     public String toString() {
         return "Student{" + "name=" + getName() + ", telephone=" + getTelephone() + ", register=" + getRegister() + ", address=" + getAddress() + ", email=" + getEmail() + ", birth_date=" + getBirth_date() + ", semester=" + getSemester() + '}';
+    }
+
+    /**
+     * @return the student_session_id
+     */
+    public int getStudent_session_id() {
+        return student_session_id;
+    }
+
+    /**
+     * @param student_session_id the student_session_id to set
+     */
+    public void setStudent_session_id(int student_session_id) {
+        this.student_session_id = student_session_id;
     }
     
     

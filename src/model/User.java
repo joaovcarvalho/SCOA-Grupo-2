@@ -8,12 +8,14 @@ public class User {
     private String cpf;
     private String password;
     private Type type;
+    private int type_id;
 
-    public User(int id, String cpf, String password, Type type) {
+    public User(int id, String cpf, String password, Type type,int type_id ) {
         this.id = id;
         this.cpf = cpf;
         this.password = password;
         this.type = type;
+        this.type_id = type_id;
     }
 
     public int getId() {
@@ -46,6 +48,20 @@ public class User {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    /**
+     * @return the type_id
+     */
+    public int getType_id() {
+        return type_id;
+    }
+
+    /**
+     * @param type_id the type_id to set
+     */
+    public void setType_id(int type_id) {
+        this.type_id = type_id;
     }
     
     

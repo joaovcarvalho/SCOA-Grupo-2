@@ -45,6 +45,8 @@ import dao.CourseDAO;
 import dao.SubjectDAO;
 import exceptions.MissingFieldException;
 import model.Course;
+import model.StudentGrade;
+import model.User;
 import static view.ProfessorViewController.infoBox;
 
 /**
@@ -205,4 +207,93 @@ public class StudentViewController implements Initializable, ControlledScreen {
         populateSubjectComboBoxByCourseId(subjectComboBox, selectedCourse.getId());
     }
     
+
+    // *****************************  Listar Notas ***************************** 
+    @FXML
+    private Pane listGradesPane;
+    @FXML
+    private TableView notaTableView;
+    
+    @FXML
+    public void handleListGradesLink(ActionEvent event){
+        hideAllPanels();
+        listGradesPane.setVisible(true);
+        populateNotasTableView(notaTableView);
+        
+    }
+    @FXML
+    public void populateNotasTableView(TableView notasTableView){
+ 
+        User aluno = myController.getUser();
+        try {
+        ArrayList<StudentGrade> grades = ExamDAO.getStudentGradeById(aluno.getType_id());
+        for(int i = 0; i < grades.size(); i++) {   
+             System.out.print(grades.get(i).toString());
+        }  
+        notasTableView.setEditable(true);
+        TableColumn coursesCol = new TableColumn("Matérias");
+        coursesCol.setCellValueFactory(
+                new PropertyValueFactory<StudentGrade,String>("course_name")
+        );
+
+        TableColumn gradesCol = new TableColumn("Nota");
+        gradesCol.setCellValueFactory(
+                new PropertyValueFactory<StudentGrade,String>("course_grade")
+        );
+        
+        if(grades != null){
+                    ObservableList<StudentGrade> list = observableArrayList();
+                    list.addAll(grades);
+                    notasTableView.setItems(list);
+                }
+        notasTableView.getColumns().addAll(coursesCol, gradesCol);
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+ 
+    // *****************************  Gera Documentos ***************************** 
+    @FXML
+    private Pane documentPane;
+    @FXML
+    private Button generateDocumentButton;
+    @FXML
+    private ComboBox documentComboBox; 
+    
+    
+    @FXML
+    public void handleListDocumentsLink (ActionEvent event){
+        hideAllPanels();
+        documentPane.setVisible(true);
+        populateDocumentComboBox(documentComboBox);
+    }
+    
+    @FXML
+    public void handleGenerateDocumentButton (ActionEvent event){
+        try {
+         
+        if(documentComboBox.getValue().equals("Histórico Escolar")){
+            infoBox("Imprimindo Documento - Histórico Escolar" ,"Gerando Documento" );
+        }else if(documentComboBox.getValue().equals("Plano de Estudo")){
+            infoBox("Imprimindo Documento - Plano de Estudo","Gerando Documento" );
+            }   
+        } catch (Exception e) {
+            infoBox("Por favor selecione um documento!","Erro");
+        }
+            
+            
+    }
+    
+    @FXML
+    public void handleDocumentComboBox(ActionEvent event){
+
+    }
+
+    private void populateDocumentComboBox(ComboBox documentComboBox) {
+        documentComboBox.getItems().clear();
+        String s1 = "Histórico Escolar";
+        String s2 =  "Plano de Estudo";
+        documentComboBox.getItems().add(s1);
+        documentComboBox.getItems().add(s2);
+    }
 }

@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import model.Exam;
 import model.Professor;
 import model.Registration;
+import model.StudentGrade;
 
 /**
  *
@@ -131,4 +132,35 @@ public class ExamDAO extends DataAccessObject {
         
         closeConnection();
     }
+    
+    public static ArrayList<StudentGrade> getStudentGradeById(int student_id) throws SQLException{
+         initConnection();
+        
+        Connection connection = getConnection();
+        String query = "SELECT name,grade FROM (SELECT subjects.name , classes.id as class_id FROM subjects JOIN classes ON subjects.id = classes.id_subject) as nome "
+                + "JOIN (SELECT id_class , AVG(grade) as grade from exams JOIN registrations ON registrations.id = exams.id_registration WHERE id_student = ? GROUP BY id_class) "
+                + "as nota ON nome.class_id = nota.id_class";
+        
+        PreparedStatement st = connection.prepareStatement(query);
+        st.setInt(1, student_id);
+        ResultSet rs = st.executeQuery();
+        ArrayList<StudentGrade> student_grade = new ArrayList<StudentGrade>();
+        try{
+            while (rs.next()) {
+                String name = rs.getString("name");
+                int grade = rs.getInt("grade");
+                
+                StudentGrade s = new StudentGrade(name, grade);
+ 
+                student_grade.add(s);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        closeConnection();     
+        return student_grade;
+    }
+
 }

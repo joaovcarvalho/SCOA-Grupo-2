@@ -112,7 +112,7 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         ArrayList<model.Class> classes;
         try {
             classes = ClassDAO.getClassByProfessorId(myController.getUser().getType().getId());
-            
+            System.out.println(myController.getUser().getType().getId());
             cb.getItems().clear();
             classes.stream().forEach((next) -> {
                 cb.getItems().add(next.getSubject().getName());
@@ -188,7 +188,6 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
                 examsTable.setEditable(true);
 
                 TableColumn idCol = new TableColumn("Id");
-
                 idCol.setCellValueFactory(
                         new PropertyValueFactory<Student,String>("id")
                 );
