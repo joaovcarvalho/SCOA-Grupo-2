@@ -130,7 +130,26 @@ public class RoomDAO extends DataAccessObject{
       
     }
     
-    
+     public static void deleteRoom(Room room) {
+        initConnection();
+        Connection connection = getConnection();
+        String query = "DELETE FROM rooms WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, room.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(RoomDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+    }
     
     
     

@@ -53,6 +53,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javax.swing.JOptionPane;
 import model.Course;
+import model.Class;
 import model.Professor;
 import model.Room;
 import model.Student;
@@ -218,7 +219,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
     @FXML
     private void handleUpdateProfButton(){
-        System.out.println("cliquei em salvar prof editado");
          String name = nameProfTA.getText();
          String cpf = cpfProfTA.getText() ;
          String reg = regProfTA.getText() ;
@@ -245,6 +245,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          u.setPassword(password);
          UserDAO.updateUser(u);
          ProfessorDAO.updateProfessor(selectedProf);
+         
+         infoBox("Dados alterados com sucesso", "Atualizando professor");
     }
     
     
@@ -266,14 +268,23 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          
          
          if(result == 1){
-             statusSuccess.setVisible(true);
+             infoBox("Professor inserido com sucesso", "Professor");
          }else if(result == 2){
-             statusEmpty.setVisible(true);
+            infoBox("Os campos senha e confirmação de senha precisam ser iguais.", "Senha");
          }else if(result ==3){
-             statusPassword.setVisible(true); 
+             infoBox("Todos os campos são de preenchimento obrigatório.", "Preenchimento obrigatório");
          }
     }
     
+       @FXML
+    public void handleDeleteProfessorButton(ActionEvent event) throws SQLException{
+        Professor p = (Professor) professorsTable.getSelectionModel().getSelectedItem();
+        ProfessorDAO.deleteProfessor(p);
+        showEditProfessor(event);
+        infoBox("Professor deletado com sucesso", "Professor");
+     
+        
+    }
     // ***************************** CURSOS ******************************
     @FXML
     private Pane InsertCourse;
@@ -363,7 +374,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
      @FXML
     private void handleUpdateCourseButton(){
-        System.out.println("cliquei em salvar curso editado");
          String name = nameCourseTA.getText();
          String code = codeCourseTA.getText() ;
          String description = descriptionCourseTA.getText() ;
@@ -375,6 +385,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
            
     
          CourseDAO.updateCourse(selectedCourse);
+         infoBox("Dados alterados com sucesso", "Curso");
     }
     
     
@@ -386,17 +397,29 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     }
      @FXML
     private void handleInsertCourseButton(ActionEvent event) throws SQLException{
-        System.out.println("cliquei em inserir curso");
+       
         
         String description = CourseDescription.getText() ;
         String name = CourseName.getText() ;
         String code = CourseCode.getText() ;
         try{
             SecretaryController.insertCourse(name, code, description);
+            infoBox("Curso inserido com sucesso", "Curso");
         } catch (exceptions.MissingFieldException ex) {
            infoBox("Todos campos são de preenchimento obrigatório", "Erro de validação");
         }
+        
        
+    }
+    
+      @FXML
+    public void handleDeleteCourseButton(ActionEvent event) throws SQLException{
+        Course c = (Course) coursesTable.getSelectionModel().getSelectedItem();
+        CourseDAO.deleteCourse(c);
+        showEditCourses(event);
+        infoBox("Curso deletado com sucesso", "Curso");
+     
+        
     }
     
     //***************************** DISCIPLINAS *****************************
@@ -459,11 +482,14 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
            
         try{
             SecretaryController.insertSubject(code, description, name, credits, courseName);
+             infoBox("Disciplina inserida com sucesso", "Disciplina");
         } catch (exceptions.MissingFieldException ex) {
            infoBox("Todos os campos são de preechimento obrigatório.", "Erro de validação");
         }catch(exceptions.InvalidFieldException ex){
             infoBox(ex.getMessage(), "Erro de validação");
         }
+        
+        
          
     }
     
@@ -518,7 +544,11 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     }
     
     private ArrayList<Course> tmpListCourses; 
-    
+    private ArrayList<Subject> tmpListSubjects; 
+    private ArrayList<Room> tmpListRooms; 
+    private ArrayList<Professor> tmpListProfs; 
+     
+     
     private void populateCoursesComboBox(ComboBox cb){
         try {
             ArrayList<Course> courses = CourseDAO.listCourses();
@@ -565,7 +595,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
      @FXML
     private void handleUpdateSubjectButton(){
-        System.out.println("cliquei em salvar disciplina editada");
         
          String name = nameSubjectTA.getText();
          String code = codeSubjectTA.getText() ;
@@ -588,6 +617,22 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          selectedSubject.setCredits(credits);
          
          SubjectDAO.updateSubject(selectedSubject);
+         
+        infoBox("Dados atualizados com sucesso", "Disciplina");
+       
+         
+         
+         
+    }
+    
+    @FXML
+    public void handleDeleteSubjectButton(ActionEvent event) throws SQLException{
+        Subject subject = (Subject) subjectTable.getSelectionModel().getSelectedItem();
+        SubjectDAO.deleteSubject(subject);
+        showEditSubject(event);
+        infoBox("Disciplina deletada com sucesso", "Disciplina");
+     
+        
     }
     
     // ***************************** TURMAS *****************************
@@ -608,10 +653,19 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     @FXML
      private Pane ListClass;
     @FXML
+     private Pane inputClass;
+    @FXML
      private TableView classTable;
     @FXML
     private TextField classSemester;
-    
+    @FXML
+    private ComboBox profClassComboBox;
+    @FXML
+    private ComboBox subjectClassComboBox;
+    @FXML
+    private ComboBox roomClassComboBox;
+    @FXML
+    private TextField semesterClassTA;
     
     @FXML
     public void showInsertClass(ActionEvent event) throws SQLException {
@@ -680,7 +734,8 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
       
         ClassDAO.insertClass(selectedProf.getId(), selectedRoom.getId(), selectedSubject.getId(), semester);
         
-        
+       infoBox("Turma inserida com sucesso", "Turma");
+      
         
     }
     
@@ -730,6 +785,121 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
                 
         ListClass.setVisible(true); 
         EditClass.setVisible(true); 
+    }
+    
+   
+    
+    private void populateProfsComboBox(ComboBox cb){
+        try {
+            ArrayList<Professor> profs = ProfessorDAO.listProfessors();
+            cb.getItems().clear();
+            
+            for(Professor p : profs){
+                cb.getItems().add(p.getName());
+            }
+
+            tmpListProfs = profs;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SecretaryViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+      private void populateSubjectsComboBox(ComboBox cb){
+        try {
+            ArrayList<Subject> subs = SubjectDAO.listSubjects();
+            cb.getItems().clear();
+            
+            for(Subject s : subs){
+                cb.getItems().add(s.getName());
+            }
+
+            tmpListSubjects = subs;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SecretaryViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+      private void populateRoomsComboBox(ComboBox cb){
+        try {
+            ArrayList<Room> rooms = RoomDAO.listRooms();
+            cb.getItems().clear();
+            
+            for(Room r : rooms){
+                cb.getItems().add(r.getNumber());
+            }
+
+            tmpListRooms = rooms;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SecretaryViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+      
+    @FXML
+    public void handleEditClassButton(){
+  
+        Class cl = (Class) classTable.getSelectionModel().getSelectedItem();
+
+        hideAllPanes();
+        selectedClass = cl;
+         
+         populateProfsComboBox(profClassComboBox);
+         profClassComboBox.getSelectionModel().select(cl.getProfessorName());
+         
+         populateSubjectsComboBox(subjectClassComboBox);
+         subjectClassComboBox.getSelectionModel().select(cl.getSubjectName());
+         
+         populateRoomsComboBox(roomClassComboBox);
+         roomClassComboBox.getSelectionModel().select(cl.getRoomNumber());
+      
+         semesterClassTA.setText("" + cl.getSemester());
+        
+        EditClass.setVisible(true);
+        inputClass.setVisible(true);
+    } 
+    
+     @FXML
+    private void handleUpdateClassButton(){
+      
+       
+         
+        int semester = Integer.parseInt(semesterClassTA.getText());
+        selectedClass.setSemester(semester);
+         
+    
+        for (Professor next : tmpListProfs) {
+            if(next.getName().equals(profClassComboBox.getValue() )){
+                selectedClass.setProfessor(next);
+                break;
+            }
+        }
+          for (Subject next : tmpListSubjects) {
+            if(next.getName().equals( subjectClassComboBox.getValue() )){
+                selectedClass.setSubject(next);
+                break;
+            }
+        }
+           for (Room next : tmpListRooms) {
+            if(next.getNumber().equals( roomClassComboBox.getValue() )){
+                selectedClass.setRoom(next);
+                break;
+            }
+        }
+         
+         ClassDAO.updateClass(selectedClass);
+         infoBox("Dados atualizados com sucesso", "Turma");
+    }
+   
+     @FXML
+    public void handleDeleteClassButton(ActionEvent event) throws SQLException{
+        Class c = (Class) classTable.getSelectionModel().getSelectedItem();
+        ClassDAO.deleteClass(c);
+        showEditClass(event);
+        infoBox("Turma deletada com sucesso", "Turma");
+     
+        
     }
     
     //***************************** SALAS *****************************
@@ -800,8 +970,9 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
          
         try{
             SecretaryController.insertRoom(number, capacity);
+            infoBox("Sala inserida com sucesso", "Sala");
         } catch (exceptions.MissingFieldException ex) {
-           infoBox("Todos os campos são de preechimento obrigatório.insert", "Erro de validação");
+           infoBox("Todos os campos são de preechimento obrigatório.", "Erro de validação");
         }catch(exceptions.InvalidFieldException ex){
             infoBox(ex.getMessage(), "Erro de validação");
         }
@@ -826,7 +997,6 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
     
      @FXML
     private void handleUpdateRoomButton(){
-        System.out.println("cliquei em salvar sala editada");
         
          String number = numberRoomTA.getText();
          String capacity = capacityRoomTA.getText() ;
@@ -837,6 +1007,17 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
            
     
          RoomDAO.updateRoom(selectedRoom);
+         infoBox("Dados atualizados com sucesso", "Turma");
+    }
+    
+      @FXML
+    public void handleDeleteRoomButton(ActionEvent event) throws SQLException{
+        Room r = (Room) roomTable.getSelectionModel().getSelectedItem();
+        RoomDAO.deleteRoom(r);
+        showEditRoom(event);
+        infoBox("Sala deletada com sucesso", "Sala");
+     
+        
     }
     
     //***************************** ALUNOS *****************************
@@ -1148,6 +1329,7 @@ public class SecretaryViewController implements Initializable, ControlledScreen 
         inputProfessor.setVisible(false);
         inputCourse.setVisible(false);
         inputRoom.setVisible(false);
+        inputClass.setVisible(false);
         inputSubject.setVisible(false);
         StudentPane.setVisible(false);
     }

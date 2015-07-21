@@ -193,7 +193,11 @@ public class UserDAO extends DataAccessObject {
         return null;
     }
     
+<<<<<<< HEAD
     public static void deleteUser(User user) {
+=======
+     public static void deleteUser(User user) {
+>>>>>>> e1a83bbb08ca64d964dedbbd2c4fb3ab3a3a99f9
         initConnection();
         Connection connection = getConnection();
         String query = "DELETE FROM users WHERE id = ?";
@@ -207,7 +211,11 @@ public class UserDAO extends DataAccessObject {
         }
             
          catch (SQLException ex) {
+<<<<<<< HEAD
+            Logger.getLogger(ProfessorDAO.class.getName()).log(Level.SEVERE, null, ex);
+=======
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+>>>>>>> e1a83bbb08ca64d964dedbbd2c4fb3ab3a3a99f9
           
         }
         

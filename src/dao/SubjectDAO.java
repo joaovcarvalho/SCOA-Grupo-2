@@ -172,6 +172,27 @@ public class SubjectDAO extends DataAccessObject{
         closeConnection();
       
     }
+      
+       public static void deleteSubject(Subject subject) {
+        initConnection();
+        Connection connection = getConnection();
+        String query = "DELETE FROM subjects WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, subject.getId());
+            statement.execute();
+           
+            closeConnection();
+        }
+            
+         catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+          
+        }
+        
+        closeConnection();
+    }
      
      
     
