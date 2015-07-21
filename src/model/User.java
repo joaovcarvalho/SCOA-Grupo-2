@@ -23,6 +23,10 @@ public class User {
         this.password = password;
         this.type = type;
     }
+    public User(String cpf, String password) {
+        this.cpf = cpf;
+        this.password = password;
+    }
 
     public int getId() {
         return id;

@@ -78,6 +78,9 @@ public class StudentViewController implements Initializable, ControlledScreen {
     private void hideAllPanels(){
         insertFeedbackPane.setVisible(false);
         signUpPane.setVisible(false);
+        documentosPane.setVisible(false);
+        listGradesPane.setVisible(false);
+        
 
     }
     
@@ -246,6 +249,7 @@ public class StudentViewController implements Initializable, ControlledScreen {
                     list.addAll(grades);
                     notasTableView.setItems(list);
                 }
+        notasTableView.getColumns().clear();
         notasTableView.getColumns().addAll(coursesCol, gradesCol);
         } catch (SQLException ex) {
             Logger.getLogger(StudentViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -254,7 +258,7 @@ public class StudentViewController implements Initializable, ControlledScreen {
  
     // *****************************  Gera Documentos ***************************** 
     @FXML
-    private Pane documentPane;
+    private Pane documentosPane;
     @FXML
     private Button generateDocumentButton;
     @FXML
@@ -264,7 +268,7 @@ public class StudentViewController implements Initializable, ControlledScreen {
     @FXML
     public void handleListDocumentsLink (ActionEvent event){
         hideAllPanels();
-        documentPane.setVisible(true);
+        documentosPane.setVisible(true);
         populateDocumentComboBox(documentComboBox);
     }
     
