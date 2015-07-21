@@ -210,8 +210,18 @@ public class StudentViewController implements Initializable, ControlledScreen {
         populateSubjectComboBoxByCourseId(subjectComboBox, selectedCourse.getId());
     }
     
+<<<<<<< HEAD
     @FXML Button logoutBtn;
     
+    @FXML
+    public void handleLogout(ActionEvent event){
+        myController.setScreen(ScreensFramework.screen1ID);
+    }
+    
+}
+=======
+
+    // *****************************  Listar Notas ***************************** 
     @FXML
     private Pane listGradesPane;
     @FXML
@@ -301,3 +311,4 @@ public class StudentViewController implements Initializable, ControlledScreen {
         documentComboBox.getItems().add(s2);
     }
 }
+>>>>>>> 4ad35705159ff5042a1d3ad7d5514ad24e414eb0

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="646.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.StudentViewController">
+   <children>
+      <Label layoutX="36.0" layoutY="23.0" text="SCOA - Bem vindo Aluno">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <Accordion layoutX="36.0" layoutY="85.0" prefHeight="255.0" prefWidth="202.0">
+        <panes>
+          <TitledPane animated="false" text="Consultar Notas">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Hyperlink layoutX="14.0" layoutY="6.0" onAction="#handleListGradesLink" prefHeight="31.0" prefWidth="68.0" text="Listar">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Hyperlink>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" text="Cadastrar Feedback">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Hyperlink layoutX="14.0" layoutY="14.0" onAction="#handleInsertFeedbackLink" text="Inserir">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Hyperlink>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" text="Consultar Documentos">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Hyperlink layoutX="14.0" layoutY="14.0" onAction="#handleListDocumentsLink" text="Gerar">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Hyperlink>
+                     </children></AnchorPane>
+            </content>
+          </TitledPane>
+            <TitledPane animated="false" layoutX="10.0" layoutY="60.0" prefHeight="180.0" prefWidth="133.0" text="Consultar Horários">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" layoutX="10.0" layoutY="85.0" prefHeight="180.0" prefWidth="133.0" text="Inscrever-se numa Turma">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Hyperlink layoutX="14.0" onAction="#handleSignUpLink" text="Inscrever-se">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Hyperlink>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" layoutX="10.0" layoutY="110.0" prefHeight="180.0" prefWidth="133.0" text="Gerenciar Plano de Estudo">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </TitledPane>
+        </panes>
+      </Accordion>
+      <StackPane layoutX="273.0" layoutY="85.0" prefHeight="373.0" prefWidth="333.0">
+         <children>
+            <Pane fx:id="insertFeedbackPane" layoutX="10.0" layoutY="10.0" prefHeight="393.0" prefWidth="330.0" visible="false">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Cadastrar Feedback">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="feedbackTypeComboBox" layoutX="152.0" layoutY="52.0" prefWidth="150.0" />
+                  <Label layoutX="14.0" layoutY="54.0" text="Tipo de Feedback:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="feedbackTextArea" layoutX="11.0" layoutY="126.0" prefHeight="163.0" prefWidth="303.0" />
+                  <Label layoutX="14.0" layoutY="94.0" text="Feedback:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="sendFeedbackButton" layoutX="214.0" layoutY="301.0" mnemonicParsing="false" onAction="#handleSendFeedbackButton" text="Enviar Feedback" />
+               </children>
+            </Pane>
+            <Pane fx:id="signUpPane" prefHeight="393.0" prefWidth="330.0" visible="false">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Inscrever-se numa Turma">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="classComboBox" layoutX="13.0" layoutY="232.0" prefHeight="25.0" prefWidth="303.0" />
+                  <Label layoutX="14.0" layoutY="205.0" prefHeight="27.0" prefWidth="150.0" text="Escolha uma turma:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="signUpButton" layoutX="215.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleSignUpClassButton" text="Inscrever-se" />
+                  <Label layoutX="14.0" layoutY="47.0" prefHeight="27.0" prefWidth="150.0" text="Escolha um curso:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="courseComboBox" layoutX="15.0" layoutY="74.0" onAction="#handleCourseSelected" prefHeight="25.0" prefWidth="303.0" />
+                  <ComboBox fx:id="subjectComboBox" layoutX="15.0" layoutY="149.0" prefHeight="25.0" prefWidth="303.0" />
+                  <Label layoutX="17.0" layoutY="122.0" prefHeight="27.0" prefWidth="150.0" text="Escolha uma matéria:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="listGradesPane" layoutX="10.0" layoutY="10.0" prefHeight="393.0" prefWidth="330.0" visible="false">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Consultar Notas">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="notaTableView" layoutX="8.0" layoutY="41.0" prefHeight="322.0" prefWidth="317.0" />
+               </children>
+            </Pane>
+            <Pane fx:id="documentosPane" layoutX="10.0" layoutY="10.0" prefHeight="393.0" prefWidth="330.0" visible="false">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Gerar documentos">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="generateDocumentButton" layoutX="228.0" layoutY="119.0" mnemonicParsing="false" onAction="#handleGenerateDocumentButton" text="Inscrever-se" />
+                  <Label layoutX="14.0" layoutY="47.0" prefHeight="27.0" prefWidth="180.0" text="Escolha um documento:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="documentComboBox" layoutX="15.0" layoutY="74.0" prefHeight="25.0" prefWidth="303.0" />
+               </children>
+            </Pane>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>
