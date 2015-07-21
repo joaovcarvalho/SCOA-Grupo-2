@@ -11,8 +11,12 @@ javafx.run.inbrowser=<Default System Browser>
 javafx.run.inbrowser.path=C:\\Program
 user.properties.file=C:\\Users\\Jo\u00e3oVitor\\AppData\\Roaming\\NetBeans\\8.0.2\\build.properties
 <<<<<<< HEAD
+user.properties.file=C:\\Users\\Amanda\\AppData\\Roaming\\NetBeans\\8.0.2\\build.properties
+=======
+<<<<<<< HEAD
 user.properties.file=/home/joaocarvalho/.netbeans/8.0.2/build.properties
 =======
 user.properties.file=C:\\Users\\dougl_000\\AppData\\Roaming\\NetBeans\\8.0.2\\build.properties
->>>>>>> 19d5669c63131b34354f88a4b30c5e91c2313a13
+>>>>>>> 4ad35705159ff5042a1d3ad7d5514ad24e414eb0
+>>>>>>> 2e6ccb3b0b122ffa11d6b7113ac335cfb5907d40
 

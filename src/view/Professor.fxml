@@ -156,5 +156,6 @@
         </Pane>
       </children>
     </StackPane>
+    <Button fx:id="logoutBtn" layoutX="590.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleLogout" text="Sair" />
   </children>
 </AnchorPane>

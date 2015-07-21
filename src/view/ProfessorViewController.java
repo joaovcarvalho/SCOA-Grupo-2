@@ -664,4 +664,12 @@ public class ProfessorViewController implements Initializable, ControlledScreen 
         return tf;
     }
     
+    @FXML Button logoutBtn;
+    
+    @FXML
+    public void handleLogout(ActionEvent event){
+        myController.setScreen(ScreensFramework.screen1ID);
+    }
+    
+    
 }
